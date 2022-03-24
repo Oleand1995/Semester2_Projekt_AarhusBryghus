@@ -5,10 +5,10 @@ public class Fadøl extends Drikkervare {
     private int klipPris;
     private String størrelse;
 
-    public Fadøl(int klippris, String størrelse){
-
-     this.klipPris = klippris;
-     this.størrelse = størrelse;
+    public Fadøl(String navn, int antal, double barPris, double butiksPris, int klipPris, String størrelse) {
+        super(navn, antal, barPris, butiksPris);
+        this.klipPris = klipPris;
+        this.størrelse = størrelse;
     }
 
     public int getKlipPris() {
