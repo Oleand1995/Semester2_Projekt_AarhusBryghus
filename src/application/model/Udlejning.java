@@ -11,6 +11,7 @@ public class Udlejning {
     private double samletPris;
     private String lejersNavn;
     private ArrayList<Produkt> produkter;
+    private Salg salg;
 
     public Udlejning(LocalDateTime udlejningsTidspunkt, LocalDateTime afleveringsTidspunkt, double samletPris, String lejersNavn) {
         this.udlejningsTidspunkt = udlejningsTidspunkt;
@@ -18,6 +19,7 @@ public class Udlejning {
         this.samletPris = samletPris;
         this.lejersNavn = lejersNavn;
         produkter = new ArrayList<>();
+        this.salg = null;
     }
 
     public LocalDateTime getUdlejningsTidspunkt() {
@@ -48,13 +50,23 @@ public class Udlejning {
         this.lejersNavn = lejersNavn;
     }
 
+
     public void addProduktTilUdlejning(Produkt produkt){
         produkter.add(produkt);
     }
 
-    public void removeProdukt(Produkt produkt){
+    public void removeProduktFraUdlejning(Produkt produkt){
         produkter.remove(produkt);
     }
+
+    public Salg createSalg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip){
+        if (salg == null){
+            salg = new Salg(udlejningsTidspunkt,samletPris ,samletKlip);
+        }
+        return salg;
+    }
+
+
 
 
 
