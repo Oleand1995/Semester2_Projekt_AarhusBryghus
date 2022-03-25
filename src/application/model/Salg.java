@@ -8,11 +8,13 @@ public class Salg {
     private LocalDateTime salgsTidspunkt;
     private double samletPris;
     private int samletKlip;
+    private RabatBeregning rabat;
 
-    public Salg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip){
+    public Salg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip, RabatBeregning rabat){
         this.salgsTidspunkt = salgsTidspunkt;
         this.samletPris = samletPris;
         this.samletKlip = samletKlip;
+        this.rabat = rabat;
     }
 
     public LocalDateTime getSalgsTidspunkt() {

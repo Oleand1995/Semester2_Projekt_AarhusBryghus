@@ -1,6 +1,8 @@
 package storage;
 
 import application.model.Produkt;
+import application.model.Salg;
+import application.model.Udlejning;
 
 import java.util.ArrayList;
 

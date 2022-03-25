@@ -1,6 +1,6 @@
 package application.model;
 
-public class procentRabat implements RabatBeregning {
+public class procentRabat implements Rabat {
 
     @Override
     public double rabat(double pris) {
