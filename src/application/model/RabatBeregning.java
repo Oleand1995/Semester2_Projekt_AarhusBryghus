@@ -1,6 +1,6 @@
 package application.model;
 
-public interface Rabat {
+public interface RabatBeregning {
 
     double rabat(double pris);
 }
