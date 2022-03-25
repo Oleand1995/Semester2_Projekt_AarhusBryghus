@@ -60,11 +60,13 @@ public class Udlejning {
     }
 
     public Salg createSalg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip){
-        if (salg == null){
-            salg = new Salg(udlejningsTidspunkt,samletPris ,samletKlip);
-        }
+            this.salg = new Salg(udlejningsTidspunkt,samletPris ,samletKlip);
+            salg.addprodukter(produkter);
+
         return salg;
     }
+
+
 
 
 
