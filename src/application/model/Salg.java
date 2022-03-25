@@ -11,10 +11,12 @@ public class Salg {
     private int samletKlip;
     private ArrayList<Produkt> produkter;
 
+
     public Salg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip){
         this.salgsTidspunkt = salgsTidspunkt;
         this.samletPris = samletPris;
         this.samletKlip = samletKlip;
+
     }
 
     public LocalDateTime getSalgsTidspunkt() {
@@ -30,6 +32,13 @@ public class Salg {
     }
 
 
+    public void addprodukter(ArrayList<Produkt> produkter){
+        for (Produkt p : produkter){
+            produkter.add(p);
+        }
+    }
+
+
     public void addProduktTilSalg(Produkt produkt){
         produkter.add(produkt);
     }
@@ -38,4 +47,7 @@ public class Salg {
         produkter.remove(produkt);
     }
 
+    public void addUdlejningerTilSalg(){
+
+    }
 }
