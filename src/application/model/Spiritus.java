@@ -5,8 +5,8 @@ public class Spiritus extends Drikkervare {
     private String størrelse;
     private double alkoProcent;
 
-    public Spiritus(String navn, int antal, double barPris, double butiksPris, String størrelse, double alkoProcent) {
-        super(navn, antal, barPris, butiksPris);
+    public Spiritus(String navn, int antal, String størrelse, double alkoProcent) {
+        super(navn, antal);
         this.størrelse = størrelse;
         this.alkoProcent = alkoProcent;
     }

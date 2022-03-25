@@ -8,8 +8,8 @@ public class Rundvisning extends Oevrige {
     private LocalDate slutTidspunkt;
 
 
-    public Rundvisning(String navn, int antal, double barPris, double butiksPris) {
-        super(navn, antal, barPris, butiksPris);
+    public Rundvisning(String navn, int antal) {
+        super(navn, antal);
 
         this.startTidspunkt = startTidspunkt;
         this.slutTidspunkt = slutTidspunkt;

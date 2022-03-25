@@ -4,8 +4,8 @@ public class Anlæg extends UdlejningsProdukter{
 
     private double leveringsPris;
 
-    public Anlæg(String navn, int antal, double barPris, double butiksPris, double leveringsPris) {
-        super(navn, antal, barPris, butiksPris);
+    public Anlæg(String navn, int antal, double leveringsPris) {
+        super(navn, antal);
         this.leveringsPris = leveringsPris;
     }
 }

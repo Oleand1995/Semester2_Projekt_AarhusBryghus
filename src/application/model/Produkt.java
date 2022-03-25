@@ -4,14 +4,10 @@ public abstract class Produkt {
 
     private String navn;
     private int antal;
-    private double barPris;
-    private double butiksPris;
 
-    public Produkt(String navn, int antal, double barPris, double butiksPris){
+    public Produkt(String navn, int antal){
         this.navn = navn;
         this.antal = antal;
-        this.barPris = barPris;
-        this.butiksPris = butiksPris;
     }
 
     public String getNavn() {
@@ -28,21 +24,5 @@ public abstract class Produkt {
 
     public void setAntal(int antal) {
         this.antal = antal;
-    }
-
-    public double getBarPris() {
-        return barPris;
-    }
-
-    public void setBarPris(double barPris) {
-        this.barPris = barPris;
-    }
-
-    public double getButiksPris() {
-        return butiksPris;
-    }
-
-    public void setButiksPris(double butiksPris) {
-        this.butiksPris = butiksPris;
     }
 }
