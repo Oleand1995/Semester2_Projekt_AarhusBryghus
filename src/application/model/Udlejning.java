@@ -60,9 +60,8 @@ public class Udlejning {
     }
 
 
-    public Salg createSalg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip){
-            this.salg = new Salg(udlejningsTidspunkt,samletPris ,samletKlip);
-            salg.addprodukter(produkter);
+    public Salg createSalg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip,RabatBeregning rabatBeregning){
+            salg = new Salg(udlejningsTidspunkt,samletPris ,samletKlip,rabatBeregning);
 
         return salg;
     }
