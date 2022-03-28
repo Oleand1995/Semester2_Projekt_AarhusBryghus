@@ -1,5 +1,6 @@
 package application.guifx;
 
+import application.controller.Controller;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -13,7 +14,7 @@ public class StartWindow extends Application {
 	
 	@Override
 	public void init() {
-	//	Controller.initStorage(); ----Gør denne aktiv
+	Controller.initStorage();
 	}
 
 	@Override
@@ -41,9 +42,9 @@ public class StartWindow extends Application {
 		Tab tab1 = new Tab("Opret produkt");
 		tabPane.getTabs().add(tab1);
 
-		OpretProduktVindue opretProduktVindue = new OpretProduktVindue();
-		tab1.setContent(opretProduktVindue);
-		tab1.setOnSelectionChanged(event -> opretProduktVindue.updateControls());
+		OpretSalgVindue opretSalgVindue = new OpretSalgVindue();
+		tab1.setContent(opretSalgVindue);
+		tab1.setOnSelectionChanged(event -> opretSalgVindue.updateControls());
 
 
 

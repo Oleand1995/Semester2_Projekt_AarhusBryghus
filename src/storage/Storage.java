@@ -1,9 +1,6 @@
 package storage;
 
-import application.model.Produkt;
-import application.model.ProduktGruppe;
-import application.model.Salg;
-import application.model.Udlejning;
+import application.model.*;
 
 import java.util.ArrayList;
 
@@ -13,6 +10,7 @@ public class Storage {
     private static ArrayList<Produkt> produkter = new ArrayList<>();
     private static ArrayList<Udlejning> udlejninger = new ArrayList<>();
     private static ArrayList<ProduktGruppe> produktGruppes = new ArrayList<>();
+    private static ArrayList<Prisliste> prislister = new ArrayList<>();
 
     //------------------------------------------------------------------------------------------------------------------
     public static ArrayList<Salg> getSalg(){
@@ -37,6 +35,11 @@ public class Storage {
     public static ArrayList<ProduktGruppe> getProduktGrupper(){return new ArrayList<ProduktGruppe>(produktGruppes);}
     public static void addProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.add(produktGruppe);}
     public static void removeProduktGruppe(ProduktGruppe produktGruppe){produkter.remove(produktGruppe);}
+
+    //------------------------------------------------------------------------------------------------------------------
+    public static ArrayList<Prisliste> getPrislister(){return new ArrayList<Prisliste>(prislister);}
+    public static void addPrisliste(Prisliste prisliste){prislister.add(prisliste);}
+    public static void removePrisliste(Prisliste prisliste){prislister.remove(prisliste);}
 
 
 

@@ -4,6 +4,7 @@ public class Produkt {
 
     private String beskrivelse;
     private ProduktGruppe produktgruppe;
+    private Prisliste prisliste;
 
     Produkt(String beskrivelse,ProduktGruppe produktGruppe){
         this.beskrivelse = beskrivelse;
@@ -16,6 +17,14 @@ public class Produkt {
 
     public void setBeskrivelse(String beskrivelse) {
         this.beskrivelse = beskrivelse;
+    }
+
+    public void setPrisliste(Prisliste prisliste){
+        this.prisliste = prisliste;
+    }
+
+    public int getPris(){
+       return prisliste.getPris(this);
     }
 
 }
