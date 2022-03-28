@@ -27,6 +27,8 @@ public class Produkt {
        return prisliste.getPris(this);
     }
 
-    public String toString(){return this.beskrivelse + "\t\t\t" + this.getPris() + ",-";}
+    //Virker ikke i, opret klassen. hvis der er pris med.
+    //public String toString(){return this.beskrivelse + "\t\t\t" + this.getPris() + ",-";}
+    public String toString(){return this.beskrivelse;}
 
 }

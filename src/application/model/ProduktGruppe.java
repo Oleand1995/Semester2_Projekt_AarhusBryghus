@@ -29,6 +29,19 @@ public class ProduktGruppe {
         }
     }
 
+    public String getProduktType(){
+        return this.produktType;
+    }
+
+    public void setProduktType(String produktType){
+        this.produktType = produktType;
+    }
+
+    @Override
+    public String toString(){
+        return produktType;
+    }
+
 
 
 }
