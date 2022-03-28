@@ -5,7 +5,7 @@ public class Produkt {
     private String beskrivelse;
     private ProduktGruppe produktgruppe;
 
-    public Produkt(String beskrivelse,ProduktGruppe produktGruppe){
+    Produkt(String beskrivelse,ProduktGruppe produktGruppe){
         this.beskrivelse = beskrivelse;
         this.produktgruppe = produktGruppe;
     }
