@@ -27,4 +27,6 @@ public class Produkt {
        return prisliste.getPris(this);
     }
 
+    public String toString(){return this.beskrivelse + "\t\t\t" + this.getPris() + ",-";}
+
 }

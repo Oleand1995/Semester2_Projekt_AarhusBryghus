@@ -22,6 +22,8 @@ public class Controller {
         return produkt;
     }
 
+    public static ArrayList<Produkt> getProdukter(){return Storage.getProdukter();}
+
     public static Prisliste createPrisliste(String navn){
         Prisliste prisliste = new Prisliste(navn);
         Storage.addPrisliste(prisliste);
@@ -47,6 +49,9 @@ public class Controller {
         bar.addPris(storOel, 60);
         bar.addPris(lilleOel, 20);
         bar.addPris(mellemOel,40);
+
+        Prisliste butik = Controller.createPrisliste("Butik");
+        butik.addPris(storOel, 55);
 
     }
 
