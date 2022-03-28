@@ -1,28 +1,30 @@
 package application.model;
 
-public abstract class Produkt {
+public class Produkt {
 
-    private String navn;
-    private int antal;
+    private String beskrivelse;
+    private ProduktGruppe produktgruppe;
+    private Prisliste prisliste;
 
-    public Produkt(String navn, int antal){
-        this.navn = navn;
-        this.antal = antal;
+    Produkt(String beskrivelse,ProduktGruppe produktGruppe){
+        this.beskrivelse = beskrivelse;
+        this.produktgruppe = produktGruppe;
     }
 
-    public String getNavn() {
-        return navn;
+    public String getBeskrivelse() {
+        return beskrivelse;
     }
 
-    public void setNavn(String navn) {
-        this.navn = navn;
+    public void setBeskrivelse(String beskrivelse) {
+        this.beskrivelse = beskrivelse;
     }
 
-    public int getAntal() {
-        return antal;
+    public void setPrisliste(Prisliste prisliste){
+        this.prisliste = prisliste;
     }
 
-    public void setAntal(int antal) {
-        this.antal = antal;
+    public int getPris(){
+       return prisliste.getPris(this);
     }
+
 }

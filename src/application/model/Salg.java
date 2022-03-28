@@ -3,20 +3,22 @@ package application.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Salg {
 
     private LocalDateTime salgsTidspunkt;
     private double samletPris;
     private int samletKlip;
-    private ArrayList<Produkt> produkter;
+    private RabatBeregning rabat;
+    private ArrayList<Produkt> produkter = new ArrayList<Produkt>();
 
 
-    public Salg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip){
+    public Salg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip, RabatBeregning rabat){
         this.salgsTidspunkt = salgsTidspunkt;
         this.samletPris = samletPris;
         this.samletKlip = samletKlip;
-
+        this.rabat = rabat;
     }
 
     public LocalDateTime getSalgsTidspunkt() {
@@ -31,23 +33,18 @@ public class Salg {
         return samletKlip;
     }
 
-
-    public void addprodukter(ArrayList<Produkt> produkter){
-        for (Produkt p : produkter){
-            produkter.add(p);
-        }
-    }
-
-
-    public void addProduktTilSalg(Produkt produkt){
+    public void addProdukt(Produkt produkt){
         produkter.add(produkt);
     }
 
-    public void removeProduktFraSalg(Produkt produkt){
+    public void removeProdukt(Produkt produkt){
         produkter.remove(produkt);
     }
 
-    public void addUdlejningerTilSalg(){
-
+    public ArrayList<Produkt> getProdukter(){
+        return produkter;
     }
+
+
+
 }
