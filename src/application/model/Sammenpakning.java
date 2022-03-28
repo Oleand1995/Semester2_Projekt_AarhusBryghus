@@ -4,8 +4,8 @@ public class Sammenpakning extends Oevrige {
 
     private int antalOel;
 
-    public Sammenpakning(String navn, int antal, double barPris, double butiksPris) {
-        super(navn, antal, barPris, butiksPris);
+    public Sammenpakning(String navn, int antal) {
+        super(navn, antal);
 
         this.antalOel = antalOel;
     }
