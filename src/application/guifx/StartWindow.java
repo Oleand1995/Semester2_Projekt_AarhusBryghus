@@ -9,6 +9,8 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import javax.swing.text.TabableView;
+
 public class StartWindow extends Application {
 
 	
@@ -45,6 +47,15 @@ public class StartWindow extends Application {
 		OpretSalgVindue opretSalgVindue = new OpretSalgVindue();
 		tab1.setContent(opretSalgVindue);
 		tab1.setOnSelectionChanged(event -> opretSalgVindue.updateControls());
+
+
+		Tab tab2 = new Tab("Opret produkt eller gruppe");
+		tabPane.getTabs().add(tab2);
+
+		OpretProduktOgGruppe opretProduktOgGruppe = new OpretProduktOgGruppe();
+		tab2.setContent(opretProduktOgGruppe);
+		tab2.setOnSelectionChanged(event -> opretProduktOgGruppe.updateControls());
+
 
 
 
