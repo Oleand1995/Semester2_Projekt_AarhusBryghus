@@ -79,11 +79,14 @@ public class OpretSalgVindue extends GridPane {
 
 	// -------------------------------------------------------------------------
 
-	private void selectedPrislisteChanged(){this.updateControls();}
-	public void updateControls() {
-	Prisliste prisliste = cbbPrisListe.getSelectionModel().getSelectedItem();
-	lvwProdukter.getItems().setAll(prisliste.getProdukter());
+	private void selectedPrislisteChanged(){this.updateControlsPrisliste();}
+	public void updateControlsPrisliste(){
+		Prisliste prisliste = cbbPrisListe.getSelectionModel().getSelectedItem();
+		lvwProdukter.getItems().setAll(prisliste.getProdukter());
 	}
+	public void updateControls() {
+	}
+
 
 
 }
