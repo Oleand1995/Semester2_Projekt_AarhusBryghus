@@ -34,7 +34,7 @@ public class Storage {
     //------------------------------------------------------------------------------------------------------------------
     public static ArrayList<ProduktGruppe> getProduktGrupper(){return new ArrayList<ProduktGruppe>(produktGruppes);}
     public static void addProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.add(produktGruppe);}
-    public static void removeProduktGruppe(ProduktGruppe produktGruppe){produkter.remove(produktGruppe);}
+    public static void removeProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.remove(produktGruppe);}
 
     //------------------------------------------------------------------------------------------------------------------
     public static ArrayList<Prisliste> getPrislister(){return new ArrayList<Prisliste>(prislister);}
