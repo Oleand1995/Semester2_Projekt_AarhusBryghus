@@ -16,11 +16,21 @@ public class Controller {
         return produktGruppe;
     }
 
+    public static ArrayList<ProduktGruppe> getProduktGrupper(){return Storage.getProduktGrupper();}
+
     public static Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
         Produkt produkt = produktGruppe.createProdukt(beskrivelse);
         Storage.addProdukt(produkt);
         return produkt;
     }
+
+    public static void sletProduktgruppe(ProduktGruppe produktGruppe){
+        if (Storage.getProduktGrupper().contains(produktGruppe)){
+            Storage.removeProduktGruppe(produktGruppe);
+        }
+    }
+
+    public static ArrayList<Produkt> getProdukter(){return Storage.getProdukter();}
 
     public static Prisliste createPrisliste(String navn){
         Prisliste prisliste = new Prisliste(navn);
@@ -47,6 +57,9 @@ public class Controller {
         bar.addPris(storOel, 60);
         bar.addPris(lilleOel, 20);
         bar.addPris(mellemOel,40);
+
+        Prisliste butik = Controller.createPrisliste("Butik");
+        butik.addPris(storOel, 55);
 
     }
 
