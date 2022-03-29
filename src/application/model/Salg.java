@@ -2,6 +2,7 @@ package application.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Salg {
 
@@ -9,7 +10,7 @@ public class Salg {
     private double samletPris;
     private int samletKlip;
     private RabatBeregning rabat;
-    private ArrayList<Produkt> produkter = new ArrayList<Produkt>();
+    private HashMap<Produkt, Integer> produkter = new HashMap<>();
 
 
     public Salg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip, RabatBeregning rabat){
@@ -31,9 +32,9 @@ public class Salg {
         return samletKlip;
     }
 
-    public void addProdukt(Produkt produkt){
-        if (!produkter.contains(produkt)){
-            produkter.add(produkt);
+    public void addProdukt(Produkt produkt, int antal){
+        if (!produkter.containsKey(produkt)){
+            produkter.put(produkt,antal);
         }
 
     }
@@ -42,7 +43,7 @@ public class Salg {
         produkter.remove(produkt);
     }
 
-    public ArrayList<Produkt> getProdukter(){
+    public HashMap<Produkt, Integer> getProdukter(){
         return produkter;
     }
 
