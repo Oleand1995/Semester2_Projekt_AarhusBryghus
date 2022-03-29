@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import java.beans.EventHandler;
 import java.sql.Array;
@@ -22,12 +24,13 @@ public class OpretSalgVindue extends GridPane {
 	private ListView<Produkt> lvwProdukter;
 	private ComboBox<Prisliste> cbbPrisListe;
 	private ComboBox<Integer> cbbAntal;
+	private VBox serviceBoxNavn, serviceBoxCounter;
 
 
 	public OpretSalgVindue() {
 		this.setPadding(new Insets(20));
 		this.setHgap(10);
-		this.setVgap(10);
+		this.setVgap(0);
 		this.setGridLinesVisible(false);
 
 
@@ -54,6 +57,7 @@ public class OpretSalgVindue extends GridPane {
 		lvwIndkøbsliste = new ListView<>();
 		this.add(lvwIndkøbsliste,3,2,2,5);
 		ChangeListener<Produkt> listenerIndkøbsliste = (ov, oldProdukt, newProdukt) -> this.selectedIndkøbsProduktChanged();
+
 
 	}
 
@@ -100,8 +104,16 @@ public class OpretSalgVindue extends GridPane {
 		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
 		if (p != null){
 			lvwIndkøbsliste.getItems().add(p);
-		}
-		if (lvwIndkøbsliste.getItems().contains(p)){
+			lvwProdukter.getItems().remove(p);
+
+
+//			int i = lvwIndkøbsliste.getItems().indexOf(p);
+//			TextField txfAntal = new TextField();
+//			txfAntal.setPrefWidth(50);
+//			HBox antalHBox = new HBox(txfAntal);
+//			antalHBox.setAlignment(Pos.CENTER_RIGHT);
+//			antalHBox.setPadding(new Insets(0));
+//			this.add(antalHBox,4,2+i);
 		}
 	}
 
