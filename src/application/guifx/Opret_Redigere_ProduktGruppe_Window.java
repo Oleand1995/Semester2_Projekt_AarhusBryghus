@@ -6,8 +6,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -15,14 +13,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.awt.*;
 
-
-public class OpretProduktGruppeWindow extends Stage {
+public class Opret_Redigere_ProduktGruppe_Window extends Stage {
 
 	private ProduktGruppe produktGruppe;
 
-    public OpretProduktGruppeWindow(String title, ProduktGruppe produktGruppe) {
+    public Opret_Redigere_ProduktGruppe_Window(String title, ProduktGruppe produktGruppe) {
 		this.initStyle(StageStyle.UTILITY);
 		this.initModality(Modality.APPLICATION_MODAL);
 		this.setResizable(false);
@@ -37,7 +33,7 @@ public class OpretProduktGruppeWindow extends Stage {
 		this.setScene(scene);
 	}
 
-	public OpretProduktGruppeWindow(String title) {
+	public Opret_Redigere_ProduktGruppe_Window(String title) {
         this(title, null);
     }
 
@@ -53,7 +49,7 @@ public class OpretProduktGruppeWindow extends Stage {
 		pane.setVgap(10);
 		pane.setGridLinesVisible(false);
 
-		Label lblName = new javafx.scene.control.Label("Produkt Type");
+		Label lblName = new Label("Produkt Type");
 		pane.add(lblName, 0, 0);
 
 		txfProdukttype = new TextField();
