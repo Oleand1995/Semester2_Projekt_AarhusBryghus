@@ -8,7 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-public class OpretProduktOgGruppe extends GridPane {
+public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
 
     private TextField txfProduktNavn, txfAntalPåLager;
     private TextArea txa;
@@ -17,7 +17,7 @@ public class OpretProduktOgGruppe extends GridPane {
     private Button btnOpretProduktGruppe,btnSletProduktGruppe,btnÆndreProduktgruppe,btnOpretProdukt,btnSletProdukt,btnÆndreProdukt;
 
 
-    public OpretProduktOgGruppe() {
+    public Opret_Redigere_Slet_ProduktOgGruppe_Pane() {
         this.setPadding(new Insets(20));
         this.setHgap(20);
         this.setVgap(10);
@@ -30,24 +30,23 @@ public class OpretProduktOgGruppe extends GridPane {
         lvwProduktgrupper = new ListView<>();
         this.add(lvwProduktgrupper,0 ,2,1,1);
         lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+        ChangeListener<ProduktGruppe> listener = (ov, oldProduktGruppe, newproduktgruppe) -> this.valgtProduktgruppe();
+        lvwProduktgrupper.getSelectionModel().selectedItemProperty().addListener(listener);
 
 
         btnOpretProduktGruppe = new Button("Opret produktgruppe");
         this.add(btnOpretProduktGruppe,0 ,3);
         btnOpretProduktGruppe.setOnAction(event -> opretProduktGruppe());
-        ChangeListener<ProduktGruppe> listener = (ov, oldProduktGruppe, newproduktgruppe) -> this.valgtProduktgruppe();
-        lvwProduktgrupper.getSelectionModel().selectedItemProperty().addListener(listener);
-
 
 
         btnSletProduktGruppe = new Button("Slet produktgruppe");
         this.add(btnSletProduktGruppe,0 ,4);
-        btnSletProduktGruppe.setOnAction(event -> sletAction());
+        btnSletProduktGruppe.setOnAction(event -> sletProduktGruppe());
 
 
         btnÆndreProduktgruppe = new Button("Ændre produktgruppe");
         this.add(btnÆndreProduktgruppe,0 ,5 );
-        btnÆndreProduktgruppe.setOnAction(event -> updateAction());
+        btnÆndreProduktgruppe.setOnAction(event -> updateproduktGruppe());
 
 
 
@@ -57,9 +56,9 @@ public class OpretProduktOgGruppe extends GridPane {
         lvwProdukter = new ListView<>();
         this.add(lvwProdukter,1 ,2,1,1);
 
-
         btnOpretProdukt = new Button("Opret produkt");
         this.add(btnOpretProdukt,1 ,3);
+        btnOpretProdukt.setOnAction(event -> opretProdukt());
 
 
         btnSletProdukt = new Button("Slet produkt");
@@ -68,6 +67,7 @@ public class OpretProduktOgGruppe extends GridPane {
 
         btnÆndreProdukt = new Button("Ændre produkt");
         this.add(btnÆndreProdukt,1 ,5 );
+        btnÆndreProdukt.setOnAction(event -> updateprodukt());
 
 
 
@@ -77,7 +77,7 @@ public class OpretProduktOgGruppe extends GridPane {
     // -------------------------------------------------------------------------
 
     private void opretProduktGruppe() {
-        OpretProduktGruppeWindow dia = new OpretProduktGruppeWindow("Opret Produktgruppe");
+        Opret_Redigere_ProduktGruppe_Window dia = new Opret_Redigere_ProduktGruppe_Window("Opret Produktgruppe");
         dia.showAndWait();
 
         //venter til vinduet lukker
@@ -91,7 +91,7 @@ public class OpretProduktOgGruppe extends GridPane {
         }
     }
 
-    private void sletAction() {
+    private void sletProduktGruppe() {
         ProduktGruppe produktGruppe = lvwProduktgrupper.getSelectionModel().getSelectedItem();
         if (produktGruppe != null){
             Controller.sletProduktgruppe(produktGruppe);
@@ -101,10 +101,10 @@ public class OpretProduktOgGruppe extends GridPane {
         }
     }
 
-    private void updateAction(){
+    private void updateproduktGruppe(){
         ProduktGruppe produktGruppe = lvwProduktgrupper.getSelectionModel().getSelectedItem();
         if (produktGruppe != null) {
-            OpretProduktGruppeWindow dia = new OpretProduktGruppeWindow("Update produktgruppe", produktGruppe);
+            Opret_Redigere_ProduktGruppe_Window dia = new Opret_Redigere_ProduktGruppe_Window("Update produktgruppe", produktGruppe);
             dia.showAndWait();
 
             int selectIndex = lvwProduktgrupper.getSelectionModel().getSelectedIndex();
@@ -113,6 +113,36 @@ public class OpretProduktOgGruppe extends GridPane {
 
         }
     }
+
+    private void opretProdukt() {
+        ProduktGruppe produktGruppe = lvwProduktgrupper.getSelectionModel().getSelectedItem();
+        if (produktGruppe != null) {
+            Opret_Redigere_Produkt_Window dia = new Opret_Redigere_Produkt_Window("Opret Produkt",produktGruppe);
+            dia.showAndWait();
+
+            //venter til vinduet lukker
+            lvwProdukter.getItems().setAll(produktGruppe.getProdukter());
+        }
+    }
+
+    private void updateprodukt(){
+        Produkt produkt = lvwProdukter.getSelectionModel().getSelectedItem();
+        if (produkt != null) {
+            Opret_Redigere_Produkt_Window dia = new Opret_Redigere_Produkt_Window("Update produktgruppe", null,produkt);
+            dia.showAndWait();
+
+            int selectIndex = lvwProduktgrupper.getSelectionModel().getSelectedIndex();
+            lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+            lvwProduktgrupper.getSelectionModel().select(selectIndex);
+
+        }
+    }
+
+
+
+
+
+
 
     // -------------------------------------------------------------------------
 
