@@ -53,6 +53,4 @@ public class Salg {
         }
         return sum;
     }
-
-
 }
