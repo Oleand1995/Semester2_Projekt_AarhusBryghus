@@ -32,7 +32,10 @@ public class Salg {
     }
 
     public void addProdukt(Produkt produkt){
-        produkter.add(produkt);
+        if (!produkter.contains(produkt)){
+            produkter.add(produkt);
+        }
+
     }
 
     public void removeProdukt(Produkt produkt){
