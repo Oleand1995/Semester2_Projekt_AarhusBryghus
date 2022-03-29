@@ -97,7 +97,6 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
             Controller.sletProduktgruppe(produktGruppe);
             lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
 
-            System.out.println(Controller.getProduktGrupper());
         }
     }
 
