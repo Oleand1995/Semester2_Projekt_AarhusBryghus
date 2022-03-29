@@ -1,5 +1,7 @@
 package application.model;
 
+import java.util.ArrayList;
+
 public class Produkt {
 
     private String beskrivelse;
@@ -22,7 +24,6 @@ public class Produkt {
     public void setPrisliste(Prisliste prisliste){
         this.prisliste = prisliste;
     }
-
     public int getPris(){
        return prisliste.getPris(this);
     }
