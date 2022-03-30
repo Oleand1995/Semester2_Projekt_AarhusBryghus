@@ -32,4 +32,5 @@ public class Produkt {
     //public String toString(){return this.beskrivelse + "\t\t\t" + this.getPris() + ",-";}
     public String toString(){return this.beskrivelse;}
 
+
 }
