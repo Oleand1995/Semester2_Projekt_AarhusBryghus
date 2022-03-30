@@ -7,7 +7,7 @@ import java.util.Map;
 public class Prisliste {
 
     private String navn;
-    private HashMap<Produkt, Integer> priser = new HashMap<>();
+    private HashMap<Produkt, Double> priser = new HashMap<>();
 
     public Prisliste(String navn){
         this.navn = navn;
@@ -19,7 +19,7 @@ public class Prisliste {
         this.navn = navn;
     }
 
-    public void addPris(Produkt produkt, int pris){
+    public void addPris(Produkt produkt, double pris){
         priser.put(produkt, pris);
     }
 
@@ -27,7 +27,7 @@ public class Prisliste {
         priser.remove(produkt);
     }
 
-    public int getPris(Produkt produkt){
+    public double getPris(Produkt produkt){
         return priser.get(produkt);
     }
 

@@ -6,7 +6,7 @@ public class Produkt {
 
     private String beskrivelse;
     private ProduktGruppe produktgruppe;
-    private Prisliste prisliste;
+    private ArrayList<Prisliste> prislister;
 
     Produkt(String beskrivelse,ProduktGruppe produktGruppe){
         this.beskrivelse = beskrivelse;
@@ -21,10 +21,18 @@ public class Produkt {
         this.beskrivelse = beskrivelse;
     }
 
-    public void setPrisliste(Prisliste prisliste){
-        this.prisliste = prisliste;
+    public void addPrisliste(Prisliste prisliste){
+        if (!prislister.contains(prisliste)){
+            prislister.add(prisliste);
+        }
     }
-    public int getPris(){
+
+    public void removePrisliste(Prisliste prisliste){
+        if (prislister.contains(prisliste)){
+            prislister.remove(prisliste);
+        }
+    }
+    public double getPris(Prisliste prisliste){
        return prisliste.getPris(this);
     }
 
