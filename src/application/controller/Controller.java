@@ -40,10 +40,8 @@ public class Controller {
         return produkter;
     }
 
-    public static void sletProdukt(Produkt produkt){
-        if (Storage.getProdukter().contains(produkt)){
-            Storage.removeProdukt(produkt);
-        }
+    public static void sletProdukt(ProduktGruppe produktGruppe, Produkt produkt){
+        produktGruppe.removeProdukt(produkt);
     }
 
     public static Prisliste createPrisliste(String navn){

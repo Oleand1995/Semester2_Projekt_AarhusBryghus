@@ -127,10 +127,11 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
     }
 
     private void sletProdukt(){
+        ProduktGruppe produktGruppe = lvwProduktgrupper.getSelectionModel().getSelectedItem();
         Produkt produkt = lvwProdukter.getSelectionModel().getSelectedItem();
         if (produkt != null) {
-            Controller.sletProdukt(produkt);
-            lvwProdukter.getItems().setAll(Controller.getProdukter());
+            Controller.sletProdukt(produktGruppe,produkt);
+            lvwProdukter.getItems().setAll(produktGruppe.getProdukter());
 
         }
 
