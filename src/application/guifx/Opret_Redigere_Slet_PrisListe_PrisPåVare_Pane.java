@@ -3,6 +3,7 @@ package application.guifx;
 import application.controller.Controller;
 import application.model.Prisliste;
 import application.model.Produkt;
+import application.model.ProduktGruppe;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -47,12 +48,13 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         btnÆndrePrisliste.setOnAction(event -> updatePrisliste());
 
 
-
         Label lblPrislisteProdukter = new Label("Prisliste produktor");
         this.add(lblPrislisteProdukter, 1, 1);
 
+
         lvwPrislisteProdukter = new ListView<>();
         this.add(lvwPrislisteProdukter,1 ,2,1,1);
+
 
         btnTilføjProdukt = new Button("Tilføj produkt");
         this.add(btnTilføjProdukt,1 ,3);
@@ -61,6 +63,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
         btnSletProdukt = new Button("Slet produkt");
         this.add(btnSletProdukt,1 ,4);
+        btnSletProdukt.setOnAction(event -> sletProdukt());
 
 
         btnÆndreProdukt = new Button("Ændre produkt");
@@ -121,6 +124,14 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
             //venter til vinduet lukker
             lvwPrislisteProdukter.getItems().setAll(prisliste.getProdukter());
+        }
+    }
+
+    private void sletProdukt(){
+        Produkt produkt = lvwPrislisteProdukter.getSelectionModel().getSelectedItem();
+        if (produkt != null) {
+            Controller.sletProdukt(produkt.getProduktgruppe(), produkt);
+            lvwPrislisteProdukter.getItems().setAll(produkt.getProduktgruppe().getProdukter());
         }
     }
 /*

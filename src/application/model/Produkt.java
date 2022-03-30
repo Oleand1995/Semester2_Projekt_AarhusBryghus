@@ -24,5 +24,7 @@ public class Produkt {
 //    public String toString(Prisliste prisliste){return this.beskrivelse + "\t\t\t" + this.getPris(prisliste) + ",-";}
     public String toString(){return this.beskrivelse;}
 
-
+    public ProduktGruppe getProduktgruppe() {
+        return produktgruppe;
+    }
 }
