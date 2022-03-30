@@ -47,11 +47,4 @@ public class Salg {
         return produkter;
     }
 
-    public int samletPris(){
-        int sum = 0;
-        for (Produkt p : produkter){
-            sum += p.getPris();
-        }
-        return sum;
-    }
 }
