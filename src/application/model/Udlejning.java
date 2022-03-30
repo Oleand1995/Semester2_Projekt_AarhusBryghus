@@ -60,8 +60,8 @@ public class Udlejning {
     }
 
 
-    public Salg createSalg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip,RabatBeregning rabatBeregning){
-            salg = new Salg(udlejningsTidspunkt,samletPris ,samletKlip,rabatBeregning);
+    public Salg createSalg(LocalDateTime salgsTidspunkt, Prisliste prisliste){
+            salg = new Salg(udlejningsTidspunkt,prisliste);
 
         return salg;
     }

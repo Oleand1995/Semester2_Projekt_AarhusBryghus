@@ -10,14 +10,12 @@ public class Salg {
     private double samletPris;
     private int samletKlip;
     private RabatBeregning rabat;
-    private HashMap<Produkt, Integer> produkter = new HashMap<>();
+    private Prisliste prisliste;
 
 
-    public Salg(LocalDateTime salgsTidspunkt, double samletPris,int samletKlip, RabatBeregning rabat){
+    public Salg(LocalDateTime salgsTidspunkt, Prisliste prisliste){
         this.salgsTidspunkt = salgsTidspunkt;
-        this.samletPris = samletPris;
-        this.samletKlip = samletKlip;
-        this.rabat = rabat;
+        this.prisliste = prisliste;
     }
 
     public LocalDateTime getSalgsTidspunkt() {
@@ -32,19 +30,10 @@ public class Salg {
         return samletKlip;
     }
 
-    public void addProdukt(Produkt produkt, int antal){
-        if (!produkter.containsKey(produkt)){
-            produkter.put(produkt,antal);
-        }
-
+    public void setPrisliste(Prisliste prisliste){
+        this.prisliste = prisliste;
     }
 
-    public void removeProdukt(Produkt produkt){
-        produkter.remove(produkt);
-    }
-
-    public HashMap<Produkt, Integer> getProdukter(){
-        return produkter;
-    }
+    public Prisliste getPrisliste(){return this.prisliste;}
 
 }

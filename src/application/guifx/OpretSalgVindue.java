@@ -30,12 +30,13 @@ public class OpretSalgVindue extends GridPane {
 	private VBox serviceBoxNavn, serviceBoxCounter;
 	private Ordrelinje ordrelinje = new Ordrelinje();
 	private ListView<Double> lvwPriser;
+	private TextField txfpris;
 
 
 	public OpretSalgVindue() {
 		this.setPadding(new Insets(20));
 		this.setHgap(10);
-		this.setVgap(0);
+		this.setVgap(10);
 		this.setGridLinesVisible(false);
 
 
@@ -50,10 +51,13 @@ public class OpretSalgVindue extends GridPane {
 
 		lvwProdukter = new ListView<>();
 		ChangeListener<Produkt> listenerProdukt = (ov, oldProdukt, newProdukt) -> this.selectedProduktChanged();
+		lvwProdukter.getSelectionModel().selectedItemProperty().addListener(listenerProdukt);
 		this.add(lvwProdukter,0,2, 2, 5);
 
-		lvwPriser = new ListView<>();
-		this.add(lvwPriser,2,2);
+		Label lblPris = new Label("Pris: ");
+		this.add(lblPris,0,7);
+		txfpris = new TextField();
+		this.add(txfpris,1,7);
 
 		Button addButton = new Button("-->");
 		this.add(addButton, 3, 4);
@@ -93,40 +97,33 @@ public class OpretSalgVindue extends GridPane {
 	// -------------------------------------------------------------------------
 
 	private void selectedPrislisteChanged(){this.updateControlsPrisliste();}
-	private void selectedProduktChanged(){this.updateControls();}
+	private void selectedProduktChanged(){this.updateControlsProdukter();}
 	private void selectedIndkøbsProduktChanged(){this.updateControlsIndkøbsProdukt();}
 
 
 	public void updateControlsPrisliste(){
 		Prisliste prisliste = cbbPrisListe.getSelectionModel().getSelectedItem();
-		ArrayList<Produkt> produkter = new ArrayList<>(prisliste.getProdukter());
-		lvwProdukter.getItems().setAll(produkter);
-		ArrayList<Double> priser = new ArrayList<>();
-		for (Produkt p : produkter){
-			priser.add(p.getPris(prisliste));
+		lvwProdukter.getItems().setAll(prisliste.getProdukter());
+		txfpris.clear();
+	}
+
+	public void updateControlsProdukter(){
+		Prisliste pl = cbbPrisListe.getSelectionModel().getSelectedItem();
+		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
+		if (p != null && pl != null){
+			double test = pl.getPris(p);
+			txfpris.setText(test + "");
 		}
-		lvwPriser.getItems().setAll(priser);
 
 	}
+
 	public void updateControls() {
 		cbbPrisListe.getItems().setAll(Controller.getPrislister());
 	}
 
 	private void addVareToIndkøbsliste() {
-		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
-		if (p != null){
-			ordrelinje.addOrdre(p);
-//			lvwIndkøbsliste.getItems().add(p);
-//			lvwProdukter.getItems().remove(p);
-//			int i = lvwIndkøbsliste.getItems().indexOf(p);
-//			TextField txfAntal = new TextField();
-//			txfAntal.setPrefWidth(50);
-//			HBox antalHBox = new HBox(txfAntal);
-//			antalHBox.setAlignment(Pos.CENTER_RIGHT);
-//			antalHBox.setPadding(new Insets(0));
-//			this.add(antalHBox,4,2+i);
-		}
-		lvwIndkøbsliste.getItems().add(ordrelinje.getOrdrer());
+
+
 	}
 
 	private void updateControlsIndkøbsProdukt(){
