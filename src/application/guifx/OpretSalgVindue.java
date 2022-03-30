@@ -16,12 +16,13 @@ import javafx.scene.layout.VBox;
 import java.beans.EventHandler;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OpretSalgVindue extends GridPane {
 
 	private TextField txfProduktNavn, txfAntalPåLager;
 	private TextArea txa;
-	private ListView<Produkt> lvwIndkøbsliste;
+	private ListView<HashMap<Produkt,Integer>> lvwIndkøbsliste;
 	private ListView<Produkt> lvwProdukter;
 	private ComboBox<Prisliste> cbbPrisListe;
 	private ComboBox<Integer> cbbAntal;
@@ -58,7 +59,7 @@ public class OpretSalgVindue extends GridPane {
 
 		lvwIndkøbsliste = new ListView<>();
 		this.add(lvwIndkøbsliste,3,2,2,5);
-		ChangeListener<Produkt> listenerIndkøbsliste = (ov, oldProdukt, newProdukt) -> this.selectedIndkøbsProduktChanged();
+		ChangeListener<HashMap<Produkt,Integer>> listenerIndkøbsliste = (ov, oldProdukt, newProdukt) -> this.selectedIndkøbsProduktChanged();
 
 
 	}
@@ -106,7 +107,7 @@ public class OpretSalgVindue extends GridPane {
 		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
 		if (p != null){
 			ordrelinje.addOrdre(p);
-			lvwIndkøbsliste.getItems().setAll(ordrelinje.getOrdrer().keySet());
+			lvwIndkøbsliste.getItems().add(ordrelinje.getOrdrer());
 //			lvwIndkøbsliste.getItems().add(p);
 //			lvwProdukter.getItems().remove(p);
 //			int i = lvwIndkøbsliste.getItems().indexOf(p);
