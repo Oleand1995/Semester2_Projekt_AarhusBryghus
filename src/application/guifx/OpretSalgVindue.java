@@ -108,7 +108,6 @@ public class OpretSalgVindue extends GridPane {
 		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
 		if (p != null){
 			ordrelinje.addOrdre(p);
-			lvwIndkøbsliste.getItems().add(ordrelinje.getOrdrer());
 //			lvwIndkøbsliste.getItems().add(p);
 //			lvwProdukter.getItems().remove(p);
 //			int i = lvwIndkøbsliste.getItems().indexOf(p);
@@ -119,6 +118,7 @@ public class OpretSalgVindue extends GridPane {
 //			antalHBox.setPadding(new Insets(0));
 //			this.add(antalHBox,4,2+i);
 		}
+		lvwIndkøbsliste.getItems().add(ordrelinje.getOrdrer());
 	}
 
 	private void updateControlsIndkøbsProdukt(){
