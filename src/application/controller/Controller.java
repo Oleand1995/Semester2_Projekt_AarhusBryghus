@@ -46,6 +46,12 @@ public class Controller {
         }
     }
 
+    public static void sletPrisliste(Prisliste prisliste){
+        if (Storage.getPrislister().contains(prisliste)){
+            Storage.removePrisliste(prisliste);
+        }
+    }
+
 
     public static void initStorage(){
         ProduktGruppe fadoel = Controller.createproduktGruppe("Fadøl");
