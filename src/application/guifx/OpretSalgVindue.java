@@ -12,21 +12,24 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.w3c.dom.Text;
 
 import java.beans.EventHandler;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OpretSalgVindue extends GridPane {
 
 	private TextField txfProduktNavn, txfAntalPåLager;
 	private TextArea txa;
-	private ListView<Produkt> lvwIndkøbsliste;
+	private ListView<HashMap<Produkt,Integer>> lvwIndkøbsliste;
 	private ListView<Produkt> lvwProdukter;
 	private ComboBox<Prisliste> cbbPrisListe;
 	private ComboBox<Integer> cbbAntal;
 	private VBox serviceBoxNavn, serviceBoxCounter;
 	private Ordrelinje ordrelinje = new Ordrelinje();
+	private ListView<Double> lvwPriser;
 
 
 	public OpretSalgVindue() {
@@ -49,16 +52,19 @@ public class OpretSalgVindue extends GridPane {
 		ChangeListener<Produkt> listenerProdukt = (ov, oldProdukt, newProdukt) -> this.selectedProduktChanged();
 		this.add(lvwProdukter,0,2, 2, 5);
 
+		lvwPriser = new ListView<>();
+		this.add(lvwPriser,2,2);
+
 		Button addButton = new Button("-->");
-		this.add(addButton, 2, 4);
+		this.add(addButton, 3, 4);
 		addButton.setOnAction(event -> this.addVareToIndkøbsliste());
 
 		Label lblIndkoeb = new Label("Indkøbsliste:");
-		this.add(lblIndkoeb,3,1);
+		this.add(lblIndkoeb,4,1);
 
 		lvwIndkøbsliste = new ListView<>();
-		this.add(lvwIndkøbsliste,3,2,2,5);
-		ChangeListener<Produkt> listenerIndkøbsliste = (ov, oldProdukt, newProdukt) -> this.selectedIndkøbsProduktChanged();
+		this.add(lvwIndkøbsliste,4,2,2,5);
+		ChangeListener<HashMap<Produkt,Integer>> listenerIndkøbsliste = (ov, oldProdukt, newProdukt) -> this.selectedIndkøbsProduktChanged();
 
 
 	}
@@ -93,10 +99,13 @@ public class OpretSalgVindue extends GridPane {
 
 	public void updateControlsPrisliste(){
 		Prisliste prisliste = cbbPrisListe.getSelectionModel().getSelectedItem();
-		if (prisliste != null){
-			Controller.setPrisLister(prisliste);
-			lvwProdukter.getItems().setAll(prisliste.getProdukter());
+		ArrayList<Produkt> produkter = new ArrayList<>(prisliste.getProdukter());
+		lvwProdukter.getItems().setAll(produkter);
+		ArrayList<Double> priser = new ArrayList<>();
+		for (Produkt p : produkter){
+			priser.add(p.getPris(prisliste));
 		}
+		lvwPriser.getItems().setAll(priser);
 
 	}
 	public void updateControls() {
@@ -107,7 +116,6 @@ public class OpretSalgVindue extends GridPane {
 		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
 		if (p != null){
 			ordrelinje.addOrdre(p);
-			lvwIndkøbsliste.getItems().setAll(ordrelinje.getOrdrer().keySet());
 //			lvwIndkøbsliste.getItems().add(p);
 //			lvwProdukter.getItems().remove(p);
 //			int i = lvwIndkøbsliste.getItems().indexOf(p);
@@ -118,6 +126,7 @@ public class OpretSalgVindue extends GridPane {
 //			antalHBox.setPadding(new Insets(0));
 //			this.add(antalHBox,4,2+i);
 		}
+		lvwIndkøbsliste.getItems().add(ordrelinje.getOrdrer());
 	}
 
 	private void updateControlsIndkøbsProdukt(){
