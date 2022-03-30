@@ -1,6 +1,7 @@
 package application.guifx;
 
 import application.controller.Controller;
+import application.model.Ordrelinje;
 import application.model.Prisliste;
 import application.model.Produkt;
 import javafx.beans.value.ChangeListener;
@@ -25,6 +26,7 @@ public class OpretSalgVindue extends GridPane {
 	private ComboBox<Prisliste> cbbPrisListe;
 	private ComboBox<Integer> cbbAntal;
 	private VBox serviceBoxNavn, serviceBoxCounter;
+	private Ordrelinje ordrelinje = new Ordrelinje();
 
 
 	public OpretSalgVindue() {
@@ -98,15 +100,16 @@ public class OpretSalgVindue extends GridPane {
 
 	}
 	public void updateControls() {
+		cbbPrisListe.getItems().setAll(Controller.getPrislister());
 	}
 
 	private void addVareToIndkøbsliste() {
 		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
 		if (p != null){
-			lvwIndkøbsliste.getItems().add(p);
-			lvwProdukter.getItems().remove(p);
-
-
+			ordrelinje.addOrdre(p);
+			lvwIndkøbsliste.getItems().setAll(ordrelinje.getOrdrer().keySet());
+//			lvwIndkøbsliste.getItems().add(p);
+//			lvwProdukter.getItems().remove(p);
 //			int i = lvwIndkøbsliste.getItems().indexOf(p);
 //			TextField txfAntal = new TextField();
 //			txfAntal.setPrefWidth(50);

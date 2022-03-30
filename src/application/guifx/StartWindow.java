@@ -39,7 +39,7 @@ public class StartWindow extends Application {
 	private void initTabPane(TabPane tabPane) {
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 
-		Tab tab1 = new Tab("Opret produkt");
+		Tab tab1 = new Tab("Opret salg");
 		tabPane.getTabs().add(tab1);
 
 		OpretSalgVindue opretSalgVindue = new OpretSalgVindue();
@@ -55,8 +55,12 @@ public class StartWindow extends Application {
 		tab2.setOnSelectionChanged(event -> opretProduktOgGruppe.updateControls());
 
 
+		Tab tab3 = new Tab("Opret prisliste og priser på vare");
+		tabPane.getTabs().add(tab3);
 
-
+		Opret_PrisListe_PrisPåVare_Pane opretPrislistePrisPåVare = new Opret_PrisListe_PrisPåVare_Pane();
+		tab3.setContent(opretPrislistePrisPåVare);
+		tab3.setOnSelectionChanged(event -> opretSalgVindue.updateControls());
 
 
 
