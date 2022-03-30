@@ -100,6 +100,7 @@ public class OpretSalgVindue extends GridPane {
 
 	}
 	public void updateControls() {
+		cbbPrisListe.getItems().setAll(Controller.getPrislister());
 	}
 
 	private void addVareToIndkøbsliste() {
