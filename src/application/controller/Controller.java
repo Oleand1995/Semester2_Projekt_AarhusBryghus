@@ -1,14 +1,30 @@
 package application.controller;
 
-import application.model.Prisliste;
-import application.model.Produkt;
-import application.model.ProduktGruppe;
+import application.model.*;
 import storage.Storage;
 
 import javax.naming.ldap.Control;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Controller {
+
+
+    public static Salg createSalg(LocalDateTime salgsTidspunkt){
+        Salg salg = new Salg(salgsTidspunkt);
+        Storage.addSalg(salg);
+        return salg;
+    }
+
+    public static OrdreLinje createOrdreLinje(Salg salg,Produkt produkt, int antal, double pris){
+        OrdreLinje ordreLinje = salg.createOrdrelinje(produkt,antal ,pris);
+        return ordreLinje;
+    }
+
+    public static void setAntalPåOrdreLinje(OrdreLinje ordreLinje, int antal){
+        ordreLinje.setAntal(antal);
+    }
+
 
     public static ProduktGruppe createproduktGruppe(String produktType){
         ProduktGruppe produktGruppe = new ProduktGruppe(produktType);
