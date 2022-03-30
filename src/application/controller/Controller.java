@@ -48,12 +48,6 @@ public class Controller {
 
     public static ArrayList<Prisliste> getPrislister(){return Storage.getPrislister();}
 
-    public static void setPrisLister(Prisliste prisliste){
-        for (Produkt p : Storage.getProdukter()){
-            p.setPrisliste(prisliste);
-        }
-    }
-
 
     public static void sletPrisliste(Prisliste prisliste){
         if (Storage.getPrislister().contains(prisliste)){
