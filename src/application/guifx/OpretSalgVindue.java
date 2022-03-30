@@ -1,7 +1,6 @@
 package application.guifx;
 
 import application.controller.Controller;
-import application.model.Ordrelinje;
 import application.model.Prisliste;
 import application.model.Produkt;
 import javafx.beans.value.ChangeListener;
