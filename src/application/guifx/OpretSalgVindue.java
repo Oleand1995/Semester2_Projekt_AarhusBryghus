@@ -28,7 +28,6 @@ public class OpretSalgVindue extends GridPane {
 	private ComboBox<Prisliste> cbbPrisListe;
 	private ComboBox<Integer> cbbAntal;
 	private VBox serviceBoxNavn, serviceBoxCounter;
-	private Ordrelinje ordrelinje = new Ordrelinje();
 	private ListView<Double> lvwPriser;
 	private TextField txfpris;
 
