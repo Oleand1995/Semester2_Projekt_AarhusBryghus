@@ -3,20 +3,19 @@ package application.guifx;
 import application.controller.Controller;
 import application.model.Prisliste;
 import application.model.Produkt;
-import application.model.ProduktGruppe;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-public class Opret_PrisListe_PrisPåVare_Pane extends GridPane {
+public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
     private ListView<Prisliste> lvwPrislister;
     private ListView<Produkt> lvwPrislisteProdukter;
     private Button btnOpretPrisliste,btnSletPrisliste,btnÆndrePrisliste,btnTilføjProdukt,btnSletProdukt,btnÆndreProdukt;
 
 
-    public Opret_PrisListe_PrisPåVare_Pane() {
+    public Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane() {
         this.setPadding(new Insets(20));
         this.setHgap(20);
         this.setVgap(10);
@@ -55,9 +54,9 @@ public class Opret_PrisListe_PrisPåVare_Pane extends GridPane {
         lvwPrislisteProdukter = new ListView<>();
         this.add(lvwPrislisteProdukter,1 ,2,1,1);
 
-        btnTilføjProdukt = new Button("Tilføg produkt");
+        btnTilføjProdukt = new Button("Tilføj produkt");
         this.add(btnTilføjProdukt,1 ,3);
-        //btnTilføjProdukt.setOnAction(event -> tilføjProdukt());
+        btnTilføjProdukt.setOnAction(event -> tilføjProduktTilPrisliste());
 
 
         btnSletProdukt = new Button("Slet produkt");
@@ -77,7 +76,7 @@ public class Opret_PrisListe_PrisPåVare_Pane extends GridPane {
 
 
     private void opretPrisliste() {
-        Opret_Prisliste_Window dia = new Opret_Prisliste_Window("Opret prisliste");
+        Opret_Redigere_Prisliste_Window dia = new Opret_Redigere_Prisliste_Window("Opret prisliste");
         dia.showAndWait();
 
         //venter til vinduet lukker
@@ -104,7 +103,7 @@ public class Opret_PrisListe_PrisPåVare_Pane extends GridPane {
     private void updatePrisliste(){
         Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
         if (prisliste != null) {
-            Opret_Prisliste_Window dia = new Opret_Prisliste_Window("Update produktgruppe", prisliste);
+            Opret_Redigere_Prisliste_Window dia = new Opret_Redigere_Prisliste_Window("Update produktgruppe", prisliste);
             dia.showAndWait();
 
             int selectIndex = lvwPrislister.getSelectionModel().getSelectedIndex();
@@ -113,29 +112,31 @@ public class Opret_PrisListe_PrisPåVare_Pane extends GridPane {
         }
     }
 
-/*
-    private void tilføjProdukt() {
-        ProduktGruppe produktGruppe = lvwProduktgrupper.getSelectionModel().getSelectedItem();
-        if (produktGruppe != null) {
-            Opret_Redigere_Produkt_Window dia = new Opret_Redigere_Produkt_Window("Opret Produkt",produktGruppe);
+
+    private void tilføjProduktTilPrisliste() {
+        Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
+        if (prisliste != null) {
+            Opret_Redigere_PrislisteProdukter_Window dia = new Opret_Redigere_PrislisteProdukter_Window("Tilføj",prisliste);
             dia.showAndWait();
 
             //venter til vinduet lukker
-            lvwPrislisteProdukter.getItems().setAll(produktGruppe.getProdukter());
+            lvwPrislisteProdukter.getItems().setAll(prisliste.getProdukter());
         }
     }
-
+/*
     private void updateprodukt(){
         Produkt produkt = lvwPrislisteProdukter.getSelectionModel().getSelectedItem();
         if (produkt != null) {
-            Opret_Redigere_Produkt_Window dia = new Opret_Redigere_Produkt_Window("Update produktgruppe", null,produkt);
+            Opret_Redigere_PrislisteProdukter_Window dia = new Opret_Redigere_PrislisteProdukter_Window("Update produktgruppe", null,produkt);
             dia.showAndWait();
 
-            int selectIndex = lvwProduktgrupper.getSelectionModel().getSelectedIndex();
-            lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
-            lvwProduktgrupper.getSelectionModel().select(selectIndex);
+            int selectIndex = lvwPrislisteProdukter.getSelectionModel().getSelectedIndex();
+            lvwPrislisteProdukter.getItems().setAll(Controller.getpris);
+            lvwPrislisteProdukter.getSelectionModel().select(selectIndex);
 
         }
+
+
     }
 
 
@@ -149,7 +150,9 @@ public class Opret_PrisListe_PrisPåVare_Pane extends GridPane {
     public void updateControls() {
         lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
     }
+    
+ */
 
-     */
+
 
 }
