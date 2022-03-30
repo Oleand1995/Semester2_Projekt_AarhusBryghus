@@ -39,7 +39,7 @@ public class StartWindow extends Application {
 	private void initTabPane(TabPane tabPane) {
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 
-		Tab tab1 = new Tab("Opret produkt");
+		Tab tab1 = new Tab("Opret salg");
 		tabPane.getTabs().add(tab1);
 
 		OpretSalgVindue opretSalgVindue = new OpretSalgVindue();
