@@ -30,15 +30,13 @@ public class Controller {
         }
     }
 
-    public static ArrayList<Produkt> getProdukter(){
-        ArrayList<Produkt> produkter = new ArrayList<>();
-        for (ProduktGruppe pG : Storage.getProduktGrupper()){
-            for (Produkt p : pG.getProdukter()){
-                produkter.add(p);
-            }
+    public static void sletProdukt (Produkt produkt){
+        if (Storage.getProdukter().contains(produkt)){
+            Storage.removeProdukt(produkt);
         }
-        return produkter;
     }
+
+    public static ArrayList<Produkt> getProdukter(){return Storage.getProdukter();}
 
     public static Prisliste createPrisliste(String navn){
         Prisliste prisliste = new Prisliste(navn);
@@ -48,15 +46,16 @@ public class Controller {
 
     public static ArrayList<Prisliste> getPrislister(){return Storage.getPrislister();}
 
+    public static void setPrisLister(Prisliste prisliste){
+        for (Produkt p : Storage.getProdukter()){
+            p.setPrisliste(prisliste);
+        }
+    }
 
     public static void sletPrisliste(Prisliste prisliste){
         if (Storage.getPrislister().contains(prisliste)){
             Storage.removePrisliste(prisliste);
         }
-    }
-
-    public static void addProduktTilprislisen(Prisliste prisliste,Produkt produkt, int pris){
-        prisliste.addPris(produkt,pris);
     }
 
 

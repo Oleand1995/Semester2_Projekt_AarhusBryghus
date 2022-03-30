@@ -63,6 +63,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
 
         btnSletProdukt = new Button("Slet produkt");
         this.add(btnSletProdukt,1 ,4);
+        btnSletProdukt.setOnAction(event -> sletProdukt());
 
 
         btnÆndreProdukt = new Button("Ændre produkt");
@@ -96,6 +97,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
         if (produktGruppe != null){
             Controller.sletProduktgruppe(produktGruppe);
             lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+            lvwProdukter.getItems().clear();
 
         }
     }
@@ -122,6 +124,16 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
             //venter til vinduet lukker
             lvwProdukter.getItems().setAll(produktGruppe.getProdukter());
         }
+    }
+
+    private void sletProdukt(){
+        Produkt produkt = lvwProdukter.getSelectionModel().getSelectedItem();
+        if (produkt != null) {
+            Controller.sletProdukt(produkt);
+            lvwProdukter.getItems().setAll(Controller.getProdukter());
+
+        }
+
     }
 
     private void updateprodukt(){
