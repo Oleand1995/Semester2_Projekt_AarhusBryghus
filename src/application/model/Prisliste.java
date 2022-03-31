@@ -13,15 +13,16 @@ public class Prisliste {
         this.situation = situation;
     }
 
-    public void addPris(Pris pris){
-        if (!priser.contains(pris)){
-            priser.add(pris);
-        }
+    public Pris createPris(double værdi, Produkt produkt){
+        Pris pris = new Pris(værdi, produkt);
+        priser.add(pris);
+        return pris;
     }
 
     public void removePris(Pris pris){
         priser.remove(pris);
     }
+
 
     public ArrayList<Pris> getPriser(){return new ArrayList<>(priser);}
 
@@ -32,4 +33,14 @@ public class Prisliste {
     public void setSituation(String situation) {
         this.situation = situation;
     }
+
+    public ArrayList<Produkt> getProdukter(){
+        ArrayList produkter = new ArrayList();
+        for (Pris pr : priser){
+            produkter.add(pr.getProdukt());
+        }
+        return produkter;
+    }
+
+    public String toString(){return this.situation;}
 }

@@ -4,25 +4,12 @@ import java.util.ArrayList;
 
 public class OrdreLinje {
 
-    private Produkt produkt;
     private int antal;
-    private double pris;
-    private ArrayList<Produkt> ønskedeProduker;
+    private Pris pris;
 
-    OrdreLinje(Produkt produkt, int antal, double pris){
-        this.produkt = produkt;
-        this.antal = antal;
+    OrdreLinje(Pris pris){
+        this.antal = 1;
         this.pris = pris;
-        this.ønskedeProduker = new ArrayList<>();
-
-    }
-
-    public Produkt getProdukt() {
-        return produkt;
-    }
-
-    public void setProdukt(Produkt produkt) {
-        this.produkt = produkt;
     }
 
     public int getAntal() {
@@ -33,30 +20,15 @@ public class OrdreLinje {
         this.antal = antal;
     }
 
-    public double getPris() {
-        return pris;
-    }
-
-    public void setPris(double pris) {
+    public void setPris(Pris pris){
         this.pris = pris;
     }
 
-    public void addØnsketProdukt(Produkt produkt){
-        if (!ønskedeProduker.contains(produkt)) {
-            ønskedeProduker.add(produkt);
-        }
-    }
+    public Pris getPris(){return this.pris;}
 
-    public void removeØnsketProdukt(Produkt produkt){
-        if (ønskedeProduker.contains(produkt)){
-            ønskedeProduker.remove(produkt);
-        }
-    }
 
     @Override
-    public String toString(){
-        return this.produkt.getBeskrivelse() + "     Antal:" + antal + "     Stk. Pris:" + this.pris + "Kr";
-    }
+    public String toString(){return pris + "";}
 
 
 

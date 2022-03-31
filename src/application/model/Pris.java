@@ -4,24 +4,30 @@ import java.util.ArrayList;
 
 public class Pris {
 
-    private ArrayList<Produkt> produkter = new ArrayList<>();
-    private int pris;
 
-    public Pris(int pris){
+    private Produkt produkt;
+    private double pris;
+
+    public Pris(double pris, Produkt produkt){
+        this.pris = pris;
+        this.produkt = produkt;
+    }
+
+    public Produkt getProdukt() {
+        return produkt;
+    }
+
+    public void setProdukt(Produkt produkt) {
+        this.produkt = produkt;
+    }
+
+    public double getPris() {
+        return pris;
+    }
+
+    public void setPris(double pris) {
         this.pris = pris;
     }
 
-    public void addProdukt(Produkt produkt){
-        if (!produkter.contains(produkt)){
-            produkter.add(produkt);
-        }
-    }
-
-    public void removeProdukt(Produkt produkt){
-        produkter.remove(produkt);
-    }
-
-    public ArrayList<Produkt> getProdukter(){return new ArrayList<>(produkter);}
-
-
+    public String toString(){return produkt + " " + pris;}
 }

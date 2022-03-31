@@ -16,8 +16,8 @@ public class Controller {
         return salg;
     }
 
-    public static OrdreLinje createOrdreLinje(Salg salg,Produkt produkt, int antal, double pris){
-        OrdreLinje ordreLinje = salg.createOrdrelinje(produkt,antal ,pris);
+    public static OrdreLinje createOrdreLinje(Salg salg,Pris pris){
+        OrdreLinje ordreLinje = salg.createOrdrelinje(pris);
         return ordreLinje;
     }
 
@@ -70,6 +70,7 @@ public class Controller {
     public static ArrayList<Prisliste> getPrislister(){return Storage.getPrislister();}
 
 
+
     public static void sletPrisliste(Prisliste prisliste){
         if (Storage.getPrislister().contains(prisliste)){
             Storage.removePrisliste(prisliste);
@@ -85,12 +86,12 @@ public class Controller {
         Produkt mellemOel = Controller.createProdukt("Semi øl",fadoel);
 
         Prisliste bar = Controller.createPrisliste("Bar");
-        bar.addPris(storOel, 60);
-        bar.addPris(lilleOel, 20);
-        bar.addPris(mellemOel,40);
+        bar.createPris(20,lilleOel);
+        bar.createPris(40,mellemOel);
+        bar.createPris(60,storOel);
 
         Prisliste butik = Controller.createPrisliste("Butik");
-        butik.addPris(storOel, 55);
+        butik.createPris(55,storOel);
 
     }
 

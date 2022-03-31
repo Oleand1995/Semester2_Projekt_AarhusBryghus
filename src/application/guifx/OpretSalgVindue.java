@@ -1,10 +1,7 @@
 package application.guifx;
 
 import application.controller.Controller;
-import application.model.OrdreLinje;
-import application.model.Prisliste;
-import application.model.Produkt;
-import application.model.Salg;
+import application.model.*;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,7 +24,7 @@ public class OpretSalgVindue extends GridPane {
 	private TextField txfProduktNavn, txfAntalPåLager;
 	private TextArea txa;
 	private ListView<OrdreLinje> lvwIndkøbsliste;
-	private ListView<Produkt> lvwProdukter;
+	private ListView<Pris> lvwProdukter;
 	private ComboBox<Prisliste> cbbPrisListe;
 	private ComboBox<Integer> cbbAntal;
 	private VBox serviceBoxNavn, serviceBoxCounter;
@@ -54,7 +51,7 @@ public class OpretSalgVindue extends GridPane {
 		this.add(lblProdukter,0,1);
 
 		lvwProdukter = new ListView<>();
-		ChangeListener<Produkt> listenerProdukt = (ov, oldProdukt, newProdukt) -> this.selectedProduktChanged();
+		ChangeListener<Pris> listenerProdukt = (ov, oldProdukt, newProdukt) -> this.selectedProduktChanged();
 		lvwProdukter.getSelectionModel().selectedItemProperty().addListener(listenerProdukt);
 		this.add(lvwProdukter,0,2, 2, 5);
 
@@ -129,17 +126,23 @@ public class OpretSalgVindue extends GridPane {
 	}
 
 	private void TilføjTilIndkoebskurv() {
-		Produkt produkt = lvwProdukter.getSelectionModel().getSelectedItem();
-		Controller.createOrdreLinje(salg,produkt,1 ,cbbPrisListe.getSelectionModel().getSelectedItem().getPris(produkt));
-		lvwIndkøbsliste.getItems().setAll(salg.getOrdreliner());
-		txfPrisIndkøbsliste.setText(salg.getSamletPris() + "");
+		Pris pris = lvwProdukter.getSelectionModel().getSelectedItem();
+		if (pris != null){
+			OrdreLinje ordreLinje = Controller.createOrdreLinje(salg,pris);
+			lvwIndkøbsliste.getItems().setAll(salg.getOrdreliner());
+			txfPrisIndkøbsliste.setText(salg.getSamletPris() + "");
+		}
+
 
 	}
 
 
 	public void antalPåvalgtProdukt(){
 		OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
-		txfAntal.setText(ordreLinje.getAntal() + "");
+		if (ordreLinje != null){
+			txfAntal.setText(ordreLinje.getAntal() + "");
+		}
+
 	}
 
 
@@ -157,10 +160,13 @@ public class OpretSalgVindue extends GridPane {
 
 	private void godkendAntal() {
 		OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
-		Controller.setAntalPåOrdreLinje(ordreLinje,Integer.parseInt(txfAntal.getText()));
-		lvwIndkøbsliste.getItems().setAll(salg.getOrdreliner());
-		txfPrisIndkøbsliste.setText(salg.getSamletPris() + "");
-		txfAntal.clear();
+		if (ordreLinje != null){
+			Controller.setAntalPåOrdreLinje(ordreLinje,Integer.parseInt(txfAntal.getText()));
+			lvwIndkøbsliste.getItems().setAll(salg.getOrdreliner());
+			txfPrisIndkøbsliste.setText(salg.getSamletPris() + "");
+			txfAntal.clear();
+		}
+
 	}
 
 
@@ -174,15 +180,15 @@ public class OpretSalgVindue extends GridPane {
 
 	public void updateControlsPrisliste(){
 		Prisliste prisliste = cbbPrisListe.getSelectionModel().getSelectedItem();
-		lvwProdukter.getItems().setAll(prisliste.getProdukter());
+		lvwProdukter.getItems().setAll(prisliste.getPriser());
 		txfpris.clear();
 	}
 
 	public void updateControlsProdukter(){
 		Prisliste pl = cbbPrisListe.getSelectionModel().getSelectedItem();
-		Produkt p = lvwProdukter.getSelectionModel().getSelectedItem();
-		if (p != null && pl != null){
-			double test = pl.getPris(p);
+		Pris pris = lvwProdukter.getSelectionModel().getSelectedItem();
+		if (pris != null && pl != null){
+			double test = pris.getPris();
 			txfpris.setText(test + "");
 		}
 

@@ -1,6 +1,7 @@
 package application.guifx;
 
 import application.controller.Controller;
+import application.model.Pris;
 import application.model.Prisliste;
 import application.model.Produkt;
 import javafx.beans.value.ChangeListener;
@@ -106,7 +107,7 @@ public class Opret_Redigere_PrislisteProdukter_Window extends Stage {
             lblError.setText("Der skal vælges et produkt");
         }
         else {
-            Controller.addProduktTilprislisen(prisliste,produkt ,prispåprodukt);
+            prisliste.createPris(prispåprodukt,produkt);
             hide();
         }
     }
