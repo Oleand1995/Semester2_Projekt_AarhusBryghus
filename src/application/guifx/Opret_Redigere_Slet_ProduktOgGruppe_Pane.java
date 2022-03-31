@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import storage.Storage;
 
 public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
 
@@ -132,7 +133,6 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
         if (produkt != null) {
             Controller.sletProdukt(produktGruppe,produkt);
             lvwProdukter.getItems().setAll(produktGruppe.getProdukter());
-
         }
 
     }

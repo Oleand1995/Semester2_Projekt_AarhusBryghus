@@ -65,9 +65,6 @@ public class Opret_Redigere_PrislisteProdukter_Window extends Stage {
         pane.add(txfPrispåProdukt,0 ,3);
         txfPrispåProdukt.setPrefWidth(200);
 
-
-
-
         Button btnAnnuller = new Button("Annuller");
         pane.add(btnAnnuller, 0, 4);
         GridPane.setHalignment(btnAnnuller, HPos.LEFT);
@@ -84,7 +81,6 @@ public class Opret_Redigere_PrislisteProdukter_Window extends Stage {
 
 
     }
-
 
     private void annullerAction() {
         hide();

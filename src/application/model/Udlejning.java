@@ -60,11 +60,11 @@ public class Udlejning {
     }
 
 
-    public Salg createSalg(LocalDateTime salgsTidspunkt, Prisliste prisliste){
-            salg = new Salg(udlejningsTidspunkt,prisliste);
-
-        return salg;
-    }
+    //public Salg createSalg(LocalDateTime salgsTidspunkt, Prisliste prisliste){
+    //        salg = new Salg(udlejningsTidspunkt,prisliste);
+    //
+    //    return salg;
+   // }
 
 
 
