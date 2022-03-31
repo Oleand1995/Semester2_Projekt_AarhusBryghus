@@ -31,9 +31,8 @@ public class Salg {
         return new ArrayList<>(ordrelinjer);
     }
 
-    public OrdreLinje createOrdrelinje(Produkt produkt, int antal, double pris){
-        OrdreLinje ordreLinje = new OrdreLinje(produkt,antal ,pris);
-        ordrelinjer.add(ordreLinje);
+    public OrdreLinje createOrdrelinje(Pris pris){
+        OrdreLinje ordreLinje = new OrdreLinje(pris);
         return ordreLinje;
     }
 
@@ -46,7 +45,7 @@ public class Salg {
     public double getSamletPris(){
         double samletPris = 0;
         for (OrdreLinje o : ordrelinjer){
-            samletPris += o.getPris() * o.getAntal();
+            samletPris += o.getPris().getPris() * o.getAntal();
         }
         return samletPris;
     }

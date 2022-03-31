@@ -77,7 +77,7 @@ public class Opret_Redigere_Prisliste_Window extends Stage {
 
     private void initControls() {
      if (prisliste != null) {
-            txfPrislisteNavn.setText(prisliste.getNavn());
+            txfPrislisteNavn.setText(prisliste.getSituation());
         }
     }
 
@@ -92,7 +92,7 @@ public class Opret_Redigere_Prisliste_Window extends Stage {
             lblError.setText("Produktbeskrivelse skal være udfyldt");
         }
         else if (prisliste != null) {
-            prisliste.setNavn(prisListeNavn);
+            prisliste.setSituation(prisListeNavn);
             hide();
         }
         else {
