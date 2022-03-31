@@ -33,6 +33,7 @@ public class Salg {
 
     public OrdreLinje createOrdrelinje(Pris pris){
         OrdreLinje ordreLinje = new OrdreLinje(pris);
+        ordrelinjer.add(ordreLinje);
         return ordreLinje;
     }
 
