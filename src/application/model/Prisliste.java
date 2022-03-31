@@ -6,36 +6,30 @@ import java.util.Map;
 
 public class Prisliste {
 
-    private String navn;
-    private HashMap<Produkt, Double> priser = new HashMap<>();
+    private String situation;
+    private ArrayList<Pris> priser = new ArrayList<>();
 
-    public Prisliste(String navn){
-        this.navn = navn;
+    public Prisliste(String situation){
+        this.situation = situation;
     }
 
-    public String getNavn(){return this.navn;}
-
-    public void setNavn(String navn){
-        this.navn = navn;
+    public void addPris(Pris pris){
+        if (!priser.contains(pris)){
+            priser.add(pris);
+        }
     }
 
-    public void addPris(Produkt produkt, double pris){
-        priser.put(produkt, pris);
+    public void removePris(Pris pris){
+        priser.remove(pris);
     }
 
-    public void removePris(Produkt produkt){
-        priser.remove(produkt);
+    public ArrayList<Pris> getPriser(){return new ArrayList<>(priser);}
+
+    public String getSituation() {
+        return situation;
     }
 
-    public double getPris(Produkt produkt){
-        return priser.get(produkt);
+    public void setSituation(String situation) {
+        this.situation = situation;
     }
-
-    public ArrayList<Produkt> getProdukter(){
-        ArrayList<Produkt> produkter = new ArrayList<>();
-        produkter.addAll(priser.keySet());
-        return produkter;
-    }
-
-    public String toString(){return this.navn;}
 }

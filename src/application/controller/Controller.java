@@ -76,9 +76,6 @@ public class Controller {
         }
     }
 
-    public static void addProduktTilprislisen(Prisliste prisliste,Produkt produkt, int pris){
-        prisliste.addPris(produkt,pris);
-    }
 
 
     public static void initStorage(){
