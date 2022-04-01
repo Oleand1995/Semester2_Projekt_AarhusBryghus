@@ -1,6 +1,7 @@
 package application.controller;
 
 import application.model.*;
+import javafx.collections.ObservableList;
 import storage.Storage;
 
 import javax.naming.ldap.Control;
@@ -10,15 +11,24 @@ import java.util.ArrayList;
 public class Controller {
 
 
-    public static Salg createSalg(LocalDateTime salgsTidspunkt){
-        Salg salg = new Salg(salgsTidspunkt);
+    public static Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris){
+        Salg salg = new Salg(salgsTidspunkt, ordreLinjer, samletPris, samletKlip);
         Storage.addSalg(salg);
         return salg;
     }
 
-    public static OrdreLinje createOrdreLinje(Salg salg,Pris pris){
-        OrdreLinje ordreLinje = salg.createOrdrelinje(pris);
-        return ordreLinje;
+    public static ArrayList<Salg> getSalg(){return new ArrayList<>(Storage.getSalg());}
+
+    public static Udlejning createUdlejning(LocalDateTime udlejningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer){
+        Udlejning udlejning = new Udlejning(udlejningsTidspunkt,null,samletPris,lejersNavn,ordrelinjer);
+        Storage.addUdlejning(udlejning);
+        return udlejning;
+    }
+
+    public static ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(Storage.getUdlejninger());}
+
+    public static OrdreLinje createOrdreLinje(Pris pris){
+        return new OrdreLinje(pris);
     }
 
     public static void setAntalPåOrdreLinje(OrdreLinje ordreLinje, int antal){
@@ -75,6 +85,14 @@ public class Controller {
         if (Storage.getPrislister().contains(prisliste)){
             Storage.removePrisliste(prisliste);
         }
+    }
+
+    public static double getSamletPris(ObservableList<OrdreLinje> ordreLinjer){
+        double samletPris = 0;
+        for (OrdreLinje o : ordreLinjer){
+            samletPris += o.getPris().getPris() * o.getAntal();
+        }
+        return samletPris;
     }
 
 

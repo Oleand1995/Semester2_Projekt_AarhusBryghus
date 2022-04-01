@@ -7,7 +7,7 @@ public class OrdreLinje {
     private int antal;
     private Pris pris;
 
-    OrdreLinje(Pris pris){
+    public OrdreLinje(Pris pris){
         this.antal = 1;
         this.pris = pris;
     }
@@ -28,7 +28,7 @@ public class OrdreLinje {
 
 
     @Override
-    public String toString(){return pris + "";}
+    public String toString(){return pris + " | " + antal + " stk";}
 
 
 

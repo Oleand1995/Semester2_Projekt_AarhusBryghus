@@ -62,6 +62,13 @@ public class StartWindow extends Application {
 		tab3.setContent(opretPrislistePrisPåVare);
 		tab3.setOnSelectionChanged(event -> opretSalgVindue.updateControls());
 
+		Tab tab4 = new Tab("Vis salg & udlejninger");
+		tabPane.getTabs().add(tab4);
+
+		VisSalgOgUdlejninger_Pane visSalgOgUdlejninger = new VisSalgOgUdlejninger_Pane();
+		tab4.setContent(visSalgOgUdlejninger);
+		tab4.setOnSelectionChanged(event -> visSalgOgUdlejninger.updateControls());
+
 
 
 

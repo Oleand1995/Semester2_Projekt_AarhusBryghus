@@ -29,5 +29,5 @@ public class Pris {
         this.pris = pris;
     }
 
-    public String toString(){return produkt + " " + pris;}
+    public String toString(){return produkt + " | " + pris + ",-";}
 }
