@@ -1,5 +1,7 @@
 package application.model;
 
+import application.controller.Controller;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,19 +9,18 @@ import java.util.ArrayList;
 public class Udlejning {
 
     private LocalDateTime udlejningsTidspunkt;
-    private LocalDateTime afleveringsTidspunkt;
+    private LocalDateTime afregningsTidspunkt;
     private double samletPris;
+    private ArrayList<OrdreLinje> ordrelinjer;
     private String lejersNavn;
-    private ArrayList<Produkt> produkter;
     private Salg salg;
 
-    public Udlejning(LocalDateTime udlejningsTidspunkt, LocalDateTime afleveringsTidspunkt, double samletPris, String lejersNavn) {
+    public Udlejning(LocalDateTime udlejningsTidspunkt, LocalDateTime afregningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer) {
         this.udlejningsTidspunkt = udlejningsTidspunkt;
-        this.afleveringsTidspunkt = afleveringsTidspunkt;
+        this.afregningsTidspunkt = afregningsTidspunkt;
         this.samletPris = samletPris;
         this.lejersNavn = lejersNavn;
-        produkter = new ArrayList<>();
-        this.salg = null;
+        this.ordrelinjer = ordrelinjer;
     }
 
     public LocalDateTime getUdlejningsTidspunkt() {
@@ -31,15 +32,19 @@ public class Udlejning {
     }
 
     public LocalDateTime getAfleveringsTidspunkt() {
-        return afleveringsTidspunkt;
+        return afregningsTidspunkt;
     }
 
     public void setAfleveringsTidspunkt(LocalDateTime afleveringsTidspunkt) {
-        this.afleveringsTidspunkt = afleveringsTidspunkt;
+        this.afregningsTidspunkt = afleveringsTidspunkt;
     }
 
     public double getSamletPris() {
         return samletPris;
+    }
+
+    public void setSamletPris(double samletPris) {
+        this.samletPris = samletPris;
     }
 
     public String getLejersNavn() {
@@ -50,32 +55,16 @@ public class Udlejning {
         this.lejersNavn = lejersNavn;
     }
 
-
-    public void addProduktTilUdlejning(Produkt produkt){
-        produkter.add(produkt);
+    public Salg getSalg() {
+        return salg;
     }
 
-    public void removeProduktFraUdlejning(Produkt produkt){
-        produkter.remove(produkt);
+    public Salg createSalg(ArrayList<OrdreLinje> ordrelinjer, double samletPris, int samletKlip){
+        this.afregningsTidspunkt = LocalDateTime.now();
+        Salg salg = Controller.createSalg(afregningsTidspunkt,ordrelinjer,samletKlip,samletPris);
+        this.salg = salg;
+        return salg;
     }
 
-
-    //public Salg createSalg(LocalDateTime salgsTidspunkt, Prisliste prisliste){
-    //        salg = new Salg(udlejningsTidspunkt,prisliste);
-    //
-    //    return salg;
-   // }
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public String toString(){return lejersNavn + ": " + ordrelinjer + " | Total: " + samletPris + ",-";}
 }

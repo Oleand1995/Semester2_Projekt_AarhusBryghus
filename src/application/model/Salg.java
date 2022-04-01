@@ -9,39 +9,37 @@ public class Salg {
     private LocalDateTime salgsTidspunkt;
     private double samletPris;
     private int samletKlip;
-    private RabatBeregning rabat;
     private ArrayList<OrdreLinje> ordrelinjer;
 
 
-    public Salg(LocalDateTime salgsTidspunkt){
+    public Salg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordrelinjer, double samletPris, int samletKlip){
         this.salgsTidspunkt = salgsTidspunkt;
-        this.ordrelinjer = new ArrayList<>();
+        this.ordrelinjer = ordrelinjer;
+        this.samletKlip = samletKlip;
+        this.samletPris = samletPris;
     }
 
     public LocalDateTime getSalgsTidspunkt() {
         return salgsTidspunkt;
     }
 
+    public void setSalgsTidspunkt(LocalDateTime salgsTidspunkt) {
+        this.salgsTidspunkt = salgsTidspunkt;
+    }
+
+    public void setSamletPris(double samletPris) {
+        this.samletPris = samletPris;
+    }
+
     public int getSamletKlip() {
         return samletKlip;
     }
 
-
-    public ArrayList<OrdreLinje> getOrdreliner(){
-        return new ArrayList<>(ordrelinjer);
+    public void setSamletKlip(int samletKlip) {
+        this.samletKlip = samletKlip;
     }
 
-    public OrdreLinje createOrdrelinje(Pris pris){
-        OrdreLinje ordreLinje = new OrdreLinje(pris);
-        ordrelinjer.add(ordreLinje);
-        return ordreLinje;
-    }
 
-    public void removeOrdrelinje(OrdreLinje ordreLinje){
-        if (ordrelinjer.contains(ordreLinje)){
-            ordrelinjer.remove(ordreLinje);
-        }
-    }
 
     public double getSamletPris(){
         double samletPris = 0;
@@ -50,6 +48,8 @@ public class Salg {
         }
         return samletPris;
     }
+
+    public String toString(){return ordrelinjer + " | Total: " + samletPris + ",-";}
 
 
 
