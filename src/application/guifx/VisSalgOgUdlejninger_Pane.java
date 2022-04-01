@@ -7,7 +7,9 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
 
+import java.time.LocalDateTime;
 
 
 public class VisSalgOgUdlejninger_Pane extends GridPane {
@@ -35,10 +37,29 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
         lvwUdlejninger.getItems().setAll(Controller.getUdlejninger());
         this.add(lvwUdlejninger,1,1);
 
+        Button btnOpretSalg = new Button("Afslut Udlejning");
+        this.add(btnOpretSalg,2,0);
+        btnOpretSalg.setOnAction(event -> this.opretSalg());
+
     }
 
     public void updateControls(){
         lvwSalg.getItems().setAll(Controller.getSalg());
         lvwUdlejninger.getItems().setAll(Controller.getUdlejninger());
+    }
+
+    private void opretSalg(){
+        Udlejning udlejning = lvwUdlejninger.getSelectionModel().getSelectedItem();
+        if (udlejning != null){
+            Opret_Salg_From_Udlejning_Window dia = new Opret_Salg_From_Udlejning_Window("Afslut udlejning",udlejning);
+            dia.showAndWait();
+
+            Controller.removeUdlejning(udlejning);
+            lvwSalg.getItems().setAll(Controller.getSalg());
+            lvwUdlejninger.getItems().setAll(Controller.getUdlejninger());
+        }
+
+
+
     }
 }
