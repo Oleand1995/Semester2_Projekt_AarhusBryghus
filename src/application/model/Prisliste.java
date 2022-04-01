@@ -19,6 +19,12 @@ public class Prisliste {
         return pris;
     }
 
+    public Pris createPrisOgKlip(double værdi, Produkt produkt,int klipPris){
+        Pris pris = new PrisOgKlip(værdi, produkt,klipPris);
+        priser.add(pris);
+        return pris;
+    }
+
     public void removePris(Pris pris){
         priser.remove(pris);
     }

@@ -95,6 +95,16 @@ public class Controller {
         return samletPris;
     }
 
+    public static Pris createPrisOgKlip(double pris, Produkt produkt, int klipPris,Prisliste prisliste){
+        Pris prisClass = prisliste.createPrisOgKlip(pris,produkt ,klipPris);
+        return prisClass;
+    }
+
+    public static Pris createPris (double pris, Produkt produkt,Prisliste prisliste){
+        Pris prisClass = prisliste.createPris(pris,produkt);
+        return prisClass;
+    }
+
 
 
     public static void initStorage(){
