@@ -7,12 +7,10 @@ public class Pris {
 
     private Produkt produkt;
     private double pris;
-    private int klippeKort;
 
     public Pris(double pris, Produkt produkt){
         this.pris = pris;
         this.produkt = produkt;
-        this.klippeKort = 10;
     }
 
     public Produkt getProdukt() {
@@ -31,9 +29,5 @@ public class Pris {
         this.pris = pris;
     }
 
-    public int getKlippeKort() {
-        return klippeKort;
-    }
-
-    public String toString(){return produkt + " " + pris;}
+    public String toString(){return produkt + "   " + pris + "Kr";}
 }

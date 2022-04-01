@@ -40,7 +40,7 @@ public class Opret_Redigere_PrislisteProdukter_Window extends Stage {
 
 
     // -------------------------------------------------------------------------
-    private TextField txfPrispåProdukt;
+    private TextField txfPrispåProdukt,txfKlipPris;
     private Label lblError;
     private ListView<Produkt> lvwprodukter;
 
@@ -66,18 +66,27 @@ public class Opret_Redigere_PrislisteProdukter_Window extends Stage {
         pane.add(txfPrispåProdukt,0 ,3);
         txfPrispåProdukt.setPrefWidth(200);
 
+
+        Label lblKlipPris = new Label("Klip pris på produkt");
+        pane.add(lblKlipPris, 0, 4);
+
+        txfKlipPris = new TextField();
+        pane.add(txfKlipPris,0 ,5);
+        txfKlipPris.setPrefWidth(200);
+
+
         Button btnAnnuller = new Button("Annuller");
-        pane.add(btnAnnuller, 0, 4);
+        pane.add(btnAnnuller, 0, 6);
         GridPane.setHalignment(btnAnnuller, HPos.LEFT);
         btnAnnuller.setOnAction(event -> annullerAction());
 
         Button btnOK = new Button("OK");
-        pane.add(btnOK, 1, 4);
+        pane.add(btnOK, 1, 6);
         GridPane.setHalignment(btnOK, HPos.RIGHT);
         btnOK.setOnAction(event -> okAction());
 
         lblError = new Label();
-        pane.add(lblError, 0, 5);
+        pane.add(lblError, 0, 7);
         lblError.setStyle("-fx-text-fill: red");
 
 
@@ -92,11 +101,19 @@ public class Opret_Redigere_PrislisteProdukter_Window extends Stage {
 
         //Finder og tjekker om det der er indtastet er et tal.
         Produkt produkt = lvwprodukter.getSelectionModel().getSelectedItem();
+
         int prispåprodukt = -1;
         try {
             prispåprodukt = Integer.parseInt(txfPrispåProdukt.getText().trim());
         }catch (NumberFormatException ex){
         }
+
+        int klipris = -1;
+        try {
+            klipris = Integer.parseInt(txfKlipPris.getText().trim());
+        }catch (NumberFormatException ex){
+        }
+
 
         //Tjekker om tallet er positivt.
         if (prispåprodukt < 0){
@@ -106,9 +123,17 @@ public class Opret_Redigere_PrislisteProdukter_Window extends Stage {
         else if (produkt == null){
             lblError.setText("Der skal vælges et produkt");
         }
+        
+
         else {
-            prisliste.createPris(prispåprodukt,produkt);
-            hide();
+            if (klipris > -1) {
+                Controller.createPrisOgKlip(prispåprodukt,produkt ,klipris ,prisliste);
+                hide();
+            }else{
+                Controller.createPris(prispåprodukt, produkt, prisliste);
+                hide();
+            }
+
         }
     }
 
