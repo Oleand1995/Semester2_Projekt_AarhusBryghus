@@ -7,7 +7,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import storage.Storage;
 
 public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
 

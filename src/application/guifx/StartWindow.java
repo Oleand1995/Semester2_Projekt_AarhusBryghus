@@ -62,6 +62,13 @@ public class StartWindow extends Application {
 		tab3.setContent(opretPrislistePrisPåVare);
 		tab3.setOnSelectionChanged(event -> opretSalgVindue.updateControls());
 
+		Tab tab4 = new Tab("Statistik");
+		tabPane.getTabs().add(tab4);
+
+		Statistik_Pane statistik = new Statistik_Pane();
+		tab4.setContent(statistik);
+//		tab4.setOnSelectionChanged(event -> Statistik_Pane.updateControls());
+
 
 
 

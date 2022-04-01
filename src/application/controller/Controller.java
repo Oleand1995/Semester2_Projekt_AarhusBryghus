@@ -61,6 +61,14 @@ public class Controller {
         Storage.removeProdukt(produkt);
     }
 
+    public static ArrayList<Salg> getSalg(){
+        ArrayList<Salg> samletSalg = new ArrayList<>();
+        for (Salg s : Storage.getSalg()){
+            samletSalg.add(s);
+        }
+        return samletSalg;
+    }
+
     public static Prisliste createPrisliste(String navn){
         Prisliste prisliste = new Prisliste(navn);
         Storage.addPrisliste(prisliste);
