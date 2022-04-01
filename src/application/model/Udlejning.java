@@ -31,11 +31,11 @@ public class Udlejning {
         this.udlejningsTidspunkt = udlejningsTidspunkt;
     }
 
-    public LocalDateTime getAfleveringsTidspunkt() {
+    public LocalDateTime getAfregningsTidspunkt() {
         return afregningsTidspunkt;
     }
 
-    public void setAfleveringsTidspunkt(LocalDateTime afleveringsTidspunkt) {
+    public void setAfregningsTidspunkt(LocalDateTime afleveringsTidspunkt) {
         this.afregningsTidspunkt = afleveringsTidspunkt;
     }
 
@@ -59,12 +59,7 @@ public class Udlejning {
         return salg;
     }
 
-    public Salg createSalg(ArrayList<OrdreLinje> ordrelinjer, double samletPris, int samletKlip){
-        this.afregningsTidspunkt = LocalDateTime.now();
-        Salg salg = Controller.createSalg(afregningsTidspunkt,ordrelinjer,samletKlip,samletPris);
-        this.salg = salg;
-        return salg;
-    }
+    public ArrayList<OrdreLinje> getOrdrelinjer(){return new ArrayList<>(ordrelinjer);}
 
     public String toString(){return lejersNavn + ": " + ordrelinjer + " | Total: " + samletPris + ",-";}
 }

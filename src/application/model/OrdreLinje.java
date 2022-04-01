@@ -20,6 +20,10 @@ public class OrdreLinje {
         this.antal = antal;
     }
 
+    public void countDown(){
+        this.antal--;
+    }
+
     public void setPris(Pris pris){
         this.pris = pris;
     }

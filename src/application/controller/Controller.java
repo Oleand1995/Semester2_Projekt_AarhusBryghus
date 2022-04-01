@@ -25,6 +25,10 @@ public class Controller {
         return udlejning;
     }
 
+    public static void removeUdlejning(Udlejning udlejning){
+        Storage.removeUdlejning(udlejning);
+    }
+
     public static ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(Storage.getUdlejninger());}
 
     public static OrdreLinje createOrdreLinje(Pris pris){
@@ -34,7 +38,6 @@ public class Controller {
     public static void setAntalPåOrdreLinje(OrdreLinje ordreLinje, int antal){
         ordreLinje.setAntal(antal);
     }
-
 
     public static ProduktGruppe createproduktGruppe(String produktType){
         ProduktGruppe produktGruppe = new ProduktGruppe(produktType);
