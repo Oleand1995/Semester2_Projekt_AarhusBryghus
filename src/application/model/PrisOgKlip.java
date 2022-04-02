@@ -9,6 +9,7 @@ public class PrisOgKlip extends Pris {
         this.klipPris = klipPris;
     }
 
+    @Override
     public int getKlip() {
         return klipPris;
     }

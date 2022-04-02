@@ -54,12 +54,8 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
             Opret_Salg_From_Udlejning_Window dia = new Opret_Salg_From_Udlejning_Window("Afslut udlejning",udlejning);
             dia.showAndWait();
 
-            Controller.removeUdlejning(udlejning);
             lvwSalg.getItems().setAll(Controller.getSalg());
             lvwUdlejninger.getItems().setAll(Controller.getUdlejninger());
         }
-
-
-
     }
 }
