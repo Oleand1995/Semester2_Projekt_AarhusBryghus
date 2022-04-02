@@ -149,8 +149,9 @@ public class Controller {
 
         // Produkter under fadøl:
 
-        Produkt monsterbryg = Controller.createProdukt("Monster Bryg, 40 cl", fadoel);
-        Produkt jazzClassic = Controller.createProdukt("Jazz Classic, 40 cl", fadoel);
+
+        Produkt klosterbrygFadoel = Controller.createProdukt("Klosterbryg, 40 cl", fadoel);
+        Produkt jazzClassicFadoel = Controller.createProdukt("Jazz Classic, 40 cl", fadoel);
         Produkt extraPilsnerFadoel = Controller.createProdukt("Extra Pilsner, 40 cl", fadoel);
         Produkt celebrationFadoel = Controller.createProdukt("Celebration, 40 cl", fadoel);
         Produkt blondieFadoel = Controller.createProdukt("Blondie, 40 cl", fadoel);
@@ -208,7 +209,7 @@ public class Controller {
 
         // Produkter under Malt:
 
-        Produkt maltSaek = Controller.createProdukt("Malt, 25 kg sæk", kulsyre);
+        Produkt maltSaek = Controller.createProdukt("Malt, 25 kg sæk", malt);
 
         // Produkter under Beklædning:
 
@@ -248,7 +249,33 @@ public class Controller {
 
         // Flaske i Bar:
 
+        bar.createPrisOgKlip(70, klosterbryg, 2);
+        bar.createPrisOgKlip(70, sweetGB, 2);
+        bar.createPrisOgKlip(70, extraPilsner, 2);
+        bar.createPrisOgKlip(70, celebration, 2);
+        bar.createPrisOgKlip(70, blondie, 2);
+        bar.createPrisOgKlip(70, foraarsbryg, 2);
+        bar.createPrisOgKlip(70, indianPA, 2);
+        bar.createPrisOgKlip(70, julebryg, 2);
+        bar.createPrisOgKlip(70, juletoenden, 2);
+        bar.createPrisOgKlip(70, oldSA, 2);
+        bar.createPrisOgKlip(70, fregattenJylland, 2);
+        bar.createPrisOgKlip(70, imperialStout, 2);
+        bar.createPrisOgKlip(70, tribute, 2);
+        bar.createPrisOgKlip(100, blackMonster, 3);
+
         // Fadøl i Bar:
+
+        bar.createPrisOgKlip(38, klosterbrygFadoel, 1);
+        bar.createPrisOgKlip(38, jazzClassicFadoel, 1);
+        bar.createPrisOgKlip(38, extraPilsnerFadoel, 1);
+        bar.createPrisOgKlip(38, celebrationFadoel, 1);
+        bar.createPrisOgKlip(38, blondieFadoel, 1);
+        bar.createPrisOgKlip(38, foraarsbrygFadoel, 1);
+        bar.createPrisOgKlip(38, indianPAFadoel, 1);
+        bar.createPrisOgKlip(38, julebrygFadoel, 1);
+        bar.createPrisOgKlip(38, imperialStoutFadoel, 1);
+        bar.createPrisOgKlip(38, specialFadoel, 1);
 
         // Sodavand i Bar:
 
@@ -262,7 +289,7 @@ public class Controller {
 
         bar.createPris(10, chips);
         bar.createPris(15, peanuts);
-        bar.createPris(30, oelpoelser);
+        bar.createPrisOgKlip(30, oelpoelser, 1);
 
         // Spiritus i Bar:
 

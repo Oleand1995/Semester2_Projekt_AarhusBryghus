@@ -143,7 +143,6 @@ public class OpretSalgVindue extends GridPane {
 		btnOpretUdlejning.setOnAction(event -> this.opretUdlejning());
 		btnOpretUdlejning.setDisable(true);
 
-
 		HBox hbxLejersNavn = new HBox(20);
 		vbxUdlejning.getChildren().add(hbxLejersNavn);
 		hbxLejersNavn.setPadding(new Insets(10, 0, 0, 0));
@@ -157,8 +156,6 @@ public class OpretSalgVindue extends GridPane {
 		ChangeListener<String> listenerTxfLejersNavn = (ov, oldOrdreLinje, newOrdreLinje) -> this.checkUdlejningsNavn();
 		txfLejersNavn.textProperty().addListener(listenerTxfLejersNavn);
 	}
-
-
 
 	// -------------------------------------------------------------------------
 
