@@ -95,6 +95,7 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
         ArrayList<OrdreLinje> ordreLinjer = new ArrayList<>();
         ordreLinjer.addAll(lvwOrdrelinjer.getItems());
         Controller.createSalg(LocalDateTime.now(),ordreLinjer,-1,Controller.getSamletPris(lvwOrdrelinjer.getItems()));
+        Controller.removeUdlejning(udlejning);
         close();
     }
 }

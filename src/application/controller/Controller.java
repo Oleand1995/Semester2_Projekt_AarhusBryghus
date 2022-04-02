@@ -100,6 +100,14 @@ public class Controller {
         return samletPris;
     }
 
+    public static int getSamletKlip(ObservableList<OrdreLinje> ordreLinjer){
+        int samletKlip = 0;
+        for (OrdreLinje o : ordreLinjer){
+            samletKlip += o.getPris().getKlip();
+        }
+        return samletKlip;
+    }
+
     public static Pris createPrisOgKlip(double pris, Produkt produkt, int klipPris,Prisliste prisliste){
         Pris prisClass = prisliste.createPrisOgKlip(pris,produkt ,klipPris);
         return prisClass;
