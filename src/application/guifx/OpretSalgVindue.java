@@ -4,6 +4,7 @@ import application.controller.Controller;
 import application.model.*;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -67,6 +68,7 @@ public class OpretSalgVindue extends GridPane {
 		ChangeListener<Pris> listenerProdukt = (ov, oldProdukt, newProdukt) -> this.selectedProduktChanged();
 		lvwProdukter.getSelectionModel().selectedItemProperty().addListener(listenerProdukt);
 		this.add(lvwProdukter,0,2, 2, 4);
+		lvwProdukter.setDisable(true);
 
 
 		VBox vbxButtons = new VBox(20);
@@ -99,31 +101,52 @@ public class OpretSalgVindue extends GridPane {
 		this.add(txfPrisIndkøbsliste,4,6);
 
 
-		HBox hbxAntal = new HBox(40);
-		this.add(hbxAntal, 3, 7, 3, 1);
-		hbxAntal.setPadding(new Insets(10, 0, 0, 0));
+
+		VBox vbxAntal = new VBox(10);
+		this.add(vbxAntal,5,3);
+		vbxAntal.setPadding(new Insets(10, 0, 0, 0));
+		vbxAntal.setAlignment(Pos.BOTTOM_LEFT);
+
+		HBox hbxAntal = new HBox(20);
+		vbxAntal.getChildren().add(hbxAntal);
+		hbxAntal.setPadding(new Insets(10, 0, 0, 50));
 		hbxAntal.setAlignment(Pos.BASELINE_CENTER);
 
 		Button antalPlusKnap = new Button("+");
 		hbxAntal.getChildren().add(antalPlusKnap);
 		antalPlusKnap.setOnAction(event -> this.antalPlusKnap());
+		antalPlusKnap.setPrefSize(30,30);
 
 		Button antalMinusKnap = new Button("-");
 		hbxAntal.getChildren().add(antalMinusKnap);
 		antalMinusKnap.setOnAction(event -> this.antalMinusKnap());
+		antalMinusKnap.setPrefSize(30,30);
 
 		Button antalGodkend = new Button("✔");
 		hbxAntal.getChildren().add(antalGodkend);
 		antalGodkend.setOnAction(event -> this.godkendAntal());
+		antalGodkend.setPrefSize(30,30);
+
+		HBox hbxAntal1 = new HBox(20);
+		vbxAntal.getChildren().add(hbxAntal1);
+		hbxAntal1.setPadding(new Insets(10, 0, 0, 0));
+		hbxAntal1.setAlignment(Pos.BASELINE_CENTER);
 
 		Label lblAntal = new Label("Antal: ");
-		hbxAntal.getChildren().add(lblAntal);
+		hbxAntal1.getChildren().add(lblAntal);
 
 		txfAntal= new TextField();
-		hbxAntal.getChildren().add(txfAntal);
+		hbxAntal1.getChildren().add(txfAntal);
 
-		HBox hbxSalg = new HBox(70);
-		this.add(hbxSalg, 5, 5, 3, 1);
+
+
+		VBox vbxUdlejningOgSalg = new VBox(20);
+		this.add(vbxUdlejningOgSalg, 5, 5, 3, 1);
+		vbxUdlejningOgSalg.setPadding(new Insets(10, 0, 0, 0));
+		vbxUdlejningOgSalg.setAlignment(Pos.BOTTOM_LEFT);
+
+		HBox hbxSalg = new HBox(56);
+		vbxUdlejningOgSalg.getChildren().add(hbxSalg);
 		hbxSalg.setPadding(new Insets(10, 0, 0, 0));
 		hbxSalg.setAlignment(Pos.CENTER_LEFT);
 
@@ -135,13 +158,9 @@ public class OpretSalgVindue extends GridPane {
 		opretSalg.setOnAction(event -> this.opretSalg());
 
 
-		VBox vbxUdlejning = new VBox(20);
-		this.add(vbxUdlejning, 5, 4, 3, 1);
-		vbxUdlejning.setPadding(new Insets(10, 0, 0, 0));
-		vbxUdlejning.setAlignment(Pos.BOTTOM_LEFT);
 
-		HBox hbxUdlejning = new HBox(20);
-		vbxUdlejning.getChildren().add(hbxUdlejning);
+		HBox hbxUdlejning = new HBox(28);
+		vbxUdlejningOgSalg.getChildren().add(hbxUdlejning);
 		hbxUdlejning.setPadding(new Insets(10, 0, 0, 0));
 		hbxUdlejning.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -154,7 +173,7 @@ public class OpretSalgVindue extends GridPane {
 		btnOpretUdlejning.setDisable(true);
 
 		HBox hbxLejersNavn = new HBox(20);
-		vbxUdlejning.getChildren().add(hbxLejersNavn);
+		vbxUdlejningOgSalg.getChildren().add(hbxLejersNavn);
 		hbxLejersNavn.setPadding(new Insets(10, 0, 0, 0));
 		hbxLejersNavn.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -231,13 +250,23 @@ public class OpretSalgVindue extends GridPane {
 		}
 
 		private void opretSalg () {
+		Betalingsmåder betalingsmåde = cbbBetalingsMåder.getSelectionModel().getSelectedItem();
+		if (betalingsmåde == Betalingsmåder.Klippekort){
 			ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
 			ordrelinjer.addAll(lvwIndkøbsliste.getItems());
-			Salg salg = Controller.createSalg(LocalDateTime.now(), ordrelinjer, -1, Double.parseDouble(txfPrisIndkøbsliste.getText()));
+			Salg salg = Controller.createSalg(LocalDateTime.now(), ordrelinjer, Integer.parseInt(txfPrisIndkøbsliste.getText()), 0);
 			clearAll();
+		}
+		else{
+			ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
+			ordrelinjer.addAll(lvwIndkøbsliste.getItems());
+			Salg salg = Controller.createSalg(LocalDateTime.now(), ordrelinjer, 0, Double.parseDouble(txfPrisIndkøbsliste.getText()));
+			clearAll();
+			}
 		}
 
 		private void opretUdlejning () {
+		Betalingsmåder betalingsmåde = cbbBetalingsMåder.getSelectionModel().getSelectedItem();
 			ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
 			ordrelinjer.addAll(lvwIndkøbsliste.getItems());
 			Controller.createUdlejning(LocalDateTime.now(), Double.parseDouble(txfPrisIndkøbsliste.getText()), txfLejersNavn.getText(), ordrelinjer);
@@ -250,7 +279,9 @@ public class OpretSalgVindue extends GridPane {
 			txfLejersNavn.clear();
 			txfAntal.clear();
 			lvwProdukter.getItems().clear();
-			cbbPrisListe.getSelectionModel().clearSelection();
+//			cbbPrisListe.getSelectionModel().clearSelection();
+			cbbBetalingsMåder.getSelectionModel().clearSelection();
+			lvwProdukter.setDisable(true);
 		}
 
 		private void setSamletPris(){
@@ -278,24 +309,20 @@ public class OpretSalgVindue extends GridPane {
 			if (prisliste != null) {
 				cbbBetalingsMåder.getSelectionModel().clearSelection();
 				cbbBetalingsMåder.setDisable(false);
-				lvwProdukter.getItems().setAll(prisliste.getPriser());
 				lvwIndkøbsliste.getItems().clear();
 				txfPrisIndkøbsliste.clear();
 			}
+			lvwProdukter.getItems().clear();
+
 
 		}
 
 		public void updateControlsProdukter () {
-			Prisliste pl = cbbPrisListe.getSelectionModel().getSelectedItem();
-			Pris pris = lvwProdukter.getSelectionModel().getSelectedItem();
-			if (pris != null && pl != null) {
-				double test = pris.getPris();
-			}
-
 		}
 
 		public void updateControls () {
 			cbbPrisListe.getItems().setAll(Controller.getPrislister());
+			cbbBetalingsMåder.setDisable(true);
 			clearAll();
 		}
 
@@ -304,11 +331,16 @@ public class OpretSalgVindue extends GridPane {
 			Betalingsmåder betalingsmåde = cbbBetalingsMåder.getSelectionModel().getSelectedItem();
 			if (betalingsmåde != null) {
 				if (betalingsmåde == Betalingsmåder.Klippekort){
+					lvwProdukter.setDisable(false);
 					lvwProdukter.getItems().setAll(prisliste.getKlipPriser());
+					txfLejersNavn.setEditable(false);
 				}else{
+					lvwProdukter.setDisable(false);
 					lvwProdukter.getItems().setAll(prisliste.getPriser());
+					txfLejersNavn.setEditable(true);
 				}
 			}
+			lvwIndkøbsliste.getItems().clear();
 		}
 
 	}

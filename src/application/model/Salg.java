@@ -1,6 +1,7 @@
 package application.model;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,6 +40,8 @@ public class Salg {
         this.samletKlip = samletKlip;
     }
 
+    public ArrayList<OrdreLinje> getOrdrelinjer(){return new ArrayList<>(ordrelinjer);}
+
 
 
     public double getSamletPris(){
@@ -49,8 +52,13 @@ public class Salg {
         return samletPris;
     }
 
-    public String toString(){return ordrelinjer + " | Total: " + samletPris + ",-";}
-
-
+    public String toString(){
+        if (samletPris == 0){
+            return "Salgstidspunkt: " + salgsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletKlip + " klip";
+        }
+        else{
+            return "Salgstidspunkt: " + salgsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletPris + ",-";
+        }
+    }
 
 }

@@ -103,7 +103,7 @@ public class Controller {
     public static int getSamletKlip(ObservableList<OrdreLinje> ordreLinjer){
         int samletKlip = 0;
         for (OrdreLinje o : ordreLinjer){
-            samletKlip += o.getPris().getKlip();
+            samletKlip += o.getPris().getKlip() * o.getAntal();
         }
         return samletKlip;
     }

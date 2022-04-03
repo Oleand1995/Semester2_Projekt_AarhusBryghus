@@ -4,14 +4,16 @@ import application.controller.Controller;
 import application.model.OrdreLinje;
 import application.model.Pris;
 import application.model.Udlejning;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 public class Opret_Salg_From_Udlejning_Window extends Stage {
 
     private Udlejning udlejning;
+
 
     public Opret_Salg_From_Udlejning_Window(String title, Udlejning udlejning){
         this.initStyle(StageStyle.UTILITY);
@@ -44,7 +47,8 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
     private ListView<OrdreLinje> lvwOrdrelinjer;
     private TextField txfSamletPris, txfReturBeloeb;
     private double returBeloeb = 0;
-
+    private Button btnAfslutUdlejning;
+    private CheckBox chbTilbagebetalt;
 
     private void initContent(GridPane pane) {
         pane.setPadding(new Insets(10));
@@ -68,11 +72,18 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
         txfReturBeloeb = new TextField();
         pane.add(txfReturBeloeb,0,3);
         txfReturBeloeb.setPrefSize(250,20);
+        txfReturBeloeb.setEditable(false);
 
-        Button btnAfslutUdlejning = new Button("Afslut Udlejning");
+        chbTilbagebetalt = new CheckBox("Tilbagebetalt");
+        pane.add(chbTilbagebetalt,0,4);
+        chbTilbagebetalt.setOnAction(event -> this.tilbagebetaltChecked());
+        chbTilbagebetalt.setAlignment(Pos.CENTER_RIGHT);
+
+        btnAfslutUdlejning = new Button("Afslut Udlejning");
         pane.add(btnAfslutUdlejning,0,5);
         btnAfslutUdlejning.setPrefSize(250,20);
         btnAfslutUdlejning.setOnAction(event -> this.afslutUdlejning());
+        btnAfslutUdlejning.setDisable(true);
 
     }
 
@@ -98,4 +109,15 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
         Controller.removeUdlejning(udlejning);
         close();
     }
+
+    private void tilbagebetaltChecked(){
+        if (chbTilbagebetalt.isSelected()){
+            btnAfslutUdlejning.setDisable(false);
+        }
+        else{
+            btnAfslutUdlejning.setDisable(true);
+        }
+    }
+
+
 }

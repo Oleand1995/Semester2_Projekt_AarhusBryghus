@@ -3,6 +3,7 @@ package application.guifx;
 import application.controller.Controller;
 import application.model.Salg;
 import application.model.*;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -16,6 +17,7 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
 
     private ListView<Salg> lvwSalg;
     private ListView<Udlejning> lvwUdlejninger;
+    private ListView<OrdreLinje> lvwSalgOrdreLinjer;
 
     public VisSalgOgUdlejninger_Pane(){
         this.setPadding(new Insets(20));
@@ -28,17 +30,22 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
 
         lvwSalg = new ListView<>();
         lvwSalg.getItems().setAll(Controller.getSalg());
+        ChangeListener<Salg> listenerSalg = (ov, oldSalg, newSalg) -> this.updateControlsSalg();
+        lvwSalg.getSelectionModel().selectedItemProperty().addListener(listenerSalg);
         this.add(lvwSalg,0,1);
 
+        lvwSalgOrdreLinjer = new ListView<>();
+        this.add(lvwSalgOrdreLinjer,1,1);
+
         Label lblUdlejninger = new Label("Udlejninger: ");
-        this.add(lblUdlejninger,1,0);
+        this.add(lblUdlejninger,2,0);
 
         lvwUdlejninger = new ListView<>();
         lvwUdlejninger.getItems().setAll(Controller.getUdlejninger());
-        this.add(lvwUdlejninger,1,1);
+        this.add(lvwUdlejninger,2,1);
 
         Button btnOpretSalg = new Button("Afslut Udlejning");
-        this.add(btnOpretSalg,2,0);
+        this.add(btnOpretSalg,3,0);
         btnOpretSalg.setOnAction(event -> this.opretSalg());
 
     }
@@ -46,6 +53,11 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
     public void updateControls(){
         lvwSalg.getItems().setAll(Controller.getSalg());
         lvwUdlejninger.getItems().setAll(Controller.getUdlejninger());
+        lvwSalgOrdreLinjer.getItems().clear();
+    }
+
+    public void updateControlsSalg(){
+        this.selectedSalgChanged();
     }
 
     private void opretSalg(){
@@ -56,6 +68,13 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
 
             lvwSalg.getItems().setAll(Controller.getSalg());
             lvwUdlejninger.getItems().setAll(Controller.getUdlejninger());
+        }
+    }
+
+    public void selectedSalgChanged(){
+        Salg salg = lvwSalg.getSelectionModel().getSelectedItem();
+        if (salg != null){
+            lvwSalgOrdreLinjer.getItems().setAll(salg.getOrdrelinjer());
         }
     }
 }
