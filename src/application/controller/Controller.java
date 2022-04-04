@@ -116,6 +116,10 @@ public class Controller {
         return prisClass;
     }
 
+    public static void sletPrisEllerPrisOgKlip(Prisliste prisliste, Pris pris){
+        prisliste.removePris(pris);
+    }
+
 
 
     public static void initStorage(){

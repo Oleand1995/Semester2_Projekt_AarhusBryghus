@@ -34,4 +34,7 @@ public class Pris {
     public int getKlip(){
         return 0;
     }
+
+    public void setKlip(int klip){
+    }
 }

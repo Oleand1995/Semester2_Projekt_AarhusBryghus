@@ -58,5 +58,6 @@ public class Prisliste {
         return produkter;
     }
 
+
     public String toString(){return this.situation;}
 }

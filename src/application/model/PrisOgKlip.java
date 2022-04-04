@@ -14,6 +14,10 @@ public class PrisOgKlip extends Pris {
         return klipPris;
     }
 
+    public void setKlip(int klip){
+        this.klipPris = klip;
+    }
+
     @Override
     public String toString(){return super.getProdukt() + "   " + super.getPris() + "Kr   " + getKlip() + "Klip";}
 
