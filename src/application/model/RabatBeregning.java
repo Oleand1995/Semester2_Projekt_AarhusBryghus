@@ -1,5 +1,6 @@
 package application.model;
 
 public interface RabatBeregning {
-    double rabat(double pris);
+
+    public double getRabat(double pris);
 }

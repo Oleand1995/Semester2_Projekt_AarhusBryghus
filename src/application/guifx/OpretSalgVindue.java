@@ -30,7 +30,7 @@ public class OpretSalgVindue extends GridPane {
 	private ComboBox<Integer> cbbAntal;
 	private VBox serviceBoxNavn, serviceBoxCounter;
 	private ListView<Double> lvwPriser;
-	private TextField txfpris,txfPrisIndkøbsliste,txfAntal;
+	private TextField txfpris,txfPrisIndkøbsliste,txfAntal,txfprocentRabat,txfFastRabat;
 	private Salg salg;
 	private Button addButton, btnOpretUdlejning;
 	private CheckBox chbUdlejning;
@@ -117,6 +117,27 @@ public class OpretSalgVindue extends GridPane {
 		hbxSalg.setPadding(new Insets(10, 0, 0, 0));
 		hbxSalg.setAlignment(Pos.CENTER_LEFT);
 
+		Label lblFastRabat = new Label("Fast rabat");
+		this.add(lblFastRabat,5 ,9 );
+
+
+		txfFastRabat = new TextField();
+		hbxSalg.getChildren().add(txfFastRabat);
+		this.add(txfFastRabat,5,10);
+		ChangeListener<String> listenerTxfFastRabat = (ov, oldTxfFastRabat, newTxfFastRabat) -> this.valgtFastRabat();
+		txfFastRabat.textProperty().addListener(listenerTxfFastRabat);
+
+
+		Label lblProcentRabat = new Label("Procent rabat");
+		this.add(lblProcentRabat,6 ,9);
+
+		txfprocentRabat = new TextField();
+		hbxSalg.getChildren().add(txfprocentRabat);
+		this.add(txfprocentRabat,6,10);
+		ChangeListener<String> listenerTxfProcentRabat = (ov, oldTxfProcentRabat, newTxfProcentRabat) -> this.valgtProcentRabat();
+		txfprocentRabat.textProperty().addListener(listenerTxfProcentRabat);
+
+
 		Label lblSalg = new Label("Salg: ");
 		hbxSalg.getChildren().add(lblSalg);
 
@@ -134,6 +155,8 @@ public class OpretSalgVindue extends GridPane {
 		vbxUdlejning.getChildren().add(hbxUdlejning);
 		hbxUdlejning.setPadding(new Insets(10, 0, 0, 0));
 		hbxUdlejning.setAlignment(Pos.BOTTOM_LEFT);
+
+
 
 		Label lblUdlejning = new Label("Udlejning: ");
 		hbxUdlejning.getChildren().add(lblUdlejning);
@@ -244,6 +267,22 @@ public class OpretSalgVindue extends GridPane {
 		txfAntal.clear();
 		lvwProdukter.getItems().clear();
 		cbbPrisListe.getSelectionModel().clearSelection();
+	}
+
+	public void valgtFastRabat(){
+		if (txfFastRabat.getText().length() != 0){
+			txfprocentRabat.setDisable(true);
+		}else{
+			txfprocentRabat.setDisable(false);
+		}
+	}
+
+	public void valgtProcentRabat(){
+		if (txfprocentRabat.getText().length() != 0){
+			txfFastRabat.setDisable(true);
+		}else{
+			txfFastRabat.setDisable(false);
+		}
 	}
 
 

@@ -10,6 +10,7 @@ public class Salg {
     private double samletPris;
     private int samletKlip;
     private ArrayList<OrdreLinje> ordrelinjer;
+    private RabatBeregning rabat;
 
 
     public Salg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordrelinjer, double samletPris, int samletKlip){
@@ -39,12 +40,18 @@ public class Salg {
         this.samletKlip = samletKlip;
     }
 
+    public void setRabat(RabatBeregning rabat){
+        this.rabat = rabat;
+    }
 
 
     public double getSamletPris(){
         double samletPris = 0;
         for (OrdreLinje o : ordrelinjer){
             samletPris += o.getPris().getPris() * o.getAntal();
+        }
+        if (rabat != null){
+            samletPris = rabat.getRabat(samletPris);
         }
         return samletPris;
     }
