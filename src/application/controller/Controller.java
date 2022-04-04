@@ -51,7 +51,6 @@ public class Controller {
 
     public static Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
         Produkt produkt = produktGruppe.createProdukt(beskrivelse);
-        Storage.addProdukt(produkt);
         return produkt;
     }
 
@@ -73,7 +72,6 @@ public class Controller {
 
     public static void sletProdukt(ProduktGruppe produktGruppe, Produkt produkt){
         produktGruppe.removeProdukt(produkt);
-        Storage.removeProdukt(produkt);
     }
 
     public static Prisliste createPrisliste(String navn){
