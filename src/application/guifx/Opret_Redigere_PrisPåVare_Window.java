@@ -44,7 +44,7 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
 
 
     // -------------------------------------------------------------------------
-    private TextField txfPrispåProdukt, txfKlipPris;
+    private TextField txfPrispåProdukt, txfKlipPris,txfNavnPåProdukt;
     private Label lblError;
     private ListView<Produkt> lvwprodukter;
 
@@ -55,13 +55,22 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
 
-        Label lblName = new Label("produkter");
-        pane.add(lblName, 0, 0);
-
         if (pris == null) {
             lvwprodukter = new ListView<>();
             pane.add(lvwprodukter, 0, 1, 1, 1);
             lvwprodukter.getItems().setAll(Controller.getProdukter());
+            Label lblName = new Label("produkter");
+            pane.add(lblName, 0, 0);
+        }
+
+        if (pris != null) {
+            Label lblNavnPåProdukt = new Label("Navn på Produkt");
+            pane.add(lblNavnPåProdukt, 0, 0);
+
+            txfNavnPåProdukt = new TextField();
+            pane.add(txfNavnPåProdukt, 0, 1);
+            txfNavnPåProdukt.setPrefWidth(200);
+            txfNavnPåProdukt.setDisable(true);
         }
 
 
@@ -102,8 +111,7 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
 
     private void initControls() {
         if (pris != null) {
-            txfPrispåProdukt.setText(pris.getPris() + "");
-            txfKlipPris.setText(pris.getKlip() + "");
+            txfNavnPåProdukt.setText(pris.getProdukt().getBeskrivelse());
         }
     }
 
@@ -115,9 +123,8 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
     private void okAction() {
 
         //Finder og tjekker om det der er indtastet er et tal.
-        if (pris != null) {
+        if (pris == null) {
             Produkt produkt = lvwprodukter.getSelectionModel().getSelectedItem();
-
             int prispåprodukt = -1;
             try {
                 prispåprodukt = Integer.parseInt(txfPrispåProdukt.getText().trim());
@@ -159,10 +166,14 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
             } catch (NumberFormatException ex) {
             }
             if (prispåprodukt < 0) {
-                lblError.setText("Tallet skal være positivt");
-            } else {
-                pris.setPris(prispåprodukt);
-                pris.setKlip(klipris);
+                lblError.setText("Tallet skal være positivt mig i røvem");
+            }
+            else if (pris.getKlip() == -1){
+
+            }
+
+            else {
+                Controller.setPrisOgKlipForProdukt(pris,prispåprodukt ,klipris);
                 hide();
             }
         }

@@ -32,7 +32,7 @@ public class Pris {
     public String toString(){return produkt + "   " + pris + "Kr";}
 
     public int getKlip(){
-        return 0;
+        return -1;
     }
 
     public void setKlip(int klip){
