@@ -120,6 +120,7 @@ public class Controller {
         prisliste.removePris(pris);
     }
 
+    /*
     public static void setPrisOgKlipForProdukt(Pris pris,double varePris,int klipPris){
         pris.setPris(varePris);
         pris.setKlip(klipPris);
@@ -129,6 +130,13 @@ public class Controller {
         sletPrisEllerPrisOgKlip(prisliste,pris);
         prisliste.createPrisOgKlip(prisPåvare,produkt,klipPris);
     }
+
+    public static void ændreKlasseFraPrisOgKlipTilPris(Prisliste prisliste,Pris pris,double prisPåvare,Produkt produkt){
+        sletPrisEllerPrisOgKlip(prisliste,pris);
+        Controller.createPris(prisPåvare,produkt,prisliste);
+    }
+
+     */
 
 
 

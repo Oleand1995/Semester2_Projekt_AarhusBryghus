@@ -105,15 +105,17 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
         lblError.setStyle("-fx-text-fill: red");
 
 
-        initControls();
+       // initControls();
 
     }
 
-    private void initControls() {
+   /* private void initControls() {
         if (pris != null) {
             txfNavnPåProdukt.setText(pris.getProdukt().getBeskrivelse());
         }
     }
+
+    */
 
     private void annullerAction() {
         hide();
@@ -123,7 +125,7 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
     private void okAction() {
 
         //Finder og tjekker om det der er indtastet er et tal.
-        if (pris == null) {
+        //if (pris == null) {
             Produkt produkt = lvwprodukter.getSelectionModel().getSelectedItem();
             int prispåprodukt = -1;
             try {
@@ -151,9 +153,9 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
                     Controller.createPris(prispåprodukt, produkt, prisliste);
                     hide();
                 }
-
             }
-        } else {
+
+       /* } else {
             int prispåprodukt = -1;
             try {
                 prispåprodukt = Integer.parseInt(txfPrispåProdukt.getText().trim());
@@ -168,17 +170,13 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
             if (prispåprodukt < 0) {
                 lblError.setText("Tallet skal være positivt mig i røvem");
             }
-            else if (pris.getKlip() == -1){
-
-            }
-
             else {
                 Controller.setPrisOgKlipForProdukt(pris,prispåprodukt ,klipris);
                 hide();
             }
+
+
         }
+        */
     }
-
-
-
 }

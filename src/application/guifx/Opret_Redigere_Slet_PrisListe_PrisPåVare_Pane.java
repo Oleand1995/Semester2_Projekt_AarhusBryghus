@@ -64,10 +64,12 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         this.add(btnSletProdukt,1 ,4);
         btnSletProdukt.setOnAction(event -> sletProdukt());
 
-
+/*
         btnÆndreProdukt = new Button("Ændre Pris");
         this.add(btnÆndreProdukt,1 ,5 );
         btnÆndreProdukt.setOnAction(event -> updateprodukt());
+
+ */
 
 
 
@@ -135,6 +137,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         }
     }
 
+    /*
     private void updateprodukt(){
         Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
         Pris pris = lvwPrispåProdukter.getSelectionModel().getSelectedItem();
@@ -149,7 +152,11 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         }
 
 
+
+
     }
+
+     */
 
 
 
