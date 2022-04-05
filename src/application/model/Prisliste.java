@@ -32,6 +32,16 @@ public class Prisliste {
 
     public ArrayList<Pris> getPriser(){return new ArrayList<>(priser);}
 
+    public ArrayList<Pris> getKlipPriser(){
+        ArrayList<Pris> prisOgKlips = new ArrayList<>();
+        for (Pris p : getPriser()){
+            if (p instanceof PrisOgKlip){
+                prisOgKlips.add(p);
+            }
+        }
+        return prisOgKlips;
+    }
+
     public String getSituation() {
         return situation;
     }
@@ -47,6 +57,7 @@ public class Prisliste {
         }
         return produkter;
     }
+
 
     public String toString(){return this.situation;}
 }

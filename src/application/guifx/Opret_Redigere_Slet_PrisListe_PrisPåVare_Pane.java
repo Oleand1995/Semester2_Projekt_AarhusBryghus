@@ -1,9 +1,8 @@
 package application.guifx;
 
 import application.controller.Controller;
+import application.model.Pris;
 import application.model.Prisliste;
-import application.model.Produkt;
-import application.model.ProduktGruppe;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -12,7 +11,7 @@ import javafx.scene.layout.GridPane;
 public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
     private ListView<Prisliste> lvwPrislister;
-    private ListView<Produkt> lvwPrislisteProdukter;
+    private ListView<Pris> lvwPrispåProdukter;
     private Button btnOpretPrisliste,btnSletPrisliste,btnÆndrePrisliste,btnTilføjProdukt,btnSletProdukt,btnÆndreProdukt;
 
 
@@ -52,23 +51,23 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         this.add(lblPrislisteProdukter, 1, 1);
 
 
-        lvwPrislisteProdukter = new ListView<>();
-        this.add(lvwPrislisteProdukter,1 ,2,1,1);
+        lvwPrispåProdukter = new ListView<>();
+        this.add(lvwPrispåProdukter,1 ,2,1,1);
 
 
-        btnTilføjProdukt = new Button("Tilføj produkt");
+        btnTilføjProdukt = new Button("Tilføj Pris");
         this.add(btnTilføjProdukt,1 ,3);
         btnTilføjProdukt.setOnAction(event -> tilføjProduktTilPrisliste());
 
 
-        btnSletProdukt = new Button("Slet produkt");
+        btnSletProdukt = new Button("Slet Pris");
         this.add(btnSletProdukt,1 ,4);
         btnSletProdukt.setOnAction(event -> sletProdukt());
 
 
-        btnÆndreProdukt = new Button("Ændre produkt");
+        btnÆndreProdukt = new Button("Ændre Pris");
         this.add(btnÆndreProdukt,1 ,5 );
-        //btnÆndreProdukt.setOnAction(event -> updateprodukt());
+        btnÆndreProdukt.setOnAction(event -> updateprodukt());
 
 
 
@@ -89,7 +88,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
     private void valgtPrisliste() {
         Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
         if (prisliste != null) {
-            lvwPrislisteProdukter.getItems().setAll(prisliste.getProdukter());
+            lvwPrispåProdukter.getItems().setAll(prisliste.getPriser());
         }
     }
 
@@ -119,31 +118,33 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
     private void tilføjProduktTilPrisliste() {
         Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
         if (prisliste != null) {
-            Opret_Redigere_PrislisteProdukter_Window dia = new Opret_Redigere_PrislisteProdukter_Window("Tilføj",prisliste);
+            Opret_Redigere_PrisPåVare_Window dia = new Opret_Redigere_PrisPåVare_Window("Tilføj",prisliste);
             dia.showAndWait();
 
             //venter til vinduet lukker
-            lvwPrislisteProdukter.getItems().setAll(prisliste.getProdukter());
+            lvwPrispåProdukter.getItems().setAll(prisliste.getPriser());
         }
     }
 
     private void sletProdukt(){
-        Produkt produkt = lvwPrislisteProdukter.getSelectionModel().getSelectedItem();
-        if (produkt != null) {
-            Controller.sletProdukt(produkt.getProduktgruppe(), produkt);
-            lvwPrislisteProdukter.getItems().setAll(produkt.getProduktgruppe().getProdukter());
+        Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
+        Pris pris = lvwPrispåProdukter.getSelectionModel().getSelectedItem();
+        if (pris != null) {
+            Controller.sletPrisEllerPrisOgKlip(prisliste,pris);
+            lvwPrispåProdukter.getItems().setAll(prisliste.getPriser());
         }
     }
-/*
+
     private void updateprodukt(){
-        Produkt produkt = lvwPrislisteProdukter.getSelectionModel().getSelectedItem();
-        if (produkt != null) {
-            Opret_Redigere_PrislisteProdukter_Window dia = new Opret_Redigere_PrislisteProdukter_Window("Update produktgruppe", null,produkt);
+        Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
+        Pris pris = lvwPrispåProdukter.getSelectionModel().getSelectedItem();
+        if (pris != null) {
+            Opret_Redigere_PrisPåVare_Window dia = new Opret_Redigere_PrisPåVare_Window("Update produktgruppe", prisliste,pris);
             dia.showAndWait();
 
-            int selectIndex = lvwPrislisteProdukter.getSelectionModel().getSelectedIndex();
-            lvwPrislisteProdukter.getItems().setAll(Controller.getpris);
-            lvwPrislisteProdukter.getSelectionModel().select(selectIndex);
+            int selectIndex = lvwPrispåProdukter.getSelectionModel().getSelectedIndex();
+            lvwPrispåProdukter.getItems().setAll(prisliste.getPriser());
+            lvwPrispåProdukter.getSelectionModel().select(selectIndex);
 
         }
 
@@ -157,7 +158,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
 
     // -------------------------------------------------------------------------
-
+/*
     public void updateControls() {
         lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
     }
