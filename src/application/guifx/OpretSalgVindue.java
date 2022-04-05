@@ -3,23 +3,15 @@ package application.guifx;
 import application.controller.Controller;
 import application.model.*;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import org.w3c.dom.Text;
-import storage.Storage;
 
-import java.beans.EventHandler;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class OpretSalgVindue extends GridPane {
 
@@ -32,10 +24,10 @@ public class OpretSalgVindue extends GridPane {
 	private ComboBox<Integer> cbbAntal;
 	private VBox serviceBoxNavn, serviceBoxCounter;
 	private ListView<Double> lvwPriser;
-	private TextField txfpris,txfPrisIndkøbsliste,txfAntal;
+	private TextField txfpris,txfPrisIndkøbsliste,txfAntal, txfFastRabatEllerProcent,txfProcentRabat;
 	private Salg salg;
 	private Button addButton, btnOpretUdlejning;
-	private CheckBox chbUdlejning;
+	private CheckBox chbProcent,chbFastPris;
 	private boolean isKlippekort;
 
 
@@ -95,10 +87,16 @@ public class OpretSalgVindue extends GridPane {
 		lvwIndkøbsliste.getSelectionModel().selectedItemProperty().addListener(listenerordrelinje);
 
 
+		HBox indkøbsListePris = new HBox(20);
+		this.add(indkøbsListePris,3 ,6 );
+		indkøbsListePris.setPadding(new Insets(10, 0, 0, 50));
+		indkøbsListePris.setAlignment(Pos.BOTTOM_LEFT);
+
 		Label lblIndkøbslistePris = new Label("Indkøbsliste samlet pris: ");
-		this.add(lblIndkøbslistePris,3,6);
+		indkøbsListePris.getChildren().add(lblIndkøbslistePris);
+
 		txfPrisIndkøbsliste= new TextField();
-		this.add(txfPrisIndkøbsliste,4,6);
+		indkøbsListePris.getChildren().add(txfPrisIndkøbsliste);
 
 
 
@@ -137,7 +135,7 @@ public class OpretSalgVindue extends GridPane {
 
 		txfAntal= new TextField();
 		hbxAntal1.getChildren().add(txfAntal);
-
+		txfAntal.setEditable(false);
 
 
 		VBox vbxUdlejningOgSalg = new VBox(20);
@@ -156,7 +154,6 @@ public class OpretSalgVindue extends GridPane {
 		Button opretSalg = new Button("Opret Salg");
 		hbxSalg.getChildren().add(opretSalg);
 		opretSalg.setOnAction(event -> this.opretSalg());
-
 
 
 		HBox hbxUdlejning = new HBox(28);
@@ -184,6 +181,39 @@ public class OpretSalgVindue extends GridPane {
 		hbxLejersNavn.getChildren().add(txfLejersNavn);
 		ChangeListener<String> listenerTxfLejersNavn = (ov, oldOrdreLinje, newOrdreLinje) -> this.checkUdlejningsNavn();
 		txfLejersNavn.textProperty().addListener(listenerTxfLejersNavn);
+
+
+		HBox hbxRabat = new HBox(20);
+		this.add(hbxRabat,3 ,7 );
+		hbxRabat.setPadding(new Insets(10, 0, 0, 0));
+		hbxRabat.setAlignment(Pos.BOTTOM_LEFT);
+
+		Label lblFastRabatEllerProcent = new Label("Pris eller procent");
+		hbxRabat.getChildren().add(lblFastRabatEllerProcent);
+
+		txfFastRabatEllerProcent = new TextField();
+		hbxRabat.getChildren().add(txfFastRabatEllerProcent);
+
+		Label lblFastRabat = new Label("Fast rabat");
+		hbxRabat.getChildren().add(lblFastRabat);
+
+		chbFastPris = new CheckBox();
+		hbxRabat.getChildren().add(chbFastPris);
+
+		Label lblchbProcent = new Label("Procent rabat");
+		hbxRabat.getChildren().add(lblchbProcent);
+
+		chbProcent = new CheckBox();
+		hbxRabat.getChildren().add(chbProcent);
+
+
+		Button godkendRabat = new Button("✔");
+		hbxRabat.getChildren().add(godkendRabat);
+		godkendRabat.setOnAction(event -> tilføjRabat());
+
+
+
+
 	}
 
 	// -------------------------------------------------------------------------
@@ -214,6 +244,20 @@ public class OpretSalgVindue extends GridPane {
 			txfAntal.setText(ordreLinje.getAntal() + "");
 		}
 
+	}
+
+	public void tilføjRabat(){
+		OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
+
+		if (chbProcent.isSelected()){
+			double rabatProcent = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
+			ordreLinje.setRabatBeregning(new ProcentRabat(rabatProcent));
+		}
+		else if (chbFastPris.isSelected()){
+			double fastRabat = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
+			ordreLinje.setRabatBeregning(new FastRabat(fastRabat));
+		}
+		txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
 	}
 
 

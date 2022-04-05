@@ -6,10 +6,20 @@ public class OrdreLinje {
 
     private int antal;
     private Pris pris;
+    private RabatBeregning rabatBeregning;
 
     public OrdreLinje(Pris pris){
         this.antal = 1;
         this.pris = pris;
+        this.rabatBeregning = null;
+    }
+
+    public void setRabatBeregning(RabatBeregning rabatBeregning){
+        this.rabatBeregning = rabatBeregning;
+    }
+
+    public RabatBeregning getRabatBeregning(){
+        return this.rabatBeregning;
     }
 
     public int getAntal() {

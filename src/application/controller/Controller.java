@@ -90,18 +90,26 @@ public class Controller {
         }
     }
 
+
     public static double getSamletPris(ObservableList<OrdreLinje> ordreLinjer){
         double samletPris = 0;
         for (OrdreLinje o : ordreLinjer){
-            samletPris += o.getPris().getPris() * o.getAntal();
+            if (o.getRabatBeregning() != null){
+                samletPris += o.getRabatBeregning().getRabat((o.getPris().getPris()) * o.getAntal());
+            }else{
+                samletPris += o.getPris().getPris() * o.getAntal();
+            }
         }
         return samletPris;
     }
 
+
     public static int getSamletKlip(ObservableList<OrdreLinje> ordreLinjer){
         int samletKlip = 0;
+
         for (OrdreLinje o : ordreLinjer){
             samletKlip += o.getPris().getKlip() * o.getAntal();
+
         }
         return samletKlip;
     }
