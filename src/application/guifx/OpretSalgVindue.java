@@ -6,10 +6,16 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -24,9 +30,10 @@ public class OpretSalgVindue extends GridPane {
 	private ComboBox<Integer> cbbAntal;
 	private VBox serviceBoxNavn, serviceBoxCounter;
 	private ListView<Double> lvwPriser;
+	private CheckboxGroup checkboxGroup = new CheckboxGroup();
 	private TextField txfpris,txfPrisIndkøbsliste,txfAntal, txfFastRabatEllerProcent,txfProcentRabat;
 	private Salg salg;
-	private Button addButton, btnOpretUdlejning;
+	private Button addButton, btnOpretUdlejning,godkendRabat;
 	private CheckBox chbProcent,chbFastPris;
 	private boolean isKlippekort;
 
@@ -193,23 +200,31 @@ public class OpretSalgVindue extends GridPane {
 
 		txfFastRabatEllerProcent = new TextField();
 		hbxRabat.getChildren().add(txfFastRabatEllerProcent);
+		txfFastRabatEllerProcent.setDisable(true);
 
 		Label lblFastRabat = new Label("Fast rabat");
 		hbxRabat.getChildren().add(lblFastRabat);
 
+
+
+
+
 		chbFastPris = new CheckBox();
 		hbxRabat.getChildren().add(chbFastPris);
+		chbFastPris.setOnAction(event -> this.valgtFastRabat());
 
 		Label lblchbProcent = new Label("Procent rabat");
 		hbxRabat.getChildren().add(lblchbProcent);
 
 		chbProcent = new CheckBox();
 		hbxRabat.getChildren().add(chbProcent);
+		chbProcent.setOnAction(event -> ValgtProcentRabat());
 
 
-		Button godkendRabat = new Button("✔");
+		godkendRabat = new Button("✔");
 		hbxRabat.getChildren().add(godkendRabat);
 		godkendRabat.setOnAction(event -> tilføjRabat());
+		godkendRabat.setDisable(true);
 
 
 
@@ -246,18 +261,20 @@ public class OpretSalgVindue extends GridPane {
 
 	}
 
-	public void tilføjRabat(){
+	public void tilføjRabat() {
 		OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
 
-		if (chbProcent.isSelected()){
-			double rabatProcent = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
-			ordreLinje.setRabatBeregning(new ProcentRabat(rabatProcent));
+		if (ordreLinje != null && txfFastRabatEllerProcent.getText().trim().length() != 0) {
+
+			if (chbProcent.isSelected()) {
+				double rabatProcent = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
+				ordreLinje.setRabatBeregning(new ProcentRabat(rabatProcent));
+			} else if (chbFastPris.isSelected()) {
+				double fastRabat = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
+				ordreLinje.setRabatBeregning(new FastRabat(fastRabat));
+			}
+			txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
 		}
-		else if (chbFastPris.isSelected()){
-			double fastRabat = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
-			ordreLinje.setRabatBeregning(new FastRabat(fastRabat));
-		}
-		txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
 	}
 
 
@@ -335,6 +352,28 @@ public class OpretSalgVindue extends GridPane {
 				txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
 			}
 		}
+
+		public void valgtFastRabat(){
+		chbProcent.setSelected(false);
+		Chancevisit();
+		}
+
+		public void ValgtProcentRabat(){
+		chbFastPris.setSelected(false);
+		Chancevisit();
+		}
+
+		public void Chancevisit(){
+		if (!chbFastPris.isSelected() && !chbProcent.isSelected()){
+			txfFastRabatEllerProcent.setDisable(true);
+			godkendRabat.setDisable(true);
+			txfFastRabatEllerProcent.clear();
+		}else {
+			txfFastRabatEllerProcent.setDisable(false);
+			godkendRabat.setDisable(false);
+			}
+		}
+
 
 		// -------------------------------------------------------------------------
 
