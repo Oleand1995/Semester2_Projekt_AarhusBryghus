@@ -8,12 +8,18 @@ public class ProcentRabat implements RabatBeregning {
         this.procentRabat = procentRabat;
     }
 
-        @Override
-        public double getRabat(double pris) {
-            double tal = procentRabat / 100;
-            double rabatPris = pris * tal;
-            pris = pris - rabatPris;
-            return pris;
-        }
+
+    @Override
+    public double getRabat(double pris) {
+        double tal = procentRabat / 100;
+        double rabatPris = pris * tal;
+        pris = pris - rabatPris;
+        return pris;
+    }
+
+    @Override
+    public String getTypeAfRabat(){
+        return "Procent rabat på " + this.procentRabat + "%";
+    }
 
 }

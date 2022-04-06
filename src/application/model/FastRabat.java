@@ -9,9 +9,17 @@ public class FastRabat implements RabatBeregning {
         this.fastRabat = fastRabat;
     }
 
+
     @Override
     public double getRabat(double pris) {
         pris = pris - fastRabat;
         return pris;
     }
+
+    @Override
+    public String getTypeAfRabat(){
+        return "Fast rabat på " + this.fastRabat + ".-" ;
+    }
+
+
 }

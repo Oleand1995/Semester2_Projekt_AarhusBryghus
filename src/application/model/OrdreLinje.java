@@ -42,8 +42,11 @@ public class OrdreLinje {
 
 
     @Override
-    public String toString(){return pris + " | " + antal + " stk";}
-
-
+    public String toString(){
+        double prisUdenRabat = pris.getPris() * getAntal();
+        if (getRabatBeregning() != null){
+            return pris + " | " + antal + " stk | " + getRabatBeregning().getTypeAfRabat() + " | Pris " + getRabatBeregning().getRabat(prisUdenRabat) + "Kr";
+        }
+        return pris + " | " + antal + " stk | Pris " + prisUdenRabat + "Kr";}
 
 }

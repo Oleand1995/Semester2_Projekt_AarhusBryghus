@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.awt.*;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -36,6 +35,8 @@ public class OpretSalgVindue extends GridPane {
 	private Button addButton, btnOpretUdlejning,godkendRabat;
 	private CheckBox chbProcent,chbFastPris;
 	private boolean isKlippekort;
+	private HBox hbxRabat;
+	private Label lblError;
 
 
 	public OpretSalgVindue() {
@@ -90,7 +91,7 @@ public class OpretSalgVindue extends GridPane {
 
 		lvwIndkøbsliste = new ListView<>();
 		this.add(lvwIndkøbsliste,3,2,2,4);
-		ChangeListener<OrdreLinje> listenerordrelinje = (ov, oldOrdreLinje, newOrdreLinje) -> this.antalPåvalgtProdukt();
+		ChangeListener<OrdreLinje> listenerordrelinje = (ov, oldOrdreLinje, newOrdreLinje) -> this.valgtOrdrelinje();
 		lvwIndkøbsliste.getSelectionModel().selectedItemProperty().addListener(listenerordrelinje);
 
 
@@ -190,7 +191,7 @@ public class OpretSalgVindue extends GridPane {
 		txfLejersNavn.textProperty().addListener(listenerTxfLejersNavn);
 
 
-		HBox hbxRabat = new HBox(20);
+		hbxRabat = new HBox(20);
 		this.add(hbxRabat,3 ,7 );
 		hbxRabat.setPadding(new Insets(10, 0, 0, 0));
 		hbxRabat.setAlignment(Pos.BOTTOM_LEFT);
@@ -204,10 +205,6 @@ public class OpretSalgVindue extends GridPane {
 
 		Label lblFastRabat = new Label("Fast rabat");
 		hbxRabat.getChildren().add(lblFastRabat);
-
-
-
-
 
 		chbFastPris = new CheckBox();
 		hbxRabat.getChildren().add(chbFastPris);
@@ -226,9 +223,8 @@ public class OpretSalgVindue extends GridPane {
 		godkendRabat.setOnAction(event -> tilføjRabat());
 		godkendRabat.setDisable(true);
 
-
-
-
+		lblError = new Label();
+		this.add(lblError, 3, 8);
 	}
 
 	// -------------------------------------------------------------------------
@@ -240,6 +236,7 @@ public class OpretSalgVindue extends GridPane {
 			lvwProdukter.getItems().remove(pris);
 			lvwIndkøbsliste.getItems().add(ordreLinje);
 			setSamletPris();
+			lblError.setText("");
 		}
 	}
 
@@ -253,11 +250,13 @@ public class OpretSalgVindue extends GridPane {
 	}
 
 
-	public void antalPåvalgtProdukt(){
+	public void valgtOrdrelinje(){
 		OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
 		if (ordreLinje != null){
 			txfAntal.setText(ordreLinje.getAntal() + "");
+			lblError.setText("");
 		}
+
 
 	}
 
@@ -268,12 +267,29 @@ public class OpretSalgVindue extends GridPane {
 
 			if (chbProcent.isSelected()) {
 				double rabatProcent = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
-				Controller.tilføjProcentRabatTilOrdrelinje(ordreLinje,rabatProcent);
+				if (rabatProcent <= 100.0 && rabatProcent >= 0.0){
+					Controller.tilføjProcentRabatTilOrdrelinje(ordreLinje,rabatProcent);
+					lblError.setStyle("-fx-text-fill: green");
+					lblError.setText("procent rabat på " + rabatProcent + "% er tilføjet til ordreLinje");
+				}else{
+					lblError.setStyle("-fx-text-fill: red");
+					lblError.setText("Procent skal være mellem 0 og 100");
+				}
 			} else if (chbFastPris.isSelected()) {
 				double fastRabat = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
-				Controller.tilføjFastRabatTilOrdrelinje(ordreLinje,fastRabat);
+				if (fastRabat <= ordreLinje.getPris().getPris() * ordreLinje.getAntal()){
+					Controller.tilføjFastRabatTilOrdrelinje(ordreLinje,fastRabat);
+					lblError.setStyle("-fx-text-fill: green");
+					lblError.setText("Fast rabat på " + fastRabat + "kr er tilføjet til ordrelinje");
+				}else{
+					lblError.setStyle("-fx-text-fill: red");
+					lblError.setText("Rabaten kan ikke være større end ordre linjens fulde pris");
+				}
+
 			}
 			txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
+			opdaterIndkøbsliste();
+			clearRabat();
 		}
 	}
 
@@ -294,13 +310,23 @@ public class OpretSalgVindue extends GridPane {
 		OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
 		if (ordreLinje != null) {
 			Controller.setAntalPåOrdreLinje(ordreLinje, Integer.parseInt(txfAntal.getText()));
-			ArrayList<OrdreLinje> ordreLinjer = new ArrayList<OrdreLinje>(lvwIndkøbsliste.getItems());
-			lvwIndkøbsliste.getItems().setAll(ordreLinjer);
+			if (ordreLinje.getRabatBeregning() instanceof FastRabat){
+				ordreLinje.setRabatBeregning(null);
+				lblError.setStyle("-fx-text-fill: red");
+				lblError.setText("Ups: Rabat fjernet fra ordrelinje, skal tilføjes igen hvis ønskes");
+			}
+			opdaterIndkøbsliste();
 			txfAntal.clear();
 			setSamletPris();
-
 		}
 	}
+
+	private void opdaterIndkøbsliste(){
+		ArrayList<OrdreLinje> ordreLinjer = new ArrayList<OrdreLinje>(lvwIndkøbsliste.getItems());
+		lvwIndkøbsliste.getItems().setAll(ordreLinjer);
+	}
+
+
 
 		private void checkUdlejningsNavn () {
 			if (txfLejersNavn.getText().length() != 0) {
@@ -312,17 +338,21 @@ public class OpretSalgVindue extends GridPane {
 
 		private void opretSalg () {
 		Betalingsmåder betalingsmåde = cbbBetalingsMåder.getSelectionModel().getSelectedItem();
-		if (betalingsmåde == Betalingsmåder.Klippekort){
-			ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
-			ordrelinjer.addAll(lvwIndkøbsliste.getItems());
-			Salg salg = Controller.createSalg(LocalDateTime.now(), ordrelinjer, Integer.parseInt(txfPrisIndkøbsliste.getText()), 0);
-			clearAll();
-		}
-		else{
-			ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
-			ordrelinjer.addAll(lvwIndkøbsliste.getItems());
-			Salg salg = Controller.createSalg(LocalDateTime.now(), ordrelinjer, 0, Double.parseDouble(txfPrisIndkøbsliste.getText()));
-			clearAll();
+			if (!lvwIndkøbsliste.getItems().isEmpty()){
+				ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
+				ordrelinjer.addAll(lvwIndkøbsliste.getItems());
+
+				if (betalingsmåde == Betalingsmåder.Klippekort){
+					Controller.createSalg(LocalDateTime.now(), ordrelinjer, Integer.parseInt(txfPrisIndkøbsliste.getText()), 0);
+					clearAll();
+				}
+				else{
+					Controller.createSalg(LocalDateTime.now(), ordrelinjer, 0, Double.parseDouble(txfPrisIndkøbsliste.getText()));
+					clearAll();
+				}
+			}else{
+				lblError.setStyle("-fx-text-fill: red");
+				lblError.setText("Ups: Du kan ikke oprette et salg, før du har lavet en indkøbsliste");
 			}
 		}
 
@@ -343,6 +373,16 @@ public class OpretSalgVindue extends GridPane {
 //			cbbPrisListe.getSelectionModel().clearSelection();
 			cbbBetalingsMåder.getSelectionModel().clearSelection();
 			lvwProdukter.setDisable(true);
+			lblError.setText("");
+			clearRabat();
+		}
+
+		private void clearRabat(){
+			txfFastRabatEllerProcent.clear();
+			txfFastRabatEllerProcent.setDisable(true);
+			godkendRabat.setDisable(true);
+			chbProcent.setSelected(false);
+			chbFastPris.setSelected(false);
 		}
 
 		private void setSamletPris(){
@@ -396,8 +436,6 @@ public class OpretSalgVindue extends GridPane {
 				txfPrisIndkøbsliste.clear();
 			}
 			lvwProdukter.getItems().clear();
-
-
 		}
 
 		public void updateControlsProdukter () {
@@ -417,10 +455,13 @@ public class OpretSalgVindue extends GridPane {
 					lvwProdukter.setDisable(false);
 					lvwProdukter.getItems().setAll(prisliste.getKlipPriser());
 					txfLejersNavn.setEditable(false);
+					hbxRabat.setDisable(true);
+
 				}else{
 					lvwProdukter.setDisable(false);
 					lvwProdukter.getItems().setAll(prisliste.getPriser());
 					txfLejersNavn.setEditable(true);
+					hbxRabat.setDisable(false);
 				}
 			}
 			lvwIndkøbsliste.getItems().clear();
