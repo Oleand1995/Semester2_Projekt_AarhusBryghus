@@ -128,6 +128,18 @@ public class Controller {
         prisliste.removePris(pris);
     }
 
+    public static RabatBeregning tilføjProcentRabatTilOrdrelinje(OrdreLinje ordreLinje,double rabatProcent){
+        RabatBeregning procentRabat = new ProcentRabat(rabatProcent);
+        ordreLinje.setRabatBeregning(procentRabat);
+        return procentRabat;
+    }
+
+    public static RabatBeregning tilføjFastRabatTilOrdrelinje(OrdreLinje ordreLinje,double fastRabatPris){
+        RabatBeregning fastRabat = new FastRabat(fastRabatPris);
+        ordreLinje.setRabatBeregning(fastRabat);
+        return fastRabat;
+    }
+
     /*
     public static void setPrisOgKlipForProdukt(Pris pris,double varePris,int klipPris){
         pris.setPris(varePris);

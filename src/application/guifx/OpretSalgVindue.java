@@ -268,10 +268,10 @@ public class OpretSalgVindue extends GridPane {
 
 			if (chbProcent.isSelected()) {
 				double rabatProcent = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
-				ordreLinje.setRabatBeregning(new ProcentRabat(rabatProcent));
+				Controller.tilføjProcentRabatTilOrdrelinje(ordreLinje,rabatProcent);
 			} else if (chbFastPris.isSelected()) {
 				double fastRabat = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
-				ordreLinje.setRabatBeregning(new FastRabat(fastRabat));
+				Controller.tilføjFastRabatTilOrdrelinje(ordreLinje,fastRabat);
 			}
 			txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
 		}
