@@ -8,6 +8,7 @@ public class ProcentRabat implements RabatBeregning {
         this.procentRabat = procentRabat;
     }
 
+    //Get rabat metode
 
     @Override
     public double getRabat(double pris) {
