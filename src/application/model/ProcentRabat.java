@@ -24,4 +24,3 @@ public class ProcentRabat implements RabatBeregning {
 
 }
 
-//Tjak mads det går nok
