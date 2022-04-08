@@ -22,12 +22,14 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
     private ListView<Udlejning> lvwAktiveUdlejninger, lvwAfsluttedeUdlejninger;
     private ListView<OrdreLinje> lvwSalgOrdreLinjer;
     private DatePicker salgsDatoStart, salgsDatoSlut;
+    private Controller controller;
 
     public VisSalgOgUdlejninger_Pane(){
         this.setPadding(new Insets(20));
         this.setHgap(10);
         this.setVgap(5);
         this.setGridLinesVisible(false);
+        controller = Controller.getController();
 
         Label lblSalg = new Label("Salg: ");
         this.add(lblSalg,0,0);
@@ -57,7 +59,7 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
         salgsDatoSlut.setOnAction(event -> this.DatoChanged());
 
         lvwSalg = new ListView<>();
-        lvwSalg.getItems().setAll(Controller.getSalg());
+        lvwSalg.getItems().setAll(controller.getSalg());
         ChangeListener<Salg> listenerSalg = (ov, oldSalg, newSalg) -> this.updateControlsSalg();
         lvwSalg.getSelectionModel().selectedItemProperty().addListener(listenerSalg);
         this.add(lvwSalg,0,3,1,4);
@@ -70,7 +72,7 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
         this.add(lblAktUdlejninger,2,2);
 
         lvwAktiveUdlejninger = new ListView<>();
-        lvwAktiveUdlejninger.getItems().setAll(Controller.getAktiveUdlejninger());
+        lvwAktiveUdlejninger.getItems().setAll(controller.getAktiveUdlejninger());
         this.add(lvwAktiveUdlejninger,2,3,1,1);
         lvwAktiveUdlejninger.setPrefSize(300,200);
 
@@ -78,7 +80,7 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
         this.add(lblAfsUdlejninger,2,5);
 
         lvwAfsluttedeUdlejninger = new ListView<>();
-        lvwAfsluttedeUdlejninger.getItems().setAll(Controller.getAfsluttedeUdlejninger());
+        lvwAfsluttedeUdlejninger.getItems().setAll(controller.getAfsluttedeUdlejninger());
         this.add(lvwAfsluttedeUdlejninger,2,6,1,1);
         lvwAfsluttedeUdlejninger.setPrefSize(300,200);
 
@@ -90,10 +92,10 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
 
     public void updateControls(){
         if (salgsDatoSlut.getValue() != null && salgsDatoSlut.getValue() != null){
-            lvwSalg.getItems().setAll(Controller.getSalgFromDato(salgsDatoStart.getValue(),salgsDatoSlut.getValue()));
+            lvwSalg.getItems().setAll(controller.getSalgFromDato(salgsDatoStart.getValue(),salgsDatoSlut.getValue()));
         }
 
-        lvwAktiveUdlejninger.getItems().setAll(Controller.getAktiveUdlejninger());
+        lvwAktiveUdlejninger.getItems().setAll(controller.getAktiveUdlejninger());
         lvwSalgOrdreLinjer.getItems().clear();
 
     }
@@ -108,9 +110,9 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
             Opret_Salg_From_Udlejning_Window dia = new Opret_Salg_From_Udlejning_Window("Afslut udlejning",udlejning);
             dia.showAndWait();
 
-            lvwSalg.getItems().setAll(Controller.getSalgFromDato(salgsDatoStart.getValue(),salgsDatoSlut.getValue()));
-            lvwAktiveUdlejninger.getItems().setAll(Controller.getAktiveUdlejninger());
-            lvwAfsluttedeUdlejninger.getItems().setAll(Controller.getAfsluttedeUdlejninger());
+            lvwSalg.getItems().setAll(controller.getSalgFromDato(salgsDatoStart.getValue(),salgsDatoSlut.getValue()));
+            lvwAktiveUdlejninger.getItems().setAll(controller.getAktiveUdlejninger());
+            lvwAfsluttedeUdlejninger.getItems().setAll(controller.getAfsluttedeUdlejninger());
         }
     }
 
@@ -124,7 +126,7 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
     public void DatoChanged(){
         if (salgsDatoSlut.getValue() != null && salgsDatoStart != null){
             if (salgsDatoStart.getValue().isBefore(salgsDatoSlut.getValue()) || salgsDatoStart.getValue().isEqual(salgsDatoSlut.getValue())){
-                lvwSalg.getItems().setAll(Controller.getSalgFromDato(salgsDatoStart.getValue(),salgsDatoSlut.getValue()));
+                lvwSalg.getItems().setAll(controller.getSalgFromDato(salgsDatoStart.getValue(),salgsDatoSlut.getValue()));
                 lvwSalgOrdreLinjer.getItems().clear();
             }
         }

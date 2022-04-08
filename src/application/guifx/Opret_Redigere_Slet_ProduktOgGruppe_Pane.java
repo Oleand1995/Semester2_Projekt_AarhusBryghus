@@ -15,13 +15,14 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
     private ListView<ProduktGruppe> lvwProduktgrupper;
     private ListView<Produkt> lvwProdukter;
     private Button btnOpretProduktGruppe,btnSletProduktGruppe,btnÆndreProduktgruppe,btnOpretProdukt,btnSletProdukt,btnÆndreProdukt;
-
+    private Controller controller;
 
     public Opret_Redigere_Slet_ProduktOgGruppe_Pane() {
         this.setPadding(new Insets(20));
         this.setHgap(20);
         this.setVgap(10);
         this.setGridLinesVisible(false);
+        controller = Controller.getController();
 
 
         Label lblProduktgrupper = new Label("Produktgrupper");
@@ -29,7 +30,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
 
         lvwProduktgrupper = new ListView<>();
         this.add(lvwProduktgrupper,0 ,2,1,1);
-        lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+        lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
         ChangeListener<ProduktGruppe> listener = (ov, oldProduktGruppe, newproduktgruppe) -> this.valgtProduktgruppe();
         lvwProduktgrupper.getSelectionModel().selectedItemProperty().addListener(listener);
 
@@ -82,7 +83,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
         dia.showAndWait();
 
         //venter til vinduet lukker
-        lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+        lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
     }
 
     private void valgtProduktgruppe() {
@@ -95,8 +96,8 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
     private void sletProduktGruppe() {
         ProduktGruppe produktGruppe = lvwProduktgrupper.getSelectionModel().getSelectedItem();
         if (produktGruppe != null){
-            Controller.sletProduktgruppe(produktGruppe);
-            lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+            controller.sletProduktgruppe(produktGruppe);
+            lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
             lvwProdukter.getItems().clear();
 
         }
@@ -109,7 +110,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
             dia.showAndWait();
 
             int selectIndex = lvwProduktgrupper.getSelectionModel().getSelectedIndex();
-            lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+            lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
             lvwProduktgrupper.getSelectionModel().select(selectIndex);
 
         }
@@ -130,7 +131,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
         ProduktGruppe produktGruppe = lvwProduktgrupper.getSelectionModel().getSelectedItem();
         Produkt produkt = lvwProdukter.getSelectionModel().getSelectedItem();
         if (produkt != null) {
-            Controller.sletProdukt(produktGruppe,produkt);
+            controller.sletProdukt(produktGruppe,produkt);
             lvwProdukter.getItems().setAll(produktGruppe.getProdukter());
         }
 
@@ -143,7 +144,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
             dia.showAndWait();
 
             int selectIndex = lvwProduktgrupper.getSelectionModel().getSelectedIndex();
-            lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+            lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
             lvwProduktgrupper.getSelectionModel().select(selectIndex);
 
         }
@@ -158,7 +159,7 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
     // -------------------------------------------------------------------------
 
     public void updateControls() {
-        lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+        lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
     }
 
 }

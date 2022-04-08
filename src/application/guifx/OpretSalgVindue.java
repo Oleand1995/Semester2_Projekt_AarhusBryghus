@@ -37,17 +37,18 @@ public class OpretSalgVindue extends GridPane {
 	private boolean isKlippekort;
 	private HBox hbxRabat;
 	private Label lblError;
-
+	private Controller controller;
 
 	public OpretSalgVindue() {
 		this.setPadding(new Insets(20));
 		this.setHgap(10);
 		this.setVgap(10);
 		this.setGridLinesVisible(false);
+		controller = Controller.getController();
 
 
 		cbbPrisListe = new ComboBox<>();
-		cbbPrisListe.getItems().setAll(Controller.getPrislister());
+		cbbPrisListe.getItems().setAll(controller.getPrislister());
 		ChangeListener<Prisliste> listenerPrisliste = (ov, oldPrisliste, newPrisliste) -> this.selectedPrislisteChanged();
 		cbbPrisListe.getSelectionModel().selectedItemProperty().addListener(listenerPrisliste);
 		this.add(cbbPrisListe,0 ,0);
@@ -233,7 +234,7 @@ public class OpretSalgVindue extends GridPane {
 	private void TilføjTilIndkoebskurv() {
 		Pris pris = lvwProdukter.getSelectionModel().getSelectedItem();
 		if (pris != null){
-			OrdreLinje ordreLinje = Controller.createOrdreLinje(pris);
+			OrdreLinje ordreLinje = controller.createOrdreLinje(pris);
 			lvwProdukter.getItems().remove(pris);
 			lvwIndkøbsliste.getItems().add(ordreLinje);
 			setSamletPris();
@@ -269,7 +270,7 @@ public class OpretSalgVindue extends GridPane {
 			if (chbProcent.isSelected()) {
 				double rabatProcent = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
 				if (rabatProcent <= 100.0 && rabatProcent >= 0.0){
-					Controller.tilføjProcentRabatTilOrdrelinje(ordreLinje,rabatProcent);
+					controller.tilføjProcentRabatTilOrdrelinje(ordreLinje,rabatProcent);
 					lblError.setStyle("-fx-text-fill: green");
 					lblError.setText("procent rabat på " + rabatProcent + "% er tilføjet til ordreLinje");
 				}else{
@@ -279,7 +280,7 @@ public class OpretSalgVindue extends GridPane {
 			} else if (chbFastPris.isSelected()) {
 				double fastRabat = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
 				if (fastRabat <= ordreLinje.getPris().getPris() * ordreLinje.getAntal()){
-					Controller.tilføjFastRabatTilOrdrelinje(ordreLinje,fastRabat);
+					controller.tilføjFastRabatTilOrdrelinje(ordreLinje,fastRabat);
 					lblError.setStyle("-fx-text-fill: green");
 					lblError.setText("Fast rabat på " + fastRabat + "kr er tilføjet til ordrelinje");
 				}else{
@@ -288,7 +289,7 @@ public class OpretSalgVindue extends GridPane {
 				}
 
 			}
-			txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
+			txfPrisIndkøbsliste.setText(controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
 			opdaterIndkøbsliste();
 			clearRabat();
 		}
@@ -315,7 +316,7 @@ public class OpretSalgVindue extends GridPane {
 	private void godkendAntal() {
 		OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
 		if (ordreLinje != null) {
-			Controller.setAntalPåOrdreLinje(ordreLinje, Integer.parseInt(txfAntal.getText()));
+			controller.setAntalPåOrdreLinje(ordreLinje, Integer.parseInt(txfAntal.getText()));
 			if (ordreLinje.getRabatBeregning() instanceof FastRabat){
 				ordreLinje.setRabatBeregning(null);
 				lblError.setStyle("-fx-text-fill: red");
@@ -349,11 +350,11 @@ public class OpretSalgVindue extends GridPane {
 				ordrelinjer.addAll(lvwIndkøbsliste.getItems());
 
 				if (betalingsmåde == Betalingsmåder.Klippekort){
-					Controller.createSalg(LocalDateTime.now(), ordrelinjer, Integer.parseInt(txfPrisIndkøbsliste.getText()), 0);
+					controller.createSalg(LocalDateTime.now(), ordrelinjer, Integer.parseInt(txfPrisIndkøbsliste.getText()), 0);
 					clearAll();
 				}
 				else{
-					Controller.createSalg(LocalDateTime.now(), ordrelinjer, 0, Double.parseDouble(txfPrisIndkøbsliste.getText()));
+					controller.createSalg(LocalDateTime.now(), ordrelinjer, 0, Double.parseDouble(txfPrisIndkøbsliste.getText()));
 					clearAll();
 				}
 			}else{
@@ -367,7 +368,7 @@ public class OpretSalgVindue extends GridPane {
 				Betalingsmåder betalingsmåde = cbbBetalingsMåder.getSelectionModel().getSelectedItem();
 				ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
 				ordrelinjer.addAll(lvwIndkøbsliste.getItems());
-				Controller.createUdlejning(LocalDateTime.now(), Double.parseDouble(txfPrisIndkøbsliste.getText()), txfLejersNavn.getText(), ordrelinjer);
+				controller.createUdlejning(LocalDateTime.now(), Double.parseDouble(txfPrisIndkøbsliste.getText()), txfLejersNavn.getText(), ordrelinjer);
 				clearAll();
 			}
 			else{
@@ -399,9 +400,9 @@ public class OpretSalgVindue extends GridPane {
 
 		private void setSamletPris(){
 			if (cbbBetalingsMåder.getSelectionModel().getSelectedItem() == Betalingsmåder.Klippekort) {
-				txfPrisIndkøbsliste.setText(Controller.getSamletKlip(lvwIndkøbsliste.getItems()) + "");
+				txfPrisIndkøbsliste.setText(controller.getSamletKlip(lvwIndkøbsliste.getItems()) + "");
 			} else {
-				txfPrisIndkøbsliste.setText(Controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
+				txfPrisIndkøbsliste.setText(controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
 			}
 		}
 
@@ -454,7 +455,7 @@ public class OpretSalgVindue extends GridPane {
 		}
 
 		public void updateControls () {
-			cbbPrisListe.getItems().setAll(Controller.getPrislister());
+			cbbPrisListe.getItems().setAll(controller.getPrislister());
 			cbbBetalingsMåder.setDisable(true);
 			clearAll();
 		}

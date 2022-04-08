@@ -17,29 +17,50 @@ import java.util.ArrayList;
 
 public class Controller {
 
-    private static Storage storage = Storage.getStorage();
 
-    public static Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris){
+    private static Controller controller;
+    private Storage storage;
+
+    public static Controller getController() {
+        if (controller == null) {
+            controller = new Controller();
+        }
+        return controller;
+    }
+
+    private Controller() {
+        storage = Storage.getStorage();
+    }
+
+    //     Denne metode kræver at Storage constructoren ikke er privat den er kun
+    //     til JUnit test
+    public Controller getTestController() {
+        Controller controller = new Controller();
+        controller.storage = new Storage();
+        return controller;
+    }
+
+    public Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris){
         Salg salg = new Salg(salgsTidspunkt, ordreLinjer, samletPris, samletKlip);
         storage.addSalg(salg);
         return salg;
     }
 
-    public static ArrayList<Salg> getSalg(){return new ArrayList<>(storage.getSalg());}
+    public ArrayList<Salg> getSalg(){return new ArrayList<>(storage.getSalg());}
 
-    public static Udlejning createUdlejning(LocalDateTime udlejningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer){
+    public Udlejning createUdlejning(LocalDateTime udlejningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer){
         Udlejning udlejning = new Udlejning(udlejningsTidspunkt,null,samletPris,lejersNavn,ordrelinjer);
         storage.addUdlejning(udlejning);
         return udlejning;
     }
 
-    public static void removeUdlejning(Udlejning udlejning){
+    public void removeUdlejning(Udlejning udlejning){
         storage.removeUdlejning(udlejning);
     }
 
-    public static ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
+    public ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
 
-    public static ArrayList<Udlejning> getAktiveUdlejninger(){
+    public ArrayList<Udlejning> getAktiveUdlejninger(){
         ArrayList<Udlejning> udlejninger = new ArrayList<>();
         for (Udlejning u : storage.getUdlejninger()){
             if (u.getAfregningsTidspunkt() == null){
@@ -49,7 +70,7 @@ public class Controller {
         return udlejninger;
     }
 
-    public static ArrayList<Udlejning> getAfsluttedeUdlejninger(){
+    public ArrayList<Udlejning> getAfsluttedeUdlejninger(){
         ArrayList<Udlejning> udlejninger = new ArrayList<>();
         for (Udlejning u : storage.getUdlejninger()){
             if (u.getAfregningsTidspunkt() != null){
@@ -59,34 +80,34 @@ public class Controller {
         return udlejninger;
     }
 
-    public static OrdreLinje createOrdreLinje(Pris pris){
+    public OrdreLinje createOrdreLinje(Pris pris){
         return new OrdreLinje(pris);
     }
 
-    public static void setAntalPåOrdreLinje(OrdreLinje ordreLinje, int antal){
+    public void setAntalPåOrdreLinje(OrdreLinje ordreLinje, int antal){
         ordreLinje.setAntal(antal);
     }
 
-    public static ProduktGruppe createproduktGruppe(String produktType){
+    public ProduktGruppe createproduktGruppe(String produktType){
         ProduktGruppe produktGruppe = new ProduktGruppe(produktType);
         storage.addProduktGruppe(produktGruppe);
         return produktGruppe;
     }
 
-    public static ArrayList<ProduktGruppe> getProduktGrupper(){return storage.getProduktGrupper();}
+    public ArrayList<ProduktGruppe> getProduktGrupper(){return storage.getProduktGrupper();}
 
-    public static Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
+    public Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
         Produkt produkt = produktGruppe.createProdukt(beskrivelse);
         return produkt;
     }
 
-    public static void sletProduktgruppe(ProduktGruppe produktGruppe){
+    public void sletProduktgruppe(ProduktGruppe produktGruppe){
         if (storage.getProduktGrupper().contains(produktGruppe)){
             storage.removeProduktGruppe(produktGruppe);
         }
     }
 
-    public static ArrayList<Produkt> getProdukter(){
+    public ArrayList<Produkt> getProdukter(){
         ArrayList<Produkt> produkter = new ArrayList<>();
         for (ProduktGruppe pG : storage.getProduktGrupper()){
             for (Produkt p : pG.getProdukter()){
@@ -96,28 +117,28 @@ public class Controller {
         return produkter;
     }
 
-    public static void sletProdukt(ProduktGruppe produktGruppe, Produkt produkt){
+    public void sletProdukt(ProduktGruppe produktGruppe, Produkt produkt){
         produktGruppe.removeProdukt(produkt);
     }
 
-    public static Prisliste createPrisliste(String navn){
+    public Prisliste createPrisliste(String navn){
         Prisliste prisliste = new Prisliste(navn);
         storage.addPrisliste(prisliste);
         return prisliste;
     }
 
-    public static ArrayList<Prisliste> getPrislister(){return storage.getPrislister();}
+    public ArrayList<Prisliste> getPrislister(){return storage.getPrislister();}
 
 
 
-    public static void sletPrisliste(Prisliste prisliste){
+    public void sletPrisliste(Prisliste prisliste){
         if (storage.getPrislister().contains(prisliste)){
             storage.removePrisliste(prisliste);
         }
     }
 
 
-    public static double getSamletPris(ObservableList<OrdreLinje> ordreLinjer){
+    public double getSamletPris(ObservableList<OrdreLinje> ordreLinjer){
         double samletPris = 0;
         for (OrdreLinje o : ordreLinjer){
             if (o.getRabatBeregning() != null){
@@ -130,7 +151,7 @@ public class Controller {
     }
 
 
-    public static int getSamletKlip(ObservableList<OrdreLinje> ordreLinjer){
+    public int getSamletKlip(ObservableList<OrdreLinje> ordreLinjer){
         int samletKlip = 0;
 
         for (OrdreLinje o : ordreLinjer){
@@ -140,33 +161,33 @@ public class Controller {
         return samletKlip;
     }
 
-    public static Pris createPrisOgKlip(double pris, Produkt produkt, int klipPris,Prisliste prisliste){
+    public Pris createPrisOgKlip(double pris, Produkt produkt, int klipPris,Prisliste prisliste){
         Pris prisClass = prisliste.createPrisOgKlip(pris,produkt ,klipPris);
         return prisClass;
     }
 
-    public static Pris createPris (double pris, Produkt produkt,Prisliste prisliste){
+    public Pris createPris (double pris, Produkt produkt,Prisliste prisliste){
         Pris prisClass = prisliste.createPris(pris,produkt);
         return prisClass;
     }
 
-    public static void sletPrisEllerPrisOgKlip(Prisliste prisliste, Pris pris){
+    public void sletPrisEllerPrisOgKlip(Prisliste prisliste, Pris pris){
         prisliste.removePris(pris);
     }
 
-    public static RabatBeregning tilføjProcentRabatTilOrdrelinje(OrdreLinje ordreLinje,double rabatProcent){
+    public RabatBeregning tilføjProcentRabatTilOrdrelinje(OrdreLinje ordreLinje,double rabatProcent){
         RabatBeregning procentRabat = new ProcentRabat(rabatProcent);
         ordreLinje.setRabatBeregning(procentRabat);
         return procentRabat;
     }
 
-    public static RabatBeregning tilføjFastRabatTilOrdrelinje(OrdreLinje ordreLinje,double fastRabatPris){
+    public RabatBeregning tilføjFastRabatTilOrdrelinje(OrdreLinje ordreLinje,double fastRabatPris){
         RabatBeregning fastRabat = new FastRabat(fastRabatPris);
         ordreLinje.setRabatBeregning(fastRabat);
         return fastRabat;
     }
 
-    public static ArrayList<Salg> getSalgFromDato(LocalDate start, LocalDate slut){
+    public ArrayList<Salg> getSalgFromDato(LocalDate start, LocalDate slut){
         ArrayList<Salg> salg = new ArrayList<>();
         if (!storage.getSalg().isEmpty()){
             for (Salg s : storage.getSalg()){
@@ -175,7 +196,6 @@ public class Controller {
                 }
             }
         }
-
         return salg;
     }
 
@@ -199,140 +219,140 @@ public class Controller {
 
 
 
-    public static void initStorage(){
+    public void initStorage(){
 
         // Produktgrupper:
 
-        ProduktGruppe flaske = Controller.createproduktGruppe("Flaske");
-        ProduktGruppe fadoel = Controller.createproduktGruppe("Fadøl");
-        ProduktGruppe spiritus = Controller.createproduktGruppe("Spiritus");
-        ProduktGruppe fustage = Controller.createproduktGruppe("Fustage");
-        ProduktGruppe kulsyre = Controller.createproduktGruppe("Kulsyre");
-        ProduktGruppe malt = Controller.createproduktGruppe("Malt");
-        ProduktGruppe beklaedning = Controller.createproduktGruppe("Beklædning");
-        ProduktGruppe anlaeg = Controller.createproduktGruppe("Anlæg");
-        ProduktGruppe glas = Controller.createproduktGruppe("Glas");
-        ProduktGruppe sampakning = Controller.createproduktGruppe("Sampakning");
-        ProduktGruppe sodavand = Controller.createproduktGruppe("Sodavand");
-        ProduktGruppe snacks = Controller.createproduktGruppe("Snacks");
-        ProduktGruppe rundvisning = Controller.createproduktGruppe("Rundvisning");
+        ProduktGruppe flaske = controller.createproduktGruppe("Flaske");
+        ProduktGruppe fadoel = controller.createproduktGruppe("Fadøl");
+        ProduktGruppe fustage = controller.createproduktGruppe("Fustage");
+        ProduktGruppe kulsyre = controller.createproduktGruppe("Kulsyre");
+        ProduktGruppe malt = controller.createproduktGruppe("Malt");
+        ProduktGruppe beklaedning = controller.createproduktGruppe("Beklædning");
+        ProduktGruppe anlaeg = controller.createproduktGruppe("Anlæg");
+        ProduktGruppe glas = controller.createproduktGruppe("Glas");
+        ProduktGruppe spiritus = controller.createproduktGruppe("Spiritus");
+        ProduktGruppe sampakning = controller.createproduktGruppe("Sampakning");
+        ProduktGruppe sodavand = controller.createproduktGruppe("Sodavand");
+        ProduktGruppe snacks = controller.createproduktGruppe("Snacks");
+        ProduktGruppe rundvisning = controller.createproduktGruppe("Rundvisning");
 
         // Produkter under flaske:
 
-        Produkt klosterbryg = Controller.createProdukt("Klosterbryg", flaske);
-        Produkt sweetGB = Controller.createProdukt("Sweet Georgia Brown", flaske);
-        Produkt extraPilsner = Controller.createProdukt("Extra Pilsner", flaske);
-        Produkt celebration = Controller.createProdukt("Celebration", flaske);
-        Produkt blondie = Controller.createProdukt("Blondie", flaske);
-        Produkt foraarsbryg = Controller.createProdukt("Forårsbryg", flaske);
-        Produkt indianPA = Controller.createProdukt("Indian Pale Ale", flaske);
-        Produkt julebryg = Controller.createProdukt("Julebryg", flaske);
-        Produkt juletoenden = Controller.createProdukt("Juletønden", flaske);
-        Produkt oldSA = Controller.createProdukt("Old Strong Ale", flaske);
-        Produkt fregattenJylland = Controller.createProdukt("Fregatten Jylland", flaske);
-        Produkt imperialStout = Controller.createProdukt("Imperial Stout", flaske);
-        Produkt tribute = Controller.createProdukt("Tribute", flaske);
-        Produkt blackMonster = Controller.createProdukt("Black Monster", flaske);
+        Produkt klosterbryg = controller.createProdukt("Klosterbryg", flaske);
+        Produkt sweetGB = controller.createProdukt("Sweet Georgia Brown", flaske);
+        Produkt extraPilsner = controller.createProdukt("Extra Pilsner", flaske);
+        Produkt celebration = controller.createProdukt("Celebration", flaske);
+        Produkt blondie = controller.createProdukt("Blondie", flaske);
+        Produkt foraarsbryg = controller.createProdukt("Forårsbryg", flaske);
+        Produkt indianPA = controller.createProdukt("Indian Pale Ale", flaske);
+        Produkt julebryg = controller.createProdukt("Julebryg", flaske);
+        Produkt juletoenden = controller.createProdukt("Juletønden", flaske);
+        Produkt oldSA = controller.createProdukt("Old Strong Ale", flaske);
+        Produkt fregattenJylland = controller.createProdukt("Fregatten Jylland", flaske);
+        Produkt imperialStout = controller.createProdukt("Imperial Stout", flaske);
+        Produkt tribute = controller.createProdukt("Tribute", flaske);
+        Produkt blackMonster = controller.createProdukt("Black Monster", flaske);
 
         // Produkter under fadøl:
 
 
-        Produkt klosterbrygFadoel = Controller.createProdukt("Klosterbryg, 40 cl", fadoel);
-        Produkt jazzClassicFadoel = Controller.createProdukt("Jazz Classic, 40 cl", fadoel);
-        Produkt extraPilsnerFadoel = Controller.createProdukt("Extra Pilsner, 40 cl", fadoel);
-        Produkt celebrationFadoel = Controller.createProdukt("Celebration, 40 cl", fadoel);
-        Produkt blondieFadoel = Controller.createProdukt("Blondie, 40 cl", fadoel);
-        Produkt foraarsbrygFadoel = Controller.createProdukt("Forårsbryg, 40 cl", fadoel);
-        Produkt indianPAFadoel = Controller.createProdukt("Indian Pale Ale, 40 cl", fadoel);
-        Produkt julebrygFadoel = Controller.createProdukt("Julebryg, 40 cl", fadoel);
-        Produkt imperialStoutFadoel = Controller.createProdukt("Imperial Stout, 40 cl", fadoel);
-        Produkt specialFadoel = Controller.createProdukt("Special, 40 cl", fadoel);
+        Produkt klosterbrygFadoel = controller.createProdukt("Klosterbryg, 40 cl", fadoel);
+        Produkt jazzClassicFadoel = controller.createProdukt("Jazz Classic, 40 cl", fadoel);
+        Produkt extraPilsnerFadoel = controller.createProdukt("Extra Pilsner, 40 cl", fadoel);
+        Produkt celebrationFadoel = controller.createProdukt("Celebration, 40 cl", fadoel);
+        Produkt blondieFadoel = controller.createProdukt("Blondie, 40 cl", fadoel);
+        Produkt foraarsbrygFadoel = controller.createProdukt("Forårsbryg, 40 cl", fadoel);
+        Produkt indianPAFadoel = controller.createProdukt("Indian Pale Ale, 40 cl", fadoel);
+        Produkt julebrygFadoel = controller.createProdukt("Julebryg, 40 cl", fadoel);
+        Produkt imperialStoutFadoel = controller.createProdukt("Imperial Stout, 40 cl", fadoel);
+        Produkt specialFadoel = controller.createProdukt("Special, 40 cl", fadoel);
 
         // Produkter under sodavand:
 
-        Produkt aeblebrus = Controller.createProdukt("Æblebrus", sodavand);
-        Produkt cola = Controller.createProdukt("Cola", sodavand);
-        Produkt nikoline = Controller.createProdukt("Nikoline", sodavand);
-        Produkt sevenUp = Controller.createProdukt("7-Up", sodavand);
-        Produkt vand = Controller.createProdukt("Vand", sodavand);
+        Produkt aeblebrus = controller.createProdukt("Æblebrus", sodavand);
+        Produkt cola = controller.createProdukt("Cola", sodavand);
+        Produkt nikoline = controller.createProdukt("Nikoline", sodavand);
+        Produkt sevenUp = controller.createProdukt("7-Up", sodavand);
+        Produkt vand = controller.createProdukt("Vand", sodavand);
 
         // Produkter under snacks:
 
-        Produkt chips = Controller.createProdukt("Chips", snacks);
-        Produkt peanuts = Controller.createProdukt("Peanuts", snacks);
-        Produkt oelpoelser = Controller.createProdukt("Ølpølser", snacks);
+        Produkt chips = controller.createProdukt("Chips", snacks);
+        Produkt peanuts = controller.createProdukt("Peanuts", snacks);
+        Produkt oelpoelser = controller.createProdukt("Ølpølser", snacks);
 
         // Produkter under spiritus:
 
-        Produkt whisky = Controller.createProdukt("Whisky 45%, 50 cl rør", spiritus);
-        Produkt whiskyFireCL = Controller.createProdukt("Whisky, 4 cl", spiritus);
-        Produkt whiskyCL = Controller.createProdukt("Whisky 43%, 50 cl rør", spiritus);
-        Produkt egesplint = Controller.createProdukt("u/ egesplint", spiritus);
-        Produkt egesplintM = Controller.createProdukt("m/ egesplint", spiritus);
-        Produkt wGB = Controller.createProdukt("2 gange Whisky, Glas + Brikker", spiritus);
-        Produkt liqourOA = Controller.createProdukt("Liquor of Aarhus", spiritus);
-        Produkt lyngGin = Controller.createProdukt("Lyng Gin, 50 cl", spiritus);
-        Produkt lynGinFireCl = Controller.createProdukt("Lyng Gin, 4 cl", spiritus);
+        Produkt whisky = controller.createProdukt("Whisky 45%, 50 cl rør", spiritus);
+        Produkt whiskyFireCL = controller.createProdukt("Whisky, 4 cl", spiritus);
+        Produkt whiskyCL = controller.createProdukt("Whisky 43%, 50 cl rør", spiritus);
+        Produkt egesplint = controller.createProdukt("u/ egesplint", spiritus);
+        Produkt egesplintM = controller.createProdukt("m/ egesplint", spiritus);
+        Produkt wGB = controller.createProdukt("2 gange Whisky, Glas + Brikker", spiritus);
+        Produkt liqourOA = controller.createProdukt("Liquor of Aarhus", spiritus);
+        Produkt lyngGin = controller.createProdukt("Lyng Gin, 50 cl", spiritus);
+        Produkt lynGinFireCl = controller.createProdukt("Lyng Gin, 4 cl", spiritus);
 
         // Produkter under fustage:
 
-        Produkt klosterbrygFustage = Controller.createProdukt("Klosterbryg, 20 liter", fustage);
-        Produkt jazzClassicFustage = Controller.createProdukt("Jazz Classic, 25 liter", fustage);
-        Produkt extraPilsnerFustage = Controller.createProdukt("Extra Pilsner, 25 liter", fustage);
-        Produkt celebrationFustage = Controller.createProdukt("Celebration, 20 liter", fustage);
-        Produkt blondieFustage = Controller.createProdukt("Blondie, 25 liter", fustage);
-        Produkt foraarsbrygFustage = Controller.createProdukt("Forårsbryg, 20 liter", fustage);
-        Produkt indianPAFustage = Controller.createProdukt("Indian Pale Ale, 20 liter", fustage);
-        Produkt julebrygFustage = Controller.createProdukt("Julebryg, 20 liter", fustage);
-        Produkt imperialStountFustage = Controller.createProdukt("Imperial Stout, 20 liter", fustage);
-        Produkt pant = Controller.createProdukt("Pant", fustage);
+        Produkt klosterbrygFustage = controller.createProdukt("Klosterbryg, 20 liter", fustage);
+        Produkt jazzClassicFustage = controller.createProdukt("Jazz Classic, 25 liter", fustage);
+        Produkt extraPilsnerFustage = controller.createProdukt("Extra Pilsner, 25 liter", fustage);
+        Produkt celebrationFustage = controller.createProdukt("Celebration, 20 liter", fustage);
+        Produkt blondieFustage = controller.createProdukt("Blondie, 25 liter", fustage);
+        Produkt foraarsbrygFustage = controller.createProdukt("Forårsbryg, 20 liter", fustage);
+        Produkt indianPAFustage = controller.createProdukt("Indian Pale Ale, 20 liter", fustage);
+        Produkt julebrygFustage = controller.createProdukt("Julebryg, 20 liter", fustage);
+        Produkt imperialStountFustage = controller.createProdukt("Imperial Stout, 20 liter", fustage);
+        Produkt pant = controller.createProdukt("Pant", fustage);
 
         // Produkter under Kulsyre
 
-        Produkt kulsyreSeksKg = Controller.createProdukt("Kulsyre, 6 kg", kulsyre);
-        Produkt kulsyrePant = Controller.createProdukt("Pant", kulsyre);
-        Produkt kulsyreFireKg = Controller.createProdukt("Kulsyre, 4 kg", kulsyre);
-        Produkt kulsyreTiKg = Controller.createProdukt("Kulsyre, 10 kg", kulsyre);
+        Produkt kulsyreSeksKg = controller.createProdukt("Kulsyre, 6 kg", kulsyre);
+        Produkt kulsyrePant = controller.createProdukt("Pant", kulsyre);
+        Produkt kulsyreFireKg = controller.createProdukt("Kulsyre, 4 kg", kulsyre);
+        Produkt kulsyreTiKg = controller.createProdukt("Kulsyre, 10 kg", kulsyre);
 
         // Produkter under Malt:
 
-        Produkt maltSaek = Controller.createProdukt("Malt, 25 kg sæk", malt);
+        Produkt maltSaek = controller.createProdukt("Malt, 25 kg sæk", malt);
 
         // Produkter under Beklædning:
 
-        Produkt tshirt = Controller.createProdukt("T-Shirt", beklaedning);
-        Produkt polo = Controller.createProdukt("Polo", beklaedning);
-        Produkt cap = Controller.createProdukt("Cap", beklaedning);
+        Produkt tshirt = controller.createProdukt("T-Shirt", beklaedning);
+        Produkt polo = controller.createProdukt("Polo", beklaedning);
+        Produkt cap = controller.createProdukt("Cap", beklaedning);
 
         // Produkter under Anlæg:
 
-        Produkt enHane = Controller.createProdukt("1-hane", anlaeg);
-        Produkt toHane = Controller.createProdukt("2-hane", anlaeg);
-        Produkt flereHaner = Controller.createProdukt("Bar med flere haner", anlaeg);
-        Produkt levering = Controller.createProdukt("Levering", anlaeg);
-        Produkt krus = Controller.createProdukt("Krus", anlaeg);
+        Produkt enHane = controller.createProdukt("1-hane", anlaeg);
+        Produkt toHane = controller.createProdukt("2-hane", anlaeg);
+        Produkt flereHaner = controller.createProdukt("Bar med flere haner", anlaeg);
+        Produkt levering = controller.createProdukt("Levering", anlaeg);
+        Produkt krus = controller.createProdukt("Krus", anlaeg);
 
         // Produkter under Glas:
 
-        Produkt uanset = Controller.createProdukt("Uanset Størrelse", glas);
+        Produkt uanset = controller.createProdukt("Uanset Størrelse", glas);
 
         // Produkter under sampakning:
 
-        Produkt gaveEt = Controller.createProdukt("Gaveæske, 2 øl, 2 glas", sampakning);
-        Produkt gaveTo = Controller.createProdukt("Gaveæske, 4 øl", sampakning);
-        Produkt traekasse = Controller.createProdukt("Trækasse, 6 øl", sampakning);
-        Produkt gavekurv = Controller.createProdukt("Gavekurv, 6 øl, 2 glas", sampakning);
-        Produkt traekasseTo = Controller.createProdukt("Trækasse, 6 øl, 6 glas", sampakning);
-        Produkt traekasseTre = Controller.createProdukt("Trækasse, 12 øl", sampakning);
-        Produkt papkasse = Controller.createProdukt("Papkasse, 12 øl", sampakning);
+        Produkt gaveEt = controller.createProdukt("Gaveæske, 2 øl, 2 glas", sampakning);
+        Produkt gaveTo = controller.createProdukt("Gaveæske, 4 øl", sampakning);
+        Produkt traekasse = controller.createProdukt("Trækasse, 6 øl", sampakning);
+        Produkt gavekurv = controller.createProdukt("Gavekurv, 6 øl, 2 glas", sampakning);
+        Produkt traekasseTo = controller.createProdukt("Trækasse, 6 øl, 6 glas", sampakning);
+        Produkt traekasseTre = controller.createProdukt("Trækasse, 12 øl", sampakning);
+        Produkt papkasse = controller.createProdukt("Papkasse, 12 øl", sampakning);
 
         // Produkt under Rundvisning:
 
-        Produkt rundvisninger = Controller.createProdukt("Pr. Person dag", rundvisning);
+        Produkt rundvisninger = controller.createProdukt("Pr. Person dag", rundvisning);
 
         // Prisliste i Bar:
 
-        Prisliste bar = Controller.createPrisliste("Bar");
+        Prisliste bar = controller.createPrisliste("Bar");
 
         // Flaske i Bar:
 
@@ -413,7 +433,7 @@ public class Controller {
 
         // Prisliste i Butik:
 
-        Prisliste butik = Controller.createPrisliste("Butik");
+        Prisliste butik = controller.createPrisliste("Butik");
 
         // Flaske i Butik:
 
@@ -498,7 +518,7 @@ public class Controller {
 
     }
 
-    public static void saveStorage() {
+    public void saveStorage() {
         try (FileOutputStream fileOut = new FileOutputStream("storage.ser")) {
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
                 out.writeObject(storage);
@@ -510,7 +530,7 @@ public class Controller {
         }
     }
 
-    public static void loadStorage() {
+    public void loadStorage() {
         try (FileInputStream fileIn = new FileInputStream("storage.ser")) {
             try (ObjectInputStream in = new ObjectInputStream(fileIn);) {
                 storage = (Storage) in.readObject();

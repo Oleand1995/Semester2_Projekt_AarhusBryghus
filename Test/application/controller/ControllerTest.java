@@ -18,48 +18,66 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
 
-    ProduktGruppe fadØl;
-    Produkt klosterBryg,blondie;
+    Controller controller;
+
+    ProduktGruppe fadoel;
+
+    Produkt klosterbryg;
+    Produkt blondie;
     Prisliste fredagsBar;
-    Pris pris,prisMedKlip;
-    OrdreLinje ordreLinje1,ordreLinje2;
-    ArrayList<OrdreLinje> ordreLinjer;
-    double ordrelinjerSamletPris;
+
+    Pris pris;
+    Pris pris2;
+
+    OrdreLinje ordreLinje1;
+    OrdreLinje ordreLinje2;
+
+    ArrayList<OrdreLinje> ordreLinjerUdenKlip;
+    ArrayList<OrdreLinje> ordreLinjerMedKlip;
+
+    ObservableList<OrdreLinje> ordrelinjerObsUdenKlip;
+    ObservableList<OrdreLinje> ordrelinjerObsMedKlip;
+
+    Double ordrelinjerSamletPris;
     int ordrelinjerSamletKlip;
-    ObservableList<OrdreLinje> ordrelinjerObs;
 
     @BeforeEach
     void setUp() {
 
+        controller = Controller.getController().getTestController();
+        
+
         //Opretter produktgruppe
-        fadØl = new ProduktGruppe("Fadøl");
+        fadoel = controller.createproduktGruppe("Fadoel");
 
         //Opretter produkter
-        klosterBryg = fadØl.createProdukt("Klosterbryg");
-        blondie = fadØl.createProdukt("Blondie");
+        klosterbryg = controller.createProdukt("Klosterbryg",fadoel);
+        blondie = controller.createProdukt("Blondie",fadoel);
 
         //Opretter prisliste
-        fredagsBar = new Prisliste("Fredagsbar");
+        fredagsBar = controller.createPrisliste("Bar");
 
         //Opretter priser
-        pris = new Pris(38,klosterBryg);
-        prisMedKlip = new PrisOgKlip(42,klosterBryg ,2);
+        pris = controller.createPris(38,klosterbryg,fredagsBar);
+        pris2 = controller.createPrisOgKlip(38,blondie,2,fredagsBar);
 
         //Opretter orderelinjer
-        ordreLinje1 = new OrdreLinje(pris);
-        ordreLinje2 = new OrdreLinje(prisMedKlip);
+        ordreLinje1 = controller.createOrdreLinje(pris);
+        ordreLinje2 = controller.createOrdreLinje(pris2);
 
         //Opretter indkøbsliste/array med ordrelinjer
-        ordreLinjer = new ArrayList<>();
-        ordreLinjer.add(ordreLinje1);
-        ordreLinjer.add(ordreLinje2);
+        ordreLinjerUdenKlip = new ArrayList<>();
+        ordreLinjerUdenKlip.add(ordreLinje1);
+        ordreLinjerMedKlip = new ArrayList<>();
+        ordreLinjerMedKlip.add(ordreLinje2);
 
         //Laver ordreliner array om til obserble liste så den kan bruges.
-        ordrelinjerObs = FXCollections.observableArrayList(ordreLinjer);
+        ordrelinjerObsUdenKlip = FXCollections.observableArrayList(ordreLinjerUdenKlip);
+        ordrelinjerObsMedKlip = FXCollections.observableArrayList(ordreLinjerMedKlip);
 
         //Udregner samlet pris og klip.
-        ordrelinjerSamletPris = Controller.getSamletPris(ordrelinjerObs);
-        ordrelinjerSamletKlip = Controller.getSamletKlip(ordrelinjerObs);
+        ordrelinjerSamletPris = controller.getSamletPris(ordrelinjerObsUdenKlip);
+        ordrelinjerSamletKlip = controller.getSamletKlip(ordrelinjerObsMedKlip);
 
     }
 
@@ -70,35 +88,34 @@ class ControllerTest {
 
     @Test
     void createSalg() {
-        assertEquals(0, Storage.getSalg().size());
-        Salg salg = Controller.createSalg(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,0)),ordreLinjer,ordrelinjerSamletKlip ,ordrelinjerSamletPris);
+        assertEquals(0, controller.getSalg().size());
+        Salg salg = controller.createSalg(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,0)),ordreLinjerUdenKlip,0,ordrelinjerSamletPris);
         assertNotNull(salg);
-        assertEquals(1, Storage.getSalg().size());
+        assertEquals(1, controller.getSalg().size());
         assertEquals(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,0)),salg.getSalgsTidspunkt());
-        assertEquals(ordreLinjer,salg.getOrdrelinjer());
-        assertEquals(2,Controller.getSamletKlip(ordrelinjerObs));
-        assertEquals(80,Controller.getSamletPris(ordrelinjerObs));
+        assertEquals(ordreLinjerUdenKlip,salg.getOrdrelinjer());
+        assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
 
     }
 
     @Test
     void createUdlejning() {
-        assertEquals(0,Storage.getUdlejninger().size());
-        Udlejning udlejning = Controller.createUdlejning(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,30)),ordrelinjerSamletPris,"Mads Nørskov",ordreLinjer);
+        assertEquals(0,controller.getUdlejninger().size());
+        Udlejning udlejning = controller.createUdlejning(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,30)),ordrelinjerSamletPris,"Mads Nørskov",ordreLinjerUdenKlip);
         assertNotNull(udlejning);
-        assertEquals(1,Storage.getUdlejninger().size());
+        assertEquals(1,controller.getUdlejninger().size());
         assertEquals(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,30)),udlejning.getUdlejningsTidspunkt());
-        assertEquals(80,ordrelinjerSamletPris);
+        assertEquals(38,ordrelinjerSamletPris);
         assertEquals("Mads Nørskov",udlejning.getLejersNavn());
-        assertEquals(ordreLinjer,udlejning.getOrdrelinjer());
-        assertEquals(80,Controller.getSamletPris(ordrelinjerObs));
+        assertEquals(ordreLinjerUdenKlip,udlejning.getOrdrelinjer());
+        assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
     }
 
     @Test
     void createOrdreLinje() {
-        OrdreLinje ordreLinje3 = Controller.createOrdreLinje(prisMedKlip);
+        OrdreLinje ordreLinje3 = controller.createOrdreLinje(pris2);
         assertNotNull(ordreLinje3);
-        assertEquals(prisMedKlip,ordreLinje3.getPris());
+        assertEquals(pris2,ordreLinje3.getPris());
         assertEquals(1,ordreLinje3.getAntal());
         assertEquals(null,ordreLinje3.getRabatBeregning());
     }
@@ -106,48 +123,45 @@ class ControllerTest {
     @Test
     void setAntalPåOrdreLinje() {
         assertEquals(1,ordreLinje1.getAntal());
-        Controller.setAntalPåOrdreLinje(ordreLinje1,5);
+        controller.setAntalPåOrdreLinje(ordreLinje1,5);
         assertEquals(5,ordreLinje1.getAntal());
     }
 
     @Test
     void createproduktGruppe() {
-        assertEquals(0,Storage.getProduktGrupper().size());
-        ProduktGruppe flaskeØl = Controller.createproduktGruppe("Flaske øl");
+        assertEquals(1,controller.getProduktGrupper().size());
+        ProduktGruppe flaskeØl = controller.createproduktGruppe("Flaske øl");
         assertNotNull(flaskeØl);
-        assertEquals(1,Storage.getProduktGrupper().size());
+        assertEquals(2,controller.getProduktGrupper().size());
         assertEquals("Flaske øl",flaskeØl.getProduktType());
-        assertEquals(0,flaskeØl.getProdukter().size());
 
     }
 
     @Test
     void createProdukt() {
-        assertEquals(2,fadØl.getProdukter().size());
-        Produkt hyggeØl = Controller.createProdukt("Hygge øl",fadØl);
+        assertEquals(2,fadoel.getProdukter().size());
+        Produkt hyggeØl = controller.createProdukt("Hygge øl",fadoel);
         assertNotNull(hyggeØl);
-        assertEquals(3,fadØl.getProdukter().size());
+        assertEquals(3,fadoel.getProdukter().size());
         assertEquals("Hygge øl",hyggeØl.getBeskrivelse());
-        assertEquals(fadØl,hyggeØl.getProduktgruppe());
+        assertEquals(fadoel,hyggeØl.getProduktgruppe());
     }
 
     @Test
     void sletProduktgruppe() {
-        //storage vil være 1, da tidligere test, har lagt en produktgruppe i storage.
-        assertEquals(1,Storage.getProduktGrupper().size());
-        ProduktGruppe pg = Controller.createproduktGruppe("Mams");
-        assertEquals(2,Storage.getProduktGrupper().size());
-        Controller.sletProduktgruppe(pg);
-        assertEquals(1,Storage.getProduktGrupper().size());
+        //controller.getTestController vil være 1, da tidligere test, har lagt en produktgruppe i controller.getTestController.
+        assertEquals(1,controller.getProduktGrupper().size());
+        ProduktGruppe pg = controller.createproduktGruppe("Mams");
+        assertEquals(2,controller.getProduktGrupper().size());
+        controller.sletProduktgruppe(pg);
+        assertEquals(1,controller.getProduktGrupper().size());
     }
 
     @Test
     void getProdukter() {
-        assertEquals(0,Controller.getProdukter().size());
-
-        assertEquals(1,Controller.getProdukter().size());
-
-
+        assertEquals(2,controller.getProdukter().size());
+        controller.createProdukt("Lort",fadoel);
+        assertEquals(3,controller.getProdukter().size());
 
     }
 
