@@ -1,10 +1,11 @@
 package application.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Prisliste {
+public class Prisliste implements Serializable {
 
     private String situation;
     private ArrayList<Pris> priser = new ArrayList<>();

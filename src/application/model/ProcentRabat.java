@@ -1,6 +1,8 @@
 package application.model;
 
-public class ProcentRabat implements RabatBeregning {
+import java.io.Serializable;
+
+public class ProcentRabat implements RabatBeregning, Serializable {
 
     private double procentRabat;
 

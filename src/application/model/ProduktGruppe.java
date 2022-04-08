@@ -1,8 +1,9 @@
 package application.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ProduktGruppe {
+public class ProduktGruppe implements Serializable {
 
     private String produktType;
     private ArrayList<Produkt> produkter;

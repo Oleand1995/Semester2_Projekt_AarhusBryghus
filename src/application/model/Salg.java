@@ -1,11 +1,12 @@
 package application.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Salg {
+public class Salg implements Serializable {
 
     private LocalDateTime salgsTidspunkt;
     private double samletPris;
