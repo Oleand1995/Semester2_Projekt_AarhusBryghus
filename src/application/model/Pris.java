@@ -1,8 +1,9 @@
 package application.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Pris {
+public class Pris implements Serializable {
 
 
     private Produkt produkt;

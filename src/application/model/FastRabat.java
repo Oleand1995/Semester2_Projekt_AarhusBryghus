@@ -1,6 +1,8 @@
 package application.model;
 
-public class FastRabat implements RabatBeregning {
+import java.io.Serializable;
+
+public class FastRabat implements RabatBeregning, Serializable {
 
     private double fastRabat;
 

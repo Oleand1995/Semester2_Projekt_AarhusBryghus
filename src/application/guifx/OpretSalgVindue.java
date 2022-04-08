@@ -105,6 +105,7 @@ public class OpretSalgVindue extends GridPane {
 
 		txfPrisIndkøbsliste= new TextField();
 		indkøbsListePris.getChildren().add(txfPrisIndkøbsliste);
+		txfPrisIndkøbsliste.setEditable(false);
 
 
 
@@ -295,15 +296,20 @@ public class OpretSalgVindue extends GridPane {
 
 
 	private void antalPlusKnap() {
-		int antal = Integer.parseInt(txfAntal.getText().trim());
-		antal++;
-		txfAntal.setText(antal + "");
+		if (!txfAntal.getText().isEmpty()){
+			int antal = Integer.parseInt(txfAntal.getText().trim());
+			antal++;
+			txfAntal.setText(antal + "");
+		}
+
 	}
 
 	private void antalMinusKnap() {
-		int antal = Integer.parseInt(txfAntal.getText().trim());
-		antal--;
-		txfAntal.setText(antal + "");
+		if (!txfAntal.getText().isEmpty()) {
+			int antal = Integer.parseInt(txfAntal.getText().trim());
+			antal--;
+			txfAntal.setText(antal + "");
+		}
 	}
 
 	private void godkendAntal() {
@@ -357,11 +363,17 @@ public class OpretSalgVindue extends GridPane {
 		}
 
 		private void opretUdlejning () {
-		Betalingsmåder betalingsmåde = cbbBetalingsMåder.getSelectionModel().getSelectedItem();
-			ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
-			ordrelinjer.addAll(lvwIndkøbsliste.getItems());
-			Controller.createUdlejning(LocalDateTime.now(), Double.parseDouble(txfPrisIndkøbsliste.getText()), txfLejersNavn.getText(), ordrelinjer);
-			clearAll();
+			if (!lvwIndkøbsliste.getItems().isEmpty()) {
+				Betalingsmåder betalingsmåde = cbbBetalingsMåder.getSelectionModel().getSelectedItem();
+				ArrayList<OrdreLinje> ordrelinjer = new ArrayList<>();
+				ordrelinjer.addAll(lvwIndkøbsliste.getItems());
+				Controller.createUdlejning(LocalDateTime.now(), Double.parseDouble(txfPrisIndkøbsliste.getText()), txfLejersNavn.getText(), ordrelinjer);
+				clearAll();
+			}
+			else{
+					lblError.setStyle("-fx-text-fill: red");
+					lblError.setText("Ups: Du kan ikke oprette en udlejning, før du har lavet en indkøbsliste");
+				}
 		}
 
 		private void clearAll () {

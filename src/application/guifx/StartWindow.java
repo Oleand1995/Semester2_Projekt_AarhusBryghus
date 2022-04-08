@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 public class StartWindow extends Application {
 
 	
-	@Override
-	public void init() {
-	Controller.initStorage();
-	}
+//	@Override
+//	public void init() {
+//	Controller.initStorage();
+//	}
 
 	@Override
 	public void start(Stage stage) {
@@ -34,6 +34,12 @@ public class StartWindow extends Application {
 		TabPane tabPane = new TabPane();
 		this.initTabPane(tabPane);
 		pane.setCenter(tabPane);
+		Controller.loadStorage();
+	}
+
+	@Override
+	public void stop() {
+		Controller.saveStorage();
 	}
 
 	private void initTabPane(TabPane tabPane) {
