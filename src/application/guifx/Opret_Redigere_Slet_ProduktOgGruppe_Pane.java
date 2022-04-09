@@ -99,7 +99,6 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
             controller.sletProduktgruppe(produktGruppe);
             lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
             lvwProdukter.getItems().clear();
-
         }
     }
 
@@ -134,7 +133,6 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
             controller.sletProdukt(produktGruppe,produkt);
             lvwProdukter.getItems().setAll(produktGruppe.getProdukter());
         }
-
     }
 
     private void updateprodukt(){

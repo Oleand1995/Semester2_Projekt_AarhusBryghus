@@ -40,7 +40,6 @@ public class Controller {
         return controller;
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------------------
     public Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris){
         Salg salg = new Salg(salgsTidspunkt, ordreLinjer, samletPris, samletKlip);
         storage.addSalg(salg);
@@ -49,7 +48,8 @@ public class Controller {
 
     public ArrayList<Salg> getSalg(){return new ArrayList<>(storage.getSalg());}
 
-    //-------------------------------------------------------------------------------------------------------------------------------------------
+    public void removeSalg(Salg salg){storage.removeSalg(salg);}
+
     public Udlejning createUdlejning(LocalDateTime udlejningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer){
         Udlejning udlejning = new Udlejning(udlejningsTidspunkt,null,samletPris,lejersNavn,ordrelinjer);
         storage.addUdlejning(udlejning);
@@ -82,7 +82,6 @@ public class Controller {
         return udlejninger;
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------------------
     public OrdreLinje createOrdreLinje(Pris pris){
         return new OrdreLinje(pris);
     }
@@ -91,7 +90,6 @@ public class Controller {
         ordreLinje.setAntal(antal);
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------------------
     public ProduktGruppe createproduktGruppe(String produktType){
         ProduktGruppe produktGruppe = new ProduktGruppe(produktType);
         storage.addProduktGruppe(produktGruppe);
@@ -100,7 +98,6 @@ public class Controller {
 
     public ArrayList<ProduktGruppe> getProduktGrupper(){return storage.getProduktGrupper();}
 
-    //-------------------------------------------------------------------------------------------------------------------------------------------
     public Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
         Produkt produkt = produktGruppe.createProdukt(beskrivelse);
         return produkt;
