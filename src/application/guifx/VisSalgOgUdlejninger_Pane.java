@@ -88,6 +88,10 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
         this.add(btnOpretSalg,2,4);
         btnOpretSalg.setOnAction(event -> this.opretSalg());
 
+        Button btnSletSalg = new Button("Slet Salg");
+        this.add(btnSletSalg, 3, 4);
+        btnSletSalg.setOnAction(event -> this.sletSalg());
+
     }
 
     public void updateControls(){
@@ -113,6 +117,15 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
             lvwSalg.getItems().setAll(controller.getSalgFromDato(salgsDatoStart.getValue(),salgsDatoSlut.getValue()));
             lvwAktiveUdlejninger.getItems().setAll(controller.getAktiveUdlejninger());
             lvwAfsluttedeUdlejninger.getItems().setAll(controller.getAfsluttedeUdlejninger());
+        }
+    }
+
+    private void sletSalg(){
+        Salg salg = lvwSalg.getSelectionModel().getSelectedItem();
+        if(salg != null){
+            controller.removeSalg(salg);
+            lvwSalg.getItems().setAll(controller.getSalg());
+            lvwSalgOrdreLinjer.getItems().clear();
         }
     }
 

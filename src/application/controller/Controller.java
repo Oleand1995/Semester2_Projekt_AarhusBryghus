@@ -48,6 +48,8 @@ public class Controller {
 
     public ArrayList<Salg> getSalg(){return new ArrayList<>(storage.getSalg());}
 
+    public void removeSalg(Salg salg){storage.removeSalg(salg);}
+
     public Udlejning createUdlejning(LocalDateTime udlejningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer){
         Udlejning udlejning = new Udlejning(udlejningsTidspunkt,null,samletPris,lejersNavn,ordrelinjer);
         storage.addUdlejning(udlejning);
