@@ -56,10 +56,6 @@ public class Controller {
         return udlejning;
     }
 
-    public void removeUdlejning(Udlejning udlejning){
-        storage.removeUdlejning(udlejning);
-    }
-
     public ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
 
     public ArrayList<Udlejning> getAktiveUdlejninger(){
@@ -100,16 +96,16 @@ public class Controller {
 
     public ArrayList<ProduktGruppe> getProduktGrupper(){return storage.getProduktGrupper();}
 
-    //-------------------------------------------------------------------------------------------------------------------------------------------
-    public Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
-        Produkt produkt = produktGruppe.createProdukt(beskrivelse);
-        return produkt;
-    }
-
     public void sletProduktgruppe(ProduktGruppe produktGruppe){
         if (storage.getProduktGrupper().contains(produktGruppe)){
             storage.removeProduktGruppe(produktGruppe);
         }
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------
+    public Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
+        Produkt produkt = produktGruppe.createProdukt(beskrivelse);
+        return produkt;
     }
 
     public ArrayList<Produkt> getProdukter(){
@@ -126,6 +122,7 @@ public class Controller {
         produktGruppe.removeProdukt(produkt);
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------------------
     public Prisliste createPrisliste(String navn){
         Prisliste prisliste = new Prisliste(navn);
         storage.addPrisliste(prisliste);
@@ -142,7 +139,7 @@ public class Controller {
         }
     }
 
-
+    //-------------------------------------------------------------------------------------------------------------------------------------------
     public double getSamletPris(ObservableList<OrdreLinje> ordreLinjer){
         double samletPris = 0;
         for (OrdreLinje o : ordreLinjer){
@@ -166,6 +163,7 @@ public class Controller {
         return samletKlip;
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------------------
     public Pris createPrisOgKlip(double pris, Produkt produkt, int klipPris,Prisliste prisliste){
         Pris prisClass = prisliste.createPrisOgKlip(pris,produkt ,klipPris);
         return prisClass;
@@ -180,6 +178,7 @@ public class Controller {
         prisliste.removePris(pris);
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------------------
     public RabatBeregning tilføjProcentRabatTilOrdrelinje(OrdreLinje ordreLinje,double rabatProcent){
         RabatBeregning procentRabat = new ProcentRabat(rabatProcent);
         ordreLinje.setRabatBeregning(procentRabat);
@@ -192,6 +191,7 @@ public class Controller {
         return fastRabat;
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------------------
     public ArrayList<Salg> getSalgFromDato(LocalDate start, LocalDate slut){
         ArrayList<Salg> salg = new ArrayList<>();
         if (!storage.getSalg().isEmpty()){
@@ -204,26 +204,7 @@ public class Controller {
         return salg;
     }
 
-    /*
-    public static void setPrisOgKlipForProdukt(Pris pris,double varePris,int klipPris){
-        pris.setPris(varePris);
-        pris.setKlip(klipPris);
-    }
-
-    public static void ændreKlasseFraPrisTilPrisOgKlip(Prisliste prisliste,Pris pris,double prisPåvare,int klipPris,Produkt produkt){
-        sletPrisEllerPrisOgKlip(prisliste,pris);
-        prisliste.createPrisOgKlip(prisPåvare,produkt,klipPris);
-    }
-
-    public static void ændreKlasseFraPrisOgKlipTilPris(Prisliste prisliste,Pris pris,double prisPåvare,Produkt produkt){
-        sletPrisEllerPrisOgKlip(prisliste,pris);
-        Controller.createPris(prisPåvare,produkt,prisliste);
-    }
-
-     */
-
-
-
+    //-------------------------------------------------------------------------------------------------------------------------------------------
     public void initStorage(){
 
         // Produktgrupper:
@@ -523,6 +504,7 @@ public class Controller {
 
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------------------
     public void saveStorage() {
         try (FileOutputStream fileOut = new FileOutputStream("storage.ser")) {
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
