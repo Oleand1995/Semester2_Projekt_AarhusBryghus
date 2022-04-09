@@ -166,12 +166,12 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
 
     // -------------------------------------------------------------------------
-/*
+
     public void updateControls() {
-        lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
+        lvwPrislister.getItems().setAll(controller.getPrislister());
     }
-    
- */
+
+
 
 
 

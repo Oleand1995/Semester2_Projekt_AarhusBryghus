@@ -49,7 +49,6 @@ public class StartWindow extends Application {
 		tab1.setContent(opretSalgVindue);
 		tab1.setOnSelectionChanged(event -> opretSalgVindue.updateControls());
 
-
 		Tab tab2 = new Tab("Opret produkt eller gruppe");
 		tabPane.getTabs().add(tab2);
 
@@ -63,7 +62,7 @@ public class StartWindow extends Application {
 
 		Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane opretPrislistePrisPåVare = new Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane();
 		tab3.setContent(opretPrislistePrisPåVare);
-		tab3.setOnSelectionChanged(event -> opretSalgVindue.updateControls());
+		tab3.setOnSelectionChanged(event -> opretPrislistePrisPåVare.updateControls());
 
 		Tab tab4 = new Tab("Vis salg & udlejninger");
 		tabPane.getTabs().add(tab4);
