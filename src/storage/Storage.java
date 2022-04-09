@@ -2,39 +2,60 @@ package storage;
 
 import application.model.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Storage {
+public class Storage implements Serializable {
+    private static Storage storage;
 
-    private static ArrayList<Salg> salgs = new ArrayList<>();
-    private static ArrayList<Udlejning> udlejninger = new ArrayList<>();
-    private static ArrayList<ProduktGruppe> produktGruppes = new ArrayList<>();
-    private static ArrayList<Prisliste> prislister = new ArrayList<>();
+    private ArrayList<Salg> salgs;
+    private ArrayList<Udlejning> udlejninger;
+    private ArrayList<ProduktGruppe> produktGruppes;
+    private ArrayList<Prisliste> prislister;
+
+    public Storage(){
+        salgs = new ArrayList<>();
+        udlejninger = new ArrayList<>();
+        produktGruppes = new ArrayList<>();
+        prislister = new ArrayList<>();
+    }
+
+    public static Storage getStorage(){
+        if (storage == null){
+            storage = new Storage();
+        }
+        return storage;
+    }
+
+//    private static ArrayList<Salg> salgs = new ArrayList<>();
+//    private static ArrayList<Udlejning> udlejninger = new ArrayList<>();
+//    private static ArrayList<ProduktGruppe> produktGruppes = new ArrayList<>();
+//    private static ArrayList<Prisliste> prislister = new ArrayList<>();
 
     //------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<Salg> getSalg(){
+    public ArrayList<Salg> getSalg(){
         return new ArrayList<Salg>(salgs);
     }
-    public static void addSalg(Salg salg){salgs.add(salg);}
-    public static void removeSalg(Salg salg){salgs.remove(salg);}
+    public void addSalg(Salg salg){salgs.add(salg);}
+    public void removeSalg(Salg salg){salgs.remove(salg);}
 
     //------------------------------------------------------------------------------------------------------------------
 
-    public static ArrayList<Udlejning> getUdlejninger(){
+    public ArrayList<Udlejning> getUdlejninger(){
         return new ArrayList<Udlejning>(udlejninger);
     }
-    public static void addUdlejning(Udlejning udlejning){udlejninger.add(udlejning);}
-    public static void removeUdlejning(Udlejning udlejning){udlejninger.remove(udlejning);}
+    public void addUdlejning(Udlejning udlejning){udlejninger.add(udlejning);}
+    public void removeUdlejning(Udlejning udlejning){udlejninger.remove(udlejning);}
 
     //------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<ProduktGruppe> getProduktGrupper(){return new ArrayList<ProduktGruppe>(produktGruppes);}
-    public static void addProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.add(produktGruppe);}
-    public static void removeProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.remove(produktGruppe);}
+    public ArrayList<ProduktGruppe> getProduktGrupper(){return new ArrayList<ProduktGruppe>(produktGruppes);}
+    public void addProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.add(produktGruppe);}
+    public void removeProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.remove(produktGruppe);}
 
     //------------------------------------------------------------------------------------------------------------------
-    public static ArrayList<Prisliste> getPrislister(){return new ArrayList<Prisliste>(prislister);}
-    public static void addPrisliste(Prisliste prisliste){prislister.add(prisliste);}
-    public static void removePrisliste(Prisliste prisliste){prislister.remove(prisliste);}
+    public ArrayList<Prisliste> getPrislister(){return new ArrayList<Prisliste>(prislister);}
+    public void addPrisliste(Prisliste prisliste){prislister.add(prisliste);}
+    public void removePrisliste(Prisliste prisliste){prislister.remove(prisliste);}
 
     //------------------------------------------------------------------------------------------------------------------
 

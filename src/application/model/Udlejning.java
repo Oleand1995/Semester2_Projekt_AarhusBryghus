@@ -2,12 +2,13 @@ package application.model;
 
 import application.controller.Controller;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class Udlejning {
+public class Udlejning implements Serializable {
 
     private LocalDateTime udlejningsTidspunkt;
     private LocalDateTime afregningsTidspunkt;
@@ -63,6 +64,12 @@ public class Udlejning {
     public ArrayList<OrdreLinje> getOrdrelinjer(){return new ArrayList<>(ordrelinjer);}
 
     public String toString(){
-        return "Navn: " + lejersNavn + " | Udlejningstidspunkt: " + udlejningsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletPris + ",-";
+        if (afregningsTidspunkt == null){
+            return "Navn: " + lejersNavn + " | Udlejningstidspunkt: " + udlejningsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletPris + ",-";
+        }
+        else{
+            return "Navn: " + lejersNavn + " | Afregningstidspunkt: " + afregningsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletPris + ",-";
+        }
+
     }
 }

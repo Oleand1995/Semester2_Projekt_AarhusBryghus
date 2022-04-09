@@ -1,237 +1,28 @@
-package application.controller;
+package setup;
 
-import application.model.*;
-import javafx.collections.ObservableList;
-import storage.Storage;
+import application.controller.Controller;
+import application.model.Prisliste;
+import application.model.Produkt;
+import application.model.ProduktGruppe;
 
-import javax.naming.ldap.Control;
-import java.io.*;
-import java.net.PortUnreachableException;
-import java.net.SocketImpl;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-
-public class Controller {
-
-
-    private static Controller controller;
-    private Storage storage;
-
-    public static Controller getController() {
-        if (controller == null) {
-            controller = new Controller();
-        }
-        return controller;
+public class StorageInitializer {
+    public static void main(String[] args) {
+        initStorage();
     }
 
-    private Controller() {
-        storage = Storage.getStorage();
-    }
+    public static void initStorage(){
 
-    //     Denne metode kræver at Storage constructoren ikke er privat den er kun
-    //     til JUnit test
-    public Controller getTestController() {
-        Controller controller = new Controller();
-        controller.storage = new Storage();
-        return controller;
-    }
-
-    public Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris){
-        Salg salg = new Salg(salgsTidspunkt, ordreLinjer, samletPris, samletKlip);
-        storage.addSalg(salg);
-        return salg;
-    }
-
-    public ArrayList<Salg> getSalg(){return new ArrayList<>(storage.getSalg());}
-
-    public Udlejning createUdlejning(LocalDateTime udlejningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer){
-        Udlejning udlejning = new Udlejning(udlejningsTidspunkt,null,samletPris,lejersNavn,ordrelinjer);
-        storage.addUdlejning(udlejning);
-        return udlejning;
-    }
-
-    public void removeUdlejning(Udlejning udlejning){
-        storage.removeUdlejning(udlejning);
-    }
-
-    public ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
-
-    public ArrayList<Udlejning> getAktiveUdlejninger(){
-        ArrayList<Udlejning> udlejninger = new ArrayList<>();
-        for (Udlejning u : storage.getUdlejninger()){
-            if (u.getAfregningsTidspunkt() == null){
-                udlejninger.add(u);
-            }
-        }
-        return udlejninger;
-    }
-
-    public ArrayList<Udlejning> getAfsluttedeUdlejninger(){
-        ArrayList<Udlejning> udlejninger = new ArrayList<>();
-        for (Udlejning u : storage.getUdlejninger()){
-            if (u.getAfregningsTidspunkt() != null){
-                udlejninger.add(u);
-            }
-        }
-        return udlejninger;
-    }
-
-    public OrdreLinje createOrdreLinje(Pris pris){
-        return new OrdreLinje(pris);
-    }
-
-    public void setAntalPåOrdreLinje(OrdreLinje ordreLinje, int antal){
-        ordreLinje.setAntal(antal);
-    }
-
-    public ProduktGruppe createproduktGruppe(String produktType){
-        ProduktGruppe produktGruppe = new ProduktGruppe(produktType);
-        storage.addProduktGruppe(produktGruppe);
-        return produktGruppe;
-    }
-
-    public ArrayList<ProduktGruppe> getProduktGrupper(){return storage.getProduktGrupper();}
-
-    public Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
-        Produkt produkt = produktGruppe.createProdukt(beskrivelse);
-        return produkt;
-    }
-
-    public void sletProduktgruppe(ProduktGruppe produktGruppe){
-        if (storage.getProduktGrupper().contains(produktGruppe)){
-            storage.removeProduktGruppe(produktGruppe);
-        }
-    }
-
-    public ArrayList<Produkt> getProdukter(){
-        ArrayList<Produkt> produkter = new ArrayList<>();
-        for (ProduktGruppe pG : storage.getProduktGrupper()){
-            for (Produkt p : pG.getProdukter()){
-                produkter.add(p);
-            }
-        }
-        return produkter;
-    }
-
-    public void sletProdukt(ProduktGruppe produktGruppe, Produkt produkt){
-        produktGruppe.removeProdukt(produkt);
-    }
-
-    public Prisliste createPrisliste(String navn){
-        Prisliste prisliste = new Prisliste(navn);
-        storage.addPrisliste(prisliste);
-        return prisliste;
-    }
-
-    public ArrayList<Prisliste> getPrislister(){return storage.getPrislister();}
-
-
-
-    public void sletPrisliste(Prisliste prisliste){
-        if (storage.getPrislister().contains(prisliste)){
-            storage.removePrisliste(prisliste);
-        }
-    }
-
-
-    public double getSamletPris(ObservableList<OrdreLinje> ordreLinjer){
-        double samletPris = 0;
-        for (OrdreLinje o : ordreLinjer){
-            if (o.getRabatBeregning() != null){
-                samletPris += o.getRabatBeregning().getRabat((o.getPris().getPris()) * o.getAntal());
-            }else{
-                samletPris += o.getPris().getPris() * o.getAntal();
-            }
-        }
-        return samletPris;
-    }
-
-
-    public int getSamletKlip(ObservableList<OrdreLinje> ordreLinjer){
-        int samletKlip = 0;
-
-        for (OrdreLinje o : ordreLinjer){
-            samletKlip += o.getPris().getKlip() * o.getAntal();
-
-        }
-        return samletKlip;
-    }
-
-    public Pris createPrisOgKlip(double pris, Produkt produkt, int klipPris,Prisliste prisliste){
-        Pris prisClass = prisliste.createPrisOgKlip(pris,produkt ,klipPris);
-        return prisClass;
-    }
-
-    public Pris createPris (double pris, Produkt produkt,Prisliste prisliste){
-        Pris prisClass = prisliste.createPris(pris,produkt);
-        return prisClass;
-    }
-
-    public void sletPrisEllerPrisOgKlip(Prisliste prisliste, Pris pris){
-        prisliste.removePris(pris);
-    }
-
-    public RabatBeregning tilføjProcentRabatTilOrdrelinje(OrdreLinje ordreLinje,double rabatProcent){
-        RabatBeregning procentRabat = new ProcentRabat(rabatProcent);
-        ordreLinje.setRabatBeregning(procentRabat);
-        return procentRabat;
-    }
-
-    public RabatBeregning tilføjFastRabatTilOrdrelinje(OrdreLinje ordreLinje,double fastRabatPris){
-        RabatBeregning fastRabat = new FastRabat(fastRabatPris);
-        ordreLinje.setRabatBeregning(fastRabat);
-        return fastRabat;
-    }
-
-    public ArrayList<Salg> getSalgFromDato(LocalDate start, LocalDate slut){
-        ArrayList<Salg> salg = new ArrayList<>();
-        if (!storage.getSalg().isEmpty()){
-            for (Salg s : storage.getSalg()){
-                if (s.getSalgsTidspunkt().isAfter(start.atStartOfDay()) && s.getSalgsTidspunkt().isBefore(slut.atTime(23,59))){
-                    salg.add(s);
-                }
-            }
-        }
-        return salg;
-    }
-
-    /*
-    public static void setPrisOgKlipForProdukt(Pris pris,double varePris,int klipPris){
-        pris.setPris(varePris);
-        pris.setKlip(klipPris);
-    }
-
-    public static void ændreKlasseFraPrisTilPrisOgKlip(Prisliste prisliste,Pris pris,double prisPåvare,int klipPris,Produkt produkt){
-        sletPrisEllerPrisOgKlip(prisliste,pris);
-        prisliste.createPrisOgKlip(prisPåvare,produkt,klipPris);
-    }
-
-    public static void ændreKlasseFraPrisOgKlipTilPris(Prisliste prisliste,Pris pris,double prisPåvare,Produkt produkt){
-        sletPrisEllerPrisOgKlip(prisliste,pris);
-        Controller.createPris(prisPåvare,produkt,prisliste);
-    }
-
-     */
-
-
-
-    public void initStorage(){
-
+        Controller controller = Controller.getController();
         // Produktgrupper:
-
         ProduktGruppe flaske = controller.createproduktGruppe("Flaske");
         ProduktGruppe fadoel = controller.createproduktGruppe("Fadøl");
+        ProduktGruppe spiritus = controller.createproduktGruppe("Spiritus");
         ProduktGruppe fustage = controller.createproduktGruppe("Fustage");
         ProduktGruppe kulsyre = controller.createproduktGruppe("Kulsyre");
         ProduktGruppe malt = controller.createproduktGruppe("Malt");
         ProduktGruppe beklaedning = controller.createproduktGruppe("Beklædning");
         ProduktGruppe anlaeg = controller.createproduktGruppe("Anlæg");
         ProduktGruppe glas = controller.createproduktGruppe("Glas");
-        ProduktGruppe spiritus = controller.createproduktGruppe("Spiritus");
         ProduktGruppe sampakning = controller.createproduktGruppe("Sampakning");
         ProduktGruppe sodavand = controller.createproduktGruppe("Sodavand");
         ProduktGruppe snacks = controller.createproduktGruppe("Snacks");
@@ -516,35 +307,6 @@ public class Controller {
 
         butik.createPris(100, rundvisninger);
 
+        controller.saveStorage();
     }
-
-    public void saveStorage() {
-        try (FileOutputStream fileOut = new FileOutputStream("storage.ser")) {
-            try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                out.writeObject(storage);
-                System.out.println("Storage saved in file storage.ser.");
-            }
-        } catch (IOException ex) {
-            System.out.println("Error saving storage object.");
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public void loadStorage() {
-        try (FileInputStream fileIn = new FileInputStream("storage.ser")) {
-            try (ObjectInputStream in = new ObjectInputStream(fileIn);) {
-                storage = (Storage) in.readObject();
-
-                System.out.println("Storage loaded from file storage.ser.");
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Error loading storage object.");
-                throw new RuntimeException(ex);
-            }
-        } catch (IOException ex) {
-            System.out.println("Error loading storage object.");
-            throw new RuntimeException(ex);
-        }
-
-    }
-
 }

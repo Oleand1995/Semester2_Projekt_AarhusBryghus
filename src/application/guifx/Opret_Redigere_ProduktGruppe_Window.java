@@ -41,13 +41,14 @@ public class Opret_Redigere_ProduktGruppe_Window extends Stage {
 	// -------------------------------------------------------------------------
 	private TextField txfProdukttype;
 	private Label lblError;
-
+	private Controller controller;
 
 	private void initContent(GridPane pane) {
 		pane.setPadding(new Insets(10));
 		pane.setHgap(10);
 		pane.setVgap(10);
 		pane.setGridLinesVisible(false);
+		controller = Controller.getController();
 
 		Label lblName = new Label("Produkt Type");
 		pane.add(lblName, 0, 0);
@@ -95,7 +96,7 @@ public class Opret_Redigere_ProduktGruppe_Window extends Stage {
 			hide();
 		}
 		else {
-			Controller.createproduktGruppe(produktType);
+			controller.createproduktGruppe(produktType);
 			hide();
 			}
 		}

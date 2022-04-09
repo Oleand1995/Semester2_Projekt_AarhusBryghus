@@ -46,6 +46,7 @@ public class Opret_Redigere_Produkt_Window extends Stage {
     // -------------------------------------------------------------------------
     private TextField txfProduktBeskrivelse;
     private Label lblError;
+    private Controller controller;
 
 
     private void initContent(GridPane pane) {
@@ -53,6 +54,7 @@ public class Opret_Redigere_Produkt_Window extends Stage {
         pane.setHgap(10);
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
+        controller = Controller.getController();
 
         Label lblName = new Label("Produkt beskrivelse");
         pane.add(lblName, 0, 0);
@@ -100,7 +102,7 @@ public class Opret_Redigere_Produkt_Window extends Stage {
             hide();
         }
         else {
-            Controller.createProdukt(produktbeskrivelse,produktGruppe);
+            controller.createProdukt(produktbeskrivelse,produktGruppe);
             hide();
         }
     }

@@ -47,6 +47,7 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
     private TextField txfPrispåProdukt, txfKlipPris,txfNavnPåProdukt;
     private Label lblError;
     private ListView<Produkt> lvwprodukter;
+    private Controller controller;
 
 
     private void initContent(GridPane pane) {
@@ -54,11 +55,12 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
         pane.setHgap(10);
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
+        controller = Controller.getController();
 
         if (pris == null) {
             lvwprodukter = new ListView<>();
             pane.add(lvwprodukter, 0, 1, 1, 1);
-            lvwprodukter.getItems().setAll(Controller.getProdukter());
+            lvwprodukter.getItems().setAll(controller.getProdukter());
             Label lblName = new Label("produkter");
             pane.add(lblName, 0, 0);
         }
@@ -147,10 +149,10 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
                 lblError.setText("Der skal vælges et produkt");
             } else {
                 if (klipris > -1) {
-                    Controller.createPrisOgKlip(prispåprodukt, produkt, klipris, prisliste);
+                    controller.createPrisOgKlip(prispåprodukt, produkt, klipris, prisliste);
                     hide();
                 } else {
-                    Controller.createPris(prispåprodukt, produkt, prisliste);
+                    controller.createPris(prispåprodukt, produkt, prisliste);
                     hide();
                 }
             }

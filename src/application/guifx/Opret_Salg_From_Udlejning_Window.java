@@ -26,13 +26,13 @@ import java.util.ArrayList;
 public class Opret_Salg_From_Udlejning_Window extends Stage {
 
     private Udlejning udlejning;
-
+    private Controller controller;
 
     public Opret_Salg_From_Udlejning_Window(String title, Udlejning udlejning){
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
         this.setResizable(false);
-
+        controller = Controller.getController();
         this.udlejning = udlejning;
 
 
@@ -103,10 +103,11 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
     }
 
     private void afslutUdlejning(){
+        udlejning.setAfregningsTidspunkt(LocalDateTime.now());
+        udlejning.setSamletPris(controller.getSamletPris(lvwOrdrelinjer.getItems()));
         ArrayList<OrdreLinje> ordreLinjer = new ArrayList<>();
         ordreLinjer.addAll(lvwOrdrelinjer.getItems());
-        Controller.createSalg(LocalDateTime.now(),ordreLinjer,-1,Controller.getSamletPris(lvwOrdrelinjer.getItems()));
-        Controller.removeUdlejning(udlejning);
+        controller.createSalg(LocalDateTime.now(),ordreLinjer,-1,controller.getSamletPris(lvwOrdrelinjer.getItems()));
         close();
     }
 

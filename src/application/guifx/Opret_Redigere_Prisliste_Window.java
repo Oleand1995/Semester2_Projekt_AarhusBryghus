@@ -41,6 +41,7 @@ public class Opret_Redigere_Prisliste_Window extends Stage {
     // -------------------------------------------------------------------------
     private TextField txfPrislisteNavn;
     private Label lblError;
+    private Controller controller;
 
 
     private void initContent(GridPane pane) {
@@ -48,6 +49,7 @@ public class Opret_Redigere_Prisliste_Window extends Stage {
         pane.setHgap(10);
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
+        controller = Controller.getController();
 
         Label lblName = new Label("Prisliste navn");
         pane.add(lblName, 0, 0);
@@ -96,7 +98,7 @@ public class Opret_Redigere_Prisliste_Window extends Stage {
             hide();
         }
         else {
-            Controller.createPrisliste(prisListeNavn);
+            controller.createPrisliste(prisListeNavn);
             hide();
         }
     }

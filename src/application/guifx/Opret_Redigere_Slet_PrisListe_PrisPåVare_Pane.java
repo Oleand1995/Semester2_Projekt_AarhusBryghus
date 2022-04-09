@@ -13,13 +13,14 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
     private ListView<Prisliste> lvwPrislister;
     private ListView<Pris> lvwPrispåProdukter;
     private Button btnOpretPrisliste,btnSletPrisliste,btnÆndrePrisliste,btnTilføjProdukt,btnSletProdukt,btnÆndreProdukt;
-
+    private Controller controller;
 
     public Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane() {
         this.setPadding(new Insets(20));
         this.setHgap(20);
         this.setVgap(10);
         this.setGridLinesVisible(false);
+        controller = Controller.getController();
 
 
         Label lblPrislister = new Label("Prislister");
@@ -27,7 +28,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
         lvwPrislister = new ListView<>();
         this.add(lvwPrislister,0 ,2,1,1);
-        lvwPrislister.getItems().setAll(Controller.getPrislister());
+        lvwPrislister.getItems().setAll(controller.getPrislister());
         ChangeListener<Prisliste> listener = (ov, oldPrisliste, newPrisliste) -> this.valgtPrisliste();
         lvwPrislister.getSelectionModel().selectedItemProperty().addListener(listener);
 
@@ -84,7 +85,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         dia.showAndWait();
 
         //venter til vinduet lukker
-        lvwPrislister.getItems().setAll(Controller.getPrislister());
+        lvwPrislister.getItems().setAll(controller.getPrislister());
     }
 
     private void valgtPrisliste() {
@@ -97,8 +98,8 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
     private void sletPrisliste() {
         Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
         if (prisliste != null){
-            Controller.sletPrisliste(prisliste);
-            lvwPrislister.getItems().setAll(Controller.getPrislister());
+            controller.sletPrisliste(prisliste);
+            lvwPrislister.getItems().setAll(controller.getPrislister());
 
         }
     }
@@ -111,7 +112,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
             dia.showAndWait();
 
             int selectIndex = lvwPrislister.getSelectionModel().getSelectedIndex();
-            lvwPrislister.getItems().setAll(Controller.getPrislister());
+            lvwPrislister.getItems().setAll(controller.getPrislister());
             lvwPrislister.getSelectionModel().select(selectIndex);
         }
     }
@@ -132,7 +133,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
         Pris pris = lvwPrispåProdukter.getSelectionModel().getSelectedItem();
         if (pris != null) {
-            Controller.sletPrisEllerPrisOgKlip(prisliste,pris);
+            controller.sletPrisEllerPrisOgKlip(prisliste,pris);
             lvwPrispåProdukter.getItems().setAll(prisliste.getPriser());
         }
     }
@@ -167,7 +168,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
     // -------------------------------------------------------------------------
 /*
     public void updateControls() {
-        lvwProduktgrupper.getItems().setAll(Controller.getProduktGrupper());
+        lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
     }
     
  */
