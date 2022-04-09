@@ -3,16 +3,12 @@ package application.controller;
 import application.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.BeforeAll;
-import storage.Storage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.SortedMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,10 +23,10 @@ class ControllerTest {
     Prisliste fredagsBar;
 
     Pris pris;
-    Pris pris2;
+    Pris prisOgklip;
 
-    OrdreLinje ordreLinje1;
-    OrdreLinje ordreLinje2;
+    OrdreLinje ordreLinjeUdenKlip;
+    OrdreLinje ordreLinjeMedKlip;
 
     ArrayList<OrdreLinje> ordreLinjerUdenKlip;
     ArrayList<OrdreLinje> ordreLinjerMedKlip;
@@ -40,6 +36,10 @@ class ControllerTest {
 
     Double ordrelinjerSamletPris;
     int ordrelinjerSamletKlip;
+
+    RabatBeregning procentRabat;
+    RabatBeregning fastRabat;
+
 
     @BeforeEach
     void setUp() {
@@ -59,17 +59,17 @@ class ControllerTest {
 
         //Opretter priser
         pris = controller.createPris(38,klosterbryg,fredagsBar);
-        pris2 = controller.createPrisOgKlip(38,blondie,2,fredagsBar);
+        prisOgklip = controller.createPrisOgKlip(38,blondie,2,fredagsBar);
 
         //Opretter orderelinjer
-        ordreLinje1 = controller.createOrdreLinje(pris);
-        ordreLinje2 = controller.createOrdreLinje(pris2);
+        ordreLinjeUdenKlip = controller.createOrdreLinje(pris);
+        ordreLinjeMedKlip = controller.createOrdreLinje(prisOgklip);
 
         //Opretter indkøbsliste/array med ordrelinjer
         ordreLinjerUdenKlip = new ArrayList<>();
-        ordreLinjerUdenKlip.add(ordreLinje1);
+        ordreLinjerUdenKlip.add(ordreLinjeUdenKlip);
         ordreLinjerMedKlip = new ArrayList<>();
-        ordreLinjerMedKlip.add(ordreLinje2);
+        ordreLinjerMedKlip.add(ordreLinjeMedKlip);
 
         //Laver ordreliner array om til obserble liste så den kan bruges.
         ordrelinjerObsUdenKlip = FXCollections.observableArrayList(ordreLinjerUdenKlip);
@@ -88,13 +88,23 @@ class ControllerTest {
 
     @Test
     void createSalg() {
+        //Tester salg med en pris
         assertEquals(0, controller.getSalg().size());
-        Salg salg = controller.createSalg(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,0)),ordreLinjerUdenKlip,0,ordrelinjerSamletPris);
-        assertNotNull(salg);
+        Salg salgMedPris = controller.createSalg(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,0)),ordreLinjerUdenKlip,0,ordrelinjerSamletPris);
+        assertNotNull(salgMedPris);
         assertEquals(1, controller.getSalg().size());
-        assertEquals(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,0)),salg.getSalgsTidspunkt());
-        assertEquals(ordreLinjerUdenKlip,salg.getOrdrelinjer());
-        assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
+        assertEquals(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,0)),salgMedPris.getSalgsTidspunkt());
+        assertEquals(ordreLinjerUdenKlip,salgMedPris.getOrdrelinjer());
+        assertEquals(38,salgMedPris.getSamletPris());
+
+        //Tester salg med klip
+        assertEquals(1, controller.getSalg().size());
+        Salg salgMedKlip = controller.createSalg(LocalDateTime.of(LocalDate.of(2022,4 ,10), LocalTime.of(9,0)),ordreLinjerMedKlip,ordrelinjerSamletKlip,0);
+        assertNotNull(salgMedKlip);
+        assertEquals(2, controller.getSalg().size());
+        assertEquals(LocalDateTime.of(LocalDate.of(2022,4 ,10), LocalTime.of(9,0)),salgMedKlip.getSalgsTidspunkt());
+        assertEquals(ordreLinjerMedKlip,salgMedKlip.getOrdrelinjer());
+        assertEquals(2,salgMedKlip.getSamletKlip());
 
     }
 
@@ -105,26 +115,25 @@ class ControllerTest {
         assertNotNull(udlejning);
         assertEquals(1,controller.getUdlejninger().size());
         assertEquals(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,30)),udlejning.getUdlejningsTidspunkt());
-        assertEquals(38,ordrelinjerSamletPris);
         assertEquals("Mads Nørskov",udlejning.getLejersNavn());
         assertEquals(ordreLinjerUdenKlip,udlejning.getOrdrelinjer());
-        assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
+        assertEquals(38,udlejning.getSamletPris());
     }
 
     @Test
     void createOrdreLinje() {
-        OrdreLinje ordreLinje3 = controller.createOrdreLinje(pris2);
+        OrdreLinje ordreLinje3 = controller.createOrdreLinje(prisOgklip);
         assertNotNull(ordreLinje3);
-        assertEquals(pris2,ordreLinje3.getPris());
+        assertEquals(prisOgklip,ordreLinje3.getPris());
         assertEquals(1,ordreLinje3.getAntal());
         assertEquals(null,ordreLinje3.getRabatBeregning());
     }
 
     @Test
     void setAntalPåOrdreLinje() {
-        assertEquals(1,ordreLinje1.getAntal());
-        controller.setAntalPåOrdreLinje(ordreLinje1,5);
-        assertEquals(5,ordreLinje1.getAntal());
+        assertEquals(1, ordreLinjeUdenKlip.getAntal());
+        controller.setAntalPåOrdreLinje(ordreLinjeUdenKlip,5);
+        assertEquals(5, ordreLinjeUdenKlip.getAntal());
     }
 
     @Test
@@ -149,67 +158,103 @@ class ControllerTest {
 
     @Test
     void sletProduktgruppe() {
-        //controller.getTestController vil være 1, da tidligere test, har lagt en produktgruppe i controller.getTestController.
         assertEquals(1,controller.getProduktGrupper().size());
-        ProduktGruppe pg = controller.createproduktGruppe("Mams");
-        assertEquals(2,controller.getProduktGrupper().size());
-        controller.sletProduktgruppe(pg);
-        assertEquals(1,controller.getProduktGrupper().size());
+        controller.sletProduktgruppe(fadoel);
+        assertEquals(0,controller.getProduktGrupper().size());
     }
 
     @Test
     void getProdukter() {
         assertEquals(2,controller.getProdukter().size());
-        controller.createProdukt("Lort",fadoel);
-        assertEquals(3,controller.getProdukter().size());
-
     }
 
     @Test
     void sletProdukt() {
+        assertEquals(2,controller.getProdukter().size());
+        controller.sletProdukt(fadoel,blondie);
+        assertEquals(1,controller.getProdukter().size());
     }
 
     @Test
     void createPrisliste() {
+        assertEquals(1,controller.getPrislister().size());
+        Prisliste familieFest = controller.createPrisliste("Familie fest");
+        assertNotNull(familieFest);
+        assertEquals(2,controller.getPrislister().size());
+        assertEquals("Familie fest",familieFest.getSituation());
+        assertEquals(0,familieFest.getPriser().size());
     }
 
     @Test
     void getPrislister() {
+        assertEquals(1,controller.getPrislister().size());
     }
 
     @Test
     void sletPrisliste() {
+        assertEquals(1,controller.getPrislister().size());
+        controller.sletPrisliste(fredagsBar);
+        assertEquals(0,controller.getPrislister().size());
     }
 
     @Test
     void getSamletPris() {
+        assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
     }
 
     @Test
     void getSamletKlip() {
+        assertEquals(2,controller.getSamletKlip(ordrelinjerObsMedKlip));
     }
 
     @Test
     void createPrisOgKlip() {
+        assertEquals(2,fredagsBar.getPriser().size());
+        Pris blondiePrisOgKlip = controller.createPrisOgKlip(70,blondie ,4,fredagsBar);
+        assertNotNull(blondiePrisOgKlip);
+        assertEquals(3,fredagsBar.getPriser().size());
+        assertEquals(4,blondiePrisOgKlip.getKlip());
+        assertEquals(blondie,blondiePrisOgKlip.getProdukt());
+        assertEquals(70,blondiePrisOgKlip.getPris());
     }
 
     @Test
     void createPris() {
+        assertEquals(2,fredagsBar.getPriser().size());
+        Pris blondiePris = controller.createPris(70,blondie,fredagsBar);
+        assertNotNull(blondiePris);
+        assertEquals(3,fredagsBar.getPriser().size());
+        assertEquals(blondie,blondiePris.getProdukt());
+        assertEquals(70,blondiePris.getPris());
     }
 
     @Test
     void sletPrisEllerPrisOgKlip() {
+        assertEquals(2,fredagsBar.getPriser().size());
+        //Tester om metoden vil slette pris.
+        controller.sletPrisEllerPrisOgKlip(fredagsBar,pris);
+        assertEquals(1,fredagsBar.getPriser().size());
+        //Tester om metoden vil slette prisMedKlip.
+        controller.sletPrisEllerPrisOgKlip(fredagsBar, prisOgklip);
+        assertEquals(0,fredagsBar.getPriser().size());
     }
 
     @Test
     void tilføjProcentRabatTilOrdrelinje() {
+        assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
+        assertNull(ordreLinjeUdenKlip.getRabatBeregning());
+        controller.tilføjProcentRabatTilOrdrelinje(ordreLinjeUdenKlip,30);
+        assertNotNull(ordreLinjeUdenKlip.getRabatBeregning());
+        assertEquals(26.6,controller.getSamletPris(ordrelinjerObsUdenKlip));
     }
 
     @Test
     void tilføjFastRabatTilOrdrelinje() {
+        assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
+        assertNull(ordreLinjeUdenKlip.getRabatBeregning());
+        controller.tilføjFastRabatTilOrdrelinje(ordreLinjeUdenKlip,8);
+        assertNotNull(ordreLinjeUdenKlip.getRabatBeregning());
+        assertEquals(30,controller.getSamletPris(ordrelinjerObsUdenKlip));
     }
 
-    @Test
-    void initStorage() {
-    }
 }
