@@ -81,11 +81,6 @@ class ControllerTest {
 
     }
 
-    @AfterEach
-    void tearDown() {
-
-    }
-
     @Test
     void createSalg() {
         //Tester salg med en pris
