@@ -109,6 +109,13 @@ class ControllerTest {
     }
 
     @Test
+    void getSalg(){
+        assertEquals(1,2 );
+
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    @Test
     void createUdlejning() {
         assertEquals(0,controller.getUdlejninger().size());
         Udlejning udlejning = controller.createUdlejning(LocalDateTime.of(LocalDate.of(2022,4 ,8), LocalTime.of(12,30)),ordrelinjerSamletPris,"Mads Nørskov",ordreLinjerUdenKlip);
@@ -121,6 +128,22 @@ class ControllerTest {
     }
 
     @Test
+    void getUdleninger(){
+
+    }
+
+    @Test
+    void getAktiveUdlejninger(){
+
+    }
+
+    @Test
+    void getAfsluttedeUdlejninger(){
+
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    @Test
     void createOrdreLinje() {
         OrdreLinje ordreLinje3 = controller.createOrdreLinje(prisOgklip);
         assertNotNull(ordreLinje3);
@@ -129,6 +152,7 @@ class ControllerTest {
         assertEquals(null,ordreLinje3.getRabatBeregning());
     }
 
+
     @Test
     void setAntalPåOrdreLinje() {
         assertEquals(1, ordreLinjeUdenKlip.getAntal());
@@ -136,6 +160,7 @@ class ControllerTest {
         assertEquals(5, ordreLinjeUdenKlip.getAntal());
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Test
     void createproduktGruppe() {
         assertEquals(1,controller.getProduktGrupper().size());
@@ -143,9 +168,21 @@ class ControllerTest {
         assertNotNull(flaskeØl);
         assertEquals(2,controller.getProduktGrupper().size());
         assertEquals("Flaske øl",flaskeØl.getProduktType());
+    }
+
+    @Test
+    void getProduktGrupper(){
 
     }
 
+    @Test
+    void sletProduktgruppe() {
+        assertEquals(1,controller.getProduktGrupper().size());
+        controller.sletProduktgruppe(fadoel);
+        assertEquals(0,controller.getProduktGrupper().size());
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Test
     void createProdukt() {
         assertEquals(2,fadoel.getProdukter().size());
@@ -156,12 +193,6 @@ class ControllerTest {
         assertEquals(fadoel,hyggeØl.getProduktgruppe());
     }
 
-    @Test
-    void sletProduktgruppe() {
-        assertEquals(1,controller.getProduktGrupper().size());
-        controller.sletProduktgruppe(fadoel);
-        assertEquals(0,controller.getProduktGrupper().size());
-    }
 
     @Test
     void getProdukter() {
@@ -175,6 +206,7 @@ class ControllerTest {
         assertEquals(1,controller.getProdukter().size());
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Test
     void createPrisliste() {
         assertEquals(1,controller.getPrislister().size());
@@ -197,6 +229,7 @@ class ControllerTest {
         assertEquals(0,controller.getPrislister().size());
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Test
     void getSamletPris() {
         assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
@@ -207,6 +240,7 @@ class ControllerTest {
         assertEquals(2,controller.getSamletKlip(ordrelinjerObsMedKlip));
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Test
     void createPrisOgKlip() {
         assertEquals(2,fredagsBar.getPriser().size());
@@ -239,6 +273,7 @@ class ControllerTest {
         assertEquals(0,fredagsBar.getPriser().size());
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Test
     void tilføjProcentRabatTilOrdrelinje() {
         assertEquals(38,controller.getSamletPris(ordrelinjerObsUdenKlip));
@@ -257,4 +292,9 @@ class ControllerTest {
         assertEquals(30,controller.getSamletPris(ordrelinjerObsUdenKlip));
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    @Test
+    void getSalgFromDato(){
+
+    }
 }
