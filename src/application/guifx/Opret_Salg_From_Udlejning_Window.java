@@ -89,16 +89,18 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
 
     private void returnerVare(){
         OrdreLinje ordreLinje = lvwOrdrelinjer.getSelectionModel().getSelectedItem();
-        if (ordreLinje.getAntal() > 1){
-            ordreLinje.countDown();
-            lvwOrdrelinjer.getItems().setAll(udlejning.getOrdrelinjer());
-            lvwOrdrelinjer.getSelectionModel().select(ordreLinje);
-            returBeloeb += ordreLinje.getPris().getPris();
-            txfReturBeloeb.setText(returBeloeb +"");
-        }else{
-            lvwOrdrelinjer.getItems().remove(ordreLinje);
-            returBeloeb += ordreLinje.getPris().getPris();
-            txfReturBeloeb.setText(returBeloeb +"");
+        if (ordreLinje != null) {
+            if (ordreLinje.getAntal() > 1) {
+                ordreLinje.countDown();
+                lvwOrdrelinjer.getItems().setAll(udlejning.getOrdrelinjer());
+                lvwOrdrelinjer.getSelectionModel().select(ordreLinje);
+                returBeloeb += ordreLinje.getPris().getPris();
+                txfReturBeloeb.setText(returBeloeb + "");
+            } else {
+                lvwOrdrelinjer.getItems().remove(ordreLinje);
+                returBeloeb += ordreLinje.getPris().getPris();
+                txfReturBeloeb.setText(returBeloeb + "");
+            }
         }
     }
 
@@ -107,7 +109,7 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
         udlejning.setSamletPris(controller.getSamletPris(lvwOrdrelinjer.getItems()));
         ArrayList<OrdreLinje> ordreLinjer = new ArrayList<>();
         ordreLinjer.addAll(lvwOrdrelinjer.getItems());
-        controller.createSalg(LocalDateTime.now(),ordreLinjer,-1,controller.getSamletPris(lvwOrdrelinjer.getItems()));
+        controller.createSalg(LocalDateTime.now(),ordreLinjer,0,controller.getSamletPris(lvwOrdrelinjer.getItems()));
         close();
     }
 

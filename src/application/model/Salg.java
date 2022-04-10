@@ -54,7 +54,7 @@ public class Salg implements Serializable {
     }
 
     public String toString(){
-        if (samletPris == 0){
+        if (samletKlip > 0){
             return "Salgstidspunkt: " + salgsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletKlip + " klip";
         }
         else{

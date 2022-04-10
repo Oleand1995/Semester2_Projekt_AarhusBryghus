@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 
@@ -74,8 +75,6 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
 
         lblBrugteKlip = new Label("Brugte klip i perioden: " + klipBrugt);
         hbxKlip.getChildren().add(lblBrugteKlip);
-
-
 
         lvwSalg = new ListView<>();
         lvwSalg.getItems().setAll(controller.getSalg());
@@ -143,7 +142,15 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
     private void sletSalg(){
         Salg salg = lvwSalg.getSelectionModel().getSelectedItem();
         if(salg != null){
-            controller.removeSalg(salg);
+            for (Udlejning u : lvwAfsluttedeUdlejninger.getItems()){
+                if (u.getAfregningsTidspunkt().truncatedTo(ChronoUnit.SECONDS).isEqual(salg.getSalgsTidspunkt().truncatedTo(ChronoUnit.SECONDS))){
+                    controller.removeUdlejning(u);
+                    controller.removeSalg(salg);
+                }else{
+                    controller.removeSalg(salg);
+                }
+            }
+            lvwAfsluttedeUdlejninger.getItems().setAll(controller.getAfsluttedeUdlejninger());
             lvwSalg.getItems().setAll(controller.getSalg());
             lvwSalgOrdreLinjer.getItems().clear();
         }
@@ -181,11 +188,10 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
                             klipSolgt += o.getAntal() * 4;
                             klippekortSolgt += o.getAntal();
                             lblSolgteKlip.setText("Solgte klip i perioden: " + klipSolgt + " på " + klippekortSolgt);
-
                         }
-                        klipBrugt += o.getPris().getKlip() * o.getAntal();
-                        lblBrugteKlip.setText("Brugte klip i perioden: " + klipBrugt);
                     }
+                    klipBrugt += s.getSamletKlip();
+                    lblBrugteKlip.setText("Brugte klip i perioden: " + klipBrugt);
                 }
             }
 }
