@@ -78,6 +78,14 @@ public class Controller {
 
     public ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
 
+    public void setAfrejningstidpunkt(Udlejning udlejning){
+        udlejning.setAfregningsTidspunkt(LocalDateTime.now());
+    }
+
+    public void setSamletPrisPåUdlejning(Udlejning udlejning, ObservableList<OrdreLinje> ordreLinjer){
+        udlejning.setSamletPris(getSamletPris(ordreLinjer));
+    }
+
     /**
      * @return henter og returnere alle udlejninger som er igangværende fra storage.
      * Bestemmes på om udlejnings attributten 'afregningstidspunkt' er null.

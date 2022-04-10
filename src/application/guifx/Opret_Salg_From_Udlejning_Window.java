@@ -103,8 +103,8 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
     }
 
     private void afslutUdlejning(){
-        udlejning.setAfregningsTidspunkt(LocalDateTime.now());
-        udlejning.setSamletPris(controller.getSamletPris(lvwOrdrelinjer.getItems()));
+        controller.setAfrejningstidpunkt(udlejning);
+        controller.setSamletPrisPåUdlejning(udlejning,lvwOrdrelinjer.getItems());
         ArrayList<OrdreLinje> ordreLinjer = new ArrayList<>();
         ordreLinjer.addAll(lvwOrdrelinjer.getItems());
         controller.createSalg(LocalDateTime.now(),ordreLinjer,-1,controller.getSamletPris(lvwOrdrelinjer.getItems()));
