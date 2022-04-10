@@ -40,6 +40,10 @@ public class OrdreLinje implements Serializable {
 
     public Pris getPris(){return this.pris;}
 
+    public double getPrisUdenRabat(){
+        return pris.getPris() * getAntal();
+    }
+
 
     @Override
     public String toString(){
