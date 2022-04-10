@@ -64,6 +64,14 @@ public class Controller {
 
     public ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
 
+    public void setAfrejningstidpunkt(Udlejning udlejning){
+        udlejning.setAfregningsTidspunkt(LocalDateTime.now());
+    }
+
+    public void setSamletPrisPåUdlejning(Udlejning udlejning, ObservableList<OrdreLinje> ordreLinjer){
+        udlejning.setSamletPris(getSamletPris(ordreLinjer));
+    }
+
     public ArrayList<Udlejning> getAktiveUdlejninger(){
         ArrayList<Udlejning> udlejninger = new ArrayList<>();
         for (Udlejning u : storage.getUdlejninger()){
