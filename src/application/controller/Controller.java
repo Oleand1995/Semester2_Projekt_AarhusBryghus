@@ -79,6 +79,9 @@ public class Controller {
 
     public ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
 
+    public void removeOrdrelinjeFromUdlejning(Udlejning udlejning, OrdreLinje ordreLinje){
+        udlejning.removeOrdrelinje(ordreLinje);
+    }
     public void setAfrejningstidpunkt(Udlejning udlejning){
         udlejning.setAfregningsTidspunkt(LocalDateTime.now());
     }

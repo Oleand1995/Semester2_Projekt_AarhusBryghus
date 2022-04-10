@@ -47,6 +47,12 @@ public class Udlejning implements Serializable {
 
     public ArrayList<OrdreLinje> getOrdrelinjer(){return new ArrayList<>(ordrelinjer);}
 
+    public void removeOrdrelinje(OrdreLinje ordreLinje){
+        if (ordrelinjer.contains(ordreLinje)){
+            ordrelinjer.remove(ordreLinje);
+        }
+    }
+
     public String toString(){
         if (afregningsTidspunkt == null){
             return "Navn: " + lejersNavn + " | Udlejningstidspunkt: " + udlejningsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletPris + ",-";

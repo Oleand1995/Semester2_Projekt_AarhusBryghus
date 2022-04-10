@@ -102,8 +102,8 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
                 }
                 txfReturBeloeb.setText(returBeloeb + "");
             } else {
-               // controller.remove;
-                lvwOrdrelinjer.getItems().remove(ordreLinje);
+                controller.removeOrdrelinjeFromUdlejning(udlejning,ordreLinje);
+                lvwOrdrelinjer.getItems().setAll(udlejning.getOrdrelinjer());
                 returBeloeb += ordreLinje.getPris().getPris();
                 txfReturBeloeb.setText(returBeloeb + "");
             }
