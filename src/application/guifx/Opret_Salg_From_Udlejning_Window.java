@@ -1,6 +1,7 @@
 package application.guifx;
 
 import application.controller.Controller;
+import application.model.Betalingsmåder;
 import application.model.OrdreLinje;
 import application.model.Pris;
 import application.model.Udlejning;
@@ -49,6 +50,7 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
     private double returBeloeb = 0;
     private Button btnAfslutUdlejning;
     private CheckBox chbTilbagebetalt;
+    private ComboBox<Betalingsmåder> cbbBetalingsmaader;
 
     private void initContent(GridPane pane) {
         pane.setPadding(new Insets(10));
@@ -79,11 +81,16 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
         chbTilbagebetalt.setOnAction(event -> this.tilbagebetaltChecked());
         chbTilbagebetalt.setAlignment(Pos.CENTER_RIGHT);
 
+        cbbBetalingsmaader = new ComboBox<>();
+        cbbBetalingsmaader.getItems().setAll(Betalingsmåder.values());
+        pane.add(cbbBetalingsmaader,0,5);
+
         btnAfslutUdlejning = new Button("Afslut Udlejning");
-        pane.add(btnAfslutUdlejning,0,5);
+        pane.add(btnAfslutUdlejning,0,6);
         btnAfslutUdlejning.setPrefSize(250,20);
         btnAfslutUdlejning.setOnAction(event -> this.afslutUdlejning());
         btnAfslutUdlejning.setDisable(true);
+
 
     }
 
@@ -105,12 +112,15 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
     }
 
     private void afslutUdlejning(){
-        controller.setAfrejningstidpunkt(udlejning);
-        controller.setSamletPrisPåUdlejning(udlejning,lvwOrdrelinjer.getItems());
-        ArrayList<OrdreLinje> ordreLinjer = new ArrayList<>();
-        ordreLinjer.addAll(lvwOrdrelinjer.getItems());
-        controller.createSalg(LocalDateTime.now(),ordreLinjer,0,controller.getSamletPris(lvwOrdrelinjer.getItems()));
-        close();
+        Betalingsmåder betalingsmåder = cbbBetalingsmaader.getSelectionModel().getSelectedItem();
+        if (betalingsmåder != null){
+            controller.setAfrejningstidpunkt(udlejning);
+            controller.setSamletPrisPåUdlejning(udlejning,lvwOrdrelinjer.getItems());
+            ArrayList<OrdreLinje> ordreLinjer = new ArrayList<>();
+            ordreLinjer.addAll(lvwOrdrelinjer.getItems());
+            controller.createSalg(LocalDateTime.now(),ordreLinjer,0,controller.getSamletPris(lvwOrdrelinjer.getItems()),betalingsmåder);
+            close();
+        }
     }
 
     private void tilbagebetaltChecked(){

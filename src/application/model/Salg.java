@@ -12,13 +12,15 @@ public class Salg implements Serializable {
     private double samletPris;
     private int samletKlip;
     private ArrayList<OrdreLinje> ordrelinjer;
+    private Betalingsmåder betalingsmåde;
 
 
-    public Salg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordrelinjer, double samletPris, int samletKlip){
+    public Salg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordrelinjer, double samletPris, int samletKlip, Betalingsmåder betalingsmåde){
         this.salgsTidspunkt = salgsTidspunkt;
         this.ordrelinjer = ordrelinjer;
         this.samletKlip = samletKlip;
         this.samletPris = samletPris;
+        this.betalingsmåde = betalingsmåde;
     }
 
     public LocalDateTime getSalgsTidspunkt() {
@@ -55,10 +57,10 @@ public class Salg implements Serializable {
 
     public String toString(){
         if (samletKlip > 0){
-            return "Salgstidspunkt: " + salgsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletKlip + " klip";
+            return "Salgstidspunkt: " + salgsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletKlip + " klip" + " | Betalt med " + betalingsmåde;
         }
         else{
-            return "Salgstidspunkt: " + salgsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletPris + ",-";
+            return "Salgstidspunkt: " + salgsTidspunkt.truncatedTo(ChronoUnit.MINUTES) + " | Pris: " + samletPris + ",-" + " | Betalt med " + betalingsmåde;
         }
     }
 

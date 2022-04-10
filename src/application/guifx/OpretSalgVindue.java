@@ -340,10 +340,10 @@ public class OpretSalgVindue extends GridPane {
             ordrelinjer.addAll(lvwIndkøbsliste.getItems());
 
             if (betalingsmåde == Betalingsmåder.Klippekort) {
-                controller.createSalg(LocalDateTime.now(), ordrelinjer, Integer.parseInt(txfPrisIndkøbsliste.getText()), 0);
+                controller.createSalg(LocalDateTime.now(), ordrelinjer, Integer.parseInt(txfPrisIndkøbsliste.getText()), 0, betalingsmåde);
                 clearAll();
             } else {
-                controller.createSalg(LocalDateTime.now(), ordrelinjer, 0, Double.parseDouble(txfPrisIndkøbsliste.getText()));
+                controller.createSalg(LocalDateTime.now(), ordrelinjer, 0, Double.parseDouble(txfPrisIndkøbsliste.getText()), betalingsmåde);
                 clearAll();
             }
         } else {
