@@ -95,11 +95,7 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
                 ordreLinje.countDown();
                 lvwOrdrelinjer.getItems().setAll(udlejning.getOrdrelinjer());
                 lvwOrdrelinjer.getSelectionModel().select(ordreLinje);
-                if (ordreLinje.getRabatBeregning() != null){
-                    returBeloeb += ordreLinje.getRabatBeregning().getRabat(ordreLinje.getPrisUdenRabat());
-                }else{
-                    returBeloeb += ordreLinje.getPris().getPris();
-                }
+                returBeloeb += ordreLinje.getPris().getPris();
                 txfReturBeloeb.setText(returBeloeb + "");
             } else {
                 controller.removeOrdrelinjeFromUdlejning(udlejning,ordreLinje);
