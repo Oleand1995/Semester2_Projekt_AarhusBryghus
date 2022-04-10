@@ -55,7 +55,7 @@ class ControllerTest {
         blondie = controller.createProdukt("Blondie",fadoel);
 
         //Opretter prisliste
-        fredagsBar = controller.createPrisliste("Bar");
+        fredagsBar = controller.createPrisliste("FredagsBar");
 
         //Opretter priser
         pris = controller.createPris(38,klosterbryg,fredagsBar);
