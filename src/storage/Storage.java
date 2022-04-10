@@ -27,14 +27,9 @@ public class Storage implements Serializable {
         return storage;
     }
 
-//    private static ArrayList<Salg> salgs = new ArrayList<>();
-//    private static ArrayList<Udlejning> udlejninger = new ArrayList<>();
-//    private static ArrayList<ProduktGruppe> produktGruppes = new ArrayList<>();
-//    private static ArrayList<Prisliste> prislister = new ArrayList<>();
-
     //------------------------------------------------------------------------------------------------------------------
     public ArrayList<Salg> getSalg(){
-        return new ArrayList<Salg>(salgs);
+        return new ArrayList<>(salgs);
     }
     public void addSalg(Salg salg){salgs.add(salg);}
     public void removeSalg(Salg salg){salgs.remove(salg);}
@@ -42,18 +37,18 @@ public class Storage implements Serializable {
     //------------------------------------------------------------------------------------------------------------------
 
     public ArrayList<Udlejning> getUdlejninger(){
-        return new ArrayList<Udlejning>(udlejninger);
+        return new ArrayList<>(udlejninger);
     }
     public void addUdlejning(Udlejning udlejning){udlejninger.add(udlejning);}
     public void removeUdlejning(Udlejning udlejning){udlejninger.remove(udlejning);}
 
     //------------------------------------------------------------------------------------------------------------------
-    public ArrayList<ProduktGruppe> getProduktGrupper(){return new ArrayList<ProduktGruppe>(produktGruppes);}
+    public ArrayList<ProduktGruppe> getProduktGrupper(){return new ArrayList<>(produktGruppes);}
     public void addProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.add(produktGruppe);}
     public void removeProduktGruppe(ProduktGruppe produktGruppe){produktGruppes.remove(produktGruppe);}
 
     //------------------------------------------------------------------------------------------------------------------
-    public ArrayList<Prisliste> getPrislister(){return new ArrayList<Prisliste>(prislister);}
+    public ArrayList<Prisliste> getPrislister(){return new ArrayList<>(prislister);}
     public void addPrisliste(Prisliste prisliste){prislister.add(prisliste);}
     public void removePrisliste(Prisliste prisliste){prislister.remove(prisliste);}
 

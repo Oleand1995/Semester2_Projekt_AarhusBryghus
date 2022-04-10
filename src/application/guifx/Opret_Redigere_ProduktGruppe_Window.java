@@ -100,12 +100,4 @@ public class Opret_Redigere_ProduktGruppe_Window extends Stage {
 			hide();
 			}
 		}
-
-
-
 	}
-
-
-
-
-

@@ -12,9 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 
 public class VisSalgOgUdlejninger_Pane extends GridPane {

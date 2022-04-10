@@ -1,7 +1,6 @@
 package application.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Pris implements Serializable {
 
@@ -36,6 +35,4 @@ public class Pris implements Serializable {
         return 0;
     }
 
-    public void setKlip(int klip){
-    }
 }

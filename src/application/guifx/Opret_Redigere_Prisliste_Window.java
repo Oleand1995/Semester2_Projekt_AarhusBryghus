@@ -102,10 +102,4 @@ public class Opret_Redigere_Prisliste_Window extends Stage {
             hide();
         }
     }
-
-
-
-
-
-
 }

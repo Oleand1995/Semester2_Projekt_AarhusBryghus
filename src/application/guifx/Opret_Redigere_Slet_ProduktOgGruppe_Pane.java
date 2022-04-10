@@ -10,8 +10,6 @@ import javafx.scene.layout.GridPane;
 
 public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
 
-    private TextField txfProduktNavn, txfAntalPåLager;
-    private TextArea txa;
     private ListView<ProduktGruppe> lvwProduktgrupper;
     private ListView<Produkt> lvwProdukter;
     private Button btnOpretProduktGruppe,btnSletProduktGruppe,btnÆndreProduktgruppe,btnOpretProdukt,btnSletProdukt,btnÆndreProdukt;
@@ -82,7 +80,6 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
         Opret_Redigere_ProduktGruppe_Window dia = new Opret_Redigere_ProduktGruppe_Window("Opret Produktgruppe");
         dia.showAndWait();
 
-        //venter til vinduet lukker
         lvwProduktgrupper.getItems().setAll(controller.getProduktGrupper());
     }
 
@@ -121,7 +118,6 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
             Opret_Redigere_Produkt_Window dia = new Opret_Redigere_Produkt_Window("Opret Produkt",produktGruppe);
             dia.showAndWait();
 
-            //venter til vinduet lukker
             lvwProdukter.getItems().setAll(produktGruppe.getProdukter());
         }
     }
@@ -147,12 +143,6 @@ public class Opret_Redigere_Slet_ProduktOgGruppe_Pane extends GridPane {
 
         }
     }
-
-
-
-
-
-
 
     // -------------------------------------------------------------------------
 

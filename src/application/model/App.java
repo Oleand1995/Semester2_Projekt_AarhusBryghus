@@ -1,9 +1,5 @@
 package application.model;
 
-import application.controller.Controller;
-import javafx.beans.value.ObservableListValue;
-import javafx.collections.ObservableList;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 

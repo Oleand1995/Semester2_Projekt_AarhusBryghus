@@ -3,9 +3,7 @@ package application.guifx;
 import application.controller.Controller;
 import application.model.Betalingsmåder;
 import application.model.OrdreLinje;
-import application.model.Pris;
 import application.model.Udlejning;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,13 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.w3c.dom.Text;
-
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -46,7 +40,7 @@ public class Opret_Salg_From_Udlejning_Window extends Stage {
     }
 
     private ListView<OrdreLinje> lvwOrdrelinjer;
-    private TextField txfSamletPris, txfReturBeloeb;
+    private TextField txfReturBeloeb;
     private double returBeloeb = 0;
     private Button btnAfslutUdlejning;
     private CheckBox chbTilbagebetalt;

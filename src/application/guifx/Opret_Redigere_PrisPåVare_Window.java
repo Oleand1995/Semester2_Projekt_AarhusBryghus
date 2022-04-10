@@ -4,7 +4,6 @@ import application.controller.Controller;
 import application.model.Pris;
 import application.model.Prisliste;
 import application.model.Produkt;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -105,19 +104,7 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
         lblError = new Label();
         pane.add(lblError, 0, 7);
         lblError.setStyle("-fx-text-fill: red");
-
-
-       // initControls();
-
     }
-
-   /* private void initControls() {
-        if (pris != null) {
-            txfNavnPåProdukt.setText(pris.getProdukt().getBeskrivelse());
-        }
-    }
-
-    */
 
     private void annullerAction() {
         hide();
@@ -128,57 +115,32 @@ public class Opret_Redigere_PrisPåVare_Window extends Stage {
 
         //Finder og tjekker om det der er indtastet er et tal.
         //if (pris == null) {
-            Produkt produkt = lvwprodukter.getSelectionModel().getSelectedItem();
-            int prispåprodukt = -1;
-            try {
-                prispåprodukt = Integer.parseInt(txfPrispåProdukt.getText().trim());
-            } catch (NumberFormatException ex) {
-            }
+        Produkt produkt = lvwprodukter.getSelectionModel().getSelectedItem();
+        int prispåprodukt = -1;
+        try {
+            prispåprodukt = Integer.parseInt(txfPrispåProdukt.getText().trim());
+        } catch (NumberFormatException ex) {
+        }
 
-            int klipris = -1;
-            try {
-                klipris = Integer.parseInt(txfKlipPris.getText().trim());
-            } catch (NumberFormatException ex) {
-            }
-
+        int klipris = -1;
+        try {
+            klipris = Integer.parseInt(txfKlipPris.getText().trim());
+        } catch (NumberFormatException ex) {
+        }
 
             //Tjekker om tallet er positivt.
-            if (prispåprodukt < 0) {
-                lblError.setText("Tallet skal være positivt");
-            } else if (produkt == null) {
-                lblError.setText("Der skal vælges et produkt");
+        if (prispåprodukt < 0) {
+            lblError.setText("Tallet skal være positivt");
+        } else if (produkt == null) {
+            lblError.setText("Der skal vælges et produkt");
+        } else {
+            if (klipris > -1) {
+                controller.createPrisOgKlip(prispåprodukt, produkt, klipris, prisliste);
+                hide();
             } else {
-                if (klipris > -1) {
-                    controller.createPrisOgKlip(prispåprodukt, produkt, klipris, prisliste);
-                    hide();
-                } else {
-                    controller.createPris(prispåprodukt, produkt, prisliste);
-                    hide();
-                }
-            }
-
-       /* } else {
-            int prispåprodukt = -1;
-            try {
-                prispåprodukt = Integer.parseInt(txfPrispåProdukt.getText().trim());
-            } catch (NumberFormatException ex) {
-            }
-
-            int klipris = -1;
-            try {
-                klipris = Integer.parseInt(txfKlipPris.getText().trim());
-            } catch (NumberFormatException ex) {
-            }
-            if (prispåprodukt < 0) {
-                lblError.setText("Tallet skal være positivt mig i røvem");
-            }
-            else {
-                Controller.setPrisOgKlipForProdukt(pris,prispåprodukt ,klipris);
+                controller.createPris(prispåprodukt, produkt, prisliste);
                 hide();
             }
-
-
         }
-        */
     }
 }

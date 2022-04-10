@@ -12,7 +12,7 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
 
     private ListView<Prisliste> lvwPrislister;
     private ListView<Pris> lvwPrispåProdukter;
-    private Button btnOpretPrisliste,btnSletPrisliste,btnÆndrePrisliste,btnTilføjProdukt,btnSletProdukt,btnÆndreProdukt;
+    private Button btnOpretPrisliste,btnSletPrisliste,btnÆndrePrisliste,btnTilføjProdukt,btnSletProdukt;
     private Controller controller;
 
     public Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane() {
@@ -65,16 +65,6 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         this.add(btnSletProdukt,1 ,4);
         btnSletProdukt.setOnAction(event -> sletProdukt());
 
-/*
-        btnÆndreProdukt = new Button("Ændre Pris");
-        this.add(btnÆndreProdukt,1 ,5 );
-        btnÆndreProdukt.setOnAction(event -> updateprodukt());
-
- */
-
-
-
-
     }
 
     // -------------------------------------------------------------------------
@@ -84,7 +74,6 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
         Opret_Redigere_Prisliste_Window dia = new Opret_Redigere_Prisliste_Window("Opret prisliste");
         dia.showAndWait();
 
-        //venter til vinduet lukker
         lvwPrislister.getItems().setAll(controller.getPrislister());
     }
 
@@ -137,33 +126,6 @@ public class Opret_Redigere_Slet_PrisListe_PrisPåVare_Pane extends GridPane {
             lvwPrispåProdukter.getItems().setAll(prisliste.getPriser());
         }
     }
-
-    /*
-    private void updateprodukt(){
-        Prisliste prisliste = lvwPrislister.getSelectionModel().getSelectedItem();
-        Pris pris = lvwPrispåProdukter.getSelectionModel().getSelectedItem();
-        if (pris != null) {
-            Opret_Redigere_PrisPåVare_Window dia = new Opret_Redigere_PrisPåVare_Window("Update produktgruppe", prisliste,pris);
-            dia.showAndWait();
-
-            int selectIndex = lvwPrispåProdukter.getSelectionModel().getSelectedIndex();
-            lvwPrispåProdukter.getItems().setAll(prisliste.getPriser());
-            lvwPrispåProdukter.getSelectionModel().select(selectIndex);
-
-        }
-
-
-
-
-    }
-
-     */
-
-
-
-
-
-
 
     // -------------------------------------------------------------------------
 

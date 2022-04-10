@@ -2,8 +2,6 @@ package application.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Prisliste implements Serializable {
 
@@ -50,15 +48,6 @@ public class Prisliste implements Serializable {
     public void setSituation(String situation) {
         this.situation = situation;
     }
-
-    public ArrayList<Produkt> getProdukter(){
-        ArrayList produkter = new ArrayList();
-        for (Pris pr : priser){
-            produkter.add(pr.getProdukt());
-        }
-        return produkter;
-    }
-
 
     public String toString(){return this.situation;}
 }
