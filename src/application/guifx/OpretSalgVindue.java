@@ -308,15 +308,17 @@ public class OpretSalgVindue extends GridPane {
     private void godkendAntal() {
         OrdreLinje ordreLinje = lvwIndkøbsliste.getSelectionModel().getSelectedItem();
         if (ordreLinje != null) {
-            controller.setAntalPåOrdreLinje(ordreLinje, Integer.parseInt(txfAntal.getText()));
-            if (ordreLinje.getRabatBeregning() instanceof FastRabat) {
-                ordreLinje.setRabatBeregning(null);
-                lblError.setStyle("-fx-text-fill: red");
-                lblError.setText("Ups: Rabat fjernet fra ordrelinje, skal tilføjes igen hvis ønskes");
+            if (Integer.parseInt(txfAntal.getText()) > 0){
+                controller.setAntalPåOrdreLinje(ordreLinje, Integer.parseInt(txfAntal.getText()));
+                if (ordreLinje.getRabatBeregning() instanceof FastRabat) {
+                    ordreLinje.setRabatBeregning(null);
+                    lblError.setStyle("-fx-text-fill: red");
+                    lblError.setText("Ups: Rabat fjernet fra ordrelinje, skal tilføjes igen hvis ønskes");
+                }
+                opdaterIndkøbsliste();
+                txfAntal.clear();
+                setSamletPris();
             }
-            opdaterIndkøbsliste();
-            txfAntal.clear();
-            setSamletPris();
         }
     }
 

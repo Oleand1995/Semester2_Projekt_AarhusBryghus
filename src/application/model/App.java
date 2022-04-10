@@ -33,7 +33,7 @@ public class App {
 
 
 //------------------------------------------------------------------------------------------------
-//                  **Elaboration - Iteration 2**
+//                  **Elaboration - Iteration 2*a*
 
         //Opretter ordrelinjer.
         OrdreLinje ordreLinje = new OrdreLinje(pris);

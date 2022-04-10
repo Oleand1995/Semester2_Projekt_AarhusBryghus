@@ -3,16 +3,9 @@ package application.controller;
 import application.model.*;
 import javafx.collections.ObservableList;
 import storage.Storage;
-
-import javax.naming.ldap.Control;
 import java.io.*;
-import java.net.PortUnreachableException;
-import java.net.SocketImpl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Controller {
@@ -41,6 +34,18 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     *
+     * @param salgsTidspunkt
+     * @param ordreLinjer
+     * @param samletKlip
+     * @param samletPris
+     * pre: salgstidspunkt er ikke null
+     * pre: samletKlip, samletPris > 0
+     * pre: ordrelinjer er ikke tom
+     * @return opretter og returnere et salg.
+     */
     public Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris){
         Salg salg = new Salg(salgsTidspunkt, ordreLinjer, samletPris, samletKlip);
         storage.addSalg(salg);
@@ -52,6 +57,15 @@ public class Controller {
     public void removeSalg(Salg salg){storage.removeSalg(salg);}
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * @param udlejningsTidspunkt
+     * @param samletPris
+     * @param lejersNavn
+     * @param ordrelinjer
+     * pre: udlejningstidspunkt, samletPris og lejersNavn er ikke null
+     * pre: ordrelinjer er ikke tom.
+     * @return opretter og returnere en udlejning
+     */
     public Udlejning createUdlejning(LocalDateTime udlejningsTidspunkt, double samletPris, String lejersNavn, ArrayList<OrdreLinje> ordrelinjer){
         Udlejning udlejning = new Udlejning(udlejningsTidspunkt,null,samletPris,lejersNavn,ordrelinjer);
         storage.addUdlejning(udlejning);
@@ -64,6 +78,10 @@ public class Controller {
 
     public ArrayList<Udlejning> getUdlejninger(){return new ArrayList<>(storage.getUdlejninger());}
 
+    /**
+     * @return henter og returnere alle udlejninger som er igangværende fra storage.
+     * Bestemmes på om udlejnings attributten 'afregningstidspunkt' er null.
+     */
     public ArrayList<Udlejning> getAktiveUdlejninger(){
         ArrayList<Udlejning> udlejninger = new ArrayList<>();
         for (Udlejning u : storage.getUdlejninger()){
@@ -74,6 +92,10 @@ public class Controller {
         return udlejninger;
     }
 
+    /**
+     * @return henter og returnere alle udlejninger som er afsluttede fra storage.
+     * Bestemmes på om udlejnings attributten 'afregningstidspunkt' er null.
+     */
     public ArrayList<Udlejning> getAfsluttedeUdlejninger(){
         ArrayList<Udlejning> udlejninger = new ArrayList<>();
         for (Udlejning u : storage.getUdlejninger()){
@@ -85,15 +107,34 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param pris
+     * pre: pris er ikke null
+     * @return returnere en ny ordrelinje
+     */
     public OrdreLinje createOrdreLinje(Pris pris){
         return new OrdreLinje(pris);
     }
 
+    /**
+     * Opdatere ordrelinjens antal.
+     * @param ordreLinje
+     * @param antal
+     * pre: ordrelinje er ikke null.
+     * pre: antal > 0.
+     */
     public void setAntalPåOrdreLinje(OrdreLinje ordreLinje, int antal){
         ordreLinje.setAntal(antal);
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param produktType
+     * pre: produktType er ikke null
+     * @return opretter og returnere produktGruppe
+     */
     public ProduktGruppe createproduktGruppe(String produktType){
         ProduktGruppe produktGruppe = new ProduktGruppe(produktType);
         storage.addProduktGruppe(produktGruppe);
@@ -109,11 +150,23 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     *
+     * @param beskrivelse
+     * @param produktGruppe
+     * pre: beskrivelse og produktGruppe er ikke null
+     * @return opretter og returnerer et produkt
+     */
     public Produkt createProdukt(String beskrivelse, ProduktGruppe produktGruppe){
         Produkt produkt = produktGruppe.createProdukt(beskrivelse);
         return produkt;
     }
 
+    /**
+     *
+     * @return returnere alle produkter, for alle produktgrupper i storage.
+     */
     public ArrayList<Produkt> getProdukter(){
         ArrayList<Produkt> produkter = new ArrayList<>();
         for (ProduktGruppe pG : storage.getProduktGrupper()){
@@ -129,6 +182,12 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param navn
+     * pre: navn må ikke være null
+     * @return opretter og returnere en prisliste.
+     */
     public Prisliste createPrisliste(String navn){
         Prisliste prisliste = new Prisliste(navn);
         storage.addPrisliste(prisliste);
@@ -138,7 +197,6 @@ public class Controller {
     public ArrayList<Prisliste> getPrislister(){return storage.getPrislister();}
 
 
-
     public void sletPrisliste(Prisliste prisliste){
         if (storage.getPrislister().contains(prisliste)){
             storage.removePrisliste(prisliste);
@@ -146,6 +204,13 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Tager en observable list fra f.eks. et listview.
+     * Den tjekker også om ordrelinjerne har tilknyttet rabat.
+     * @param ordreLinjer
+     * @return beregner og returnere en samlet pris.
+     */
     public double getSamletPris(ObservableList<OrdreLinje> ordreLinjer){
         double samletPris = 0;
         for (OrdreLinje o : ordreLinjer){
@@ -158,7 +223,12 @@ public class Controller {
         return samletPris;
     }
 
-
+    /**
+     * Tager en observable list fra f.eks. et listview.
+     * Den tjekker også om ordrelinjerne har tilknyttet rabat.
+     * @param ordreLinjer
+     * @return beregner og returnere en samlet pris
+     */
     public int getSamletKlip(ObservableList<OrdreLinje> ordreLinjer){
         int samletKlip = 0;
 
@@ -170,14 +240,32 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param pris
+     * @param produkt
+     * @param klipPris
+     * @param prisliste
+     * pre: pris, klippris > 0.
+     * pre: produkt og prisliste er ikke null
+     * @return opretter og returnerer en prisOgKlip
+     */
     public Pris createPrisOgKlip(double pris, Produkt produkt, int klipPris,Prisliste prisliste){
-        Pris prisClass = prisliste.createPrisOgKlip(pris,produkt ,klipPris);
-        return prisClass;
+        Pris prisOgKlip = prisliste.createPrisOgKlip(pris,produkt ,klipPris);
+        return prisOgKlip;
     }
 
+    /**
+     * @param pris
+     * @param produkt
+     * @param prisliste
+     * pre: pris > 0
+     * pre: produkt og prislite er ikke nullæ
+     * @return opretter og returnerer en pris
+     */
     public Pris createPris (double pris, Produkt produkt,Prisliste prisliste){
-        Pris prisClass = prisliste.createPris(pris,produkt);
-        return prisClass;
+        Pris prisUdenKlip = prisliste.createPris(pris,produkt);
+        return prisUdenKlip;
     }
 
     public void sletPrisEllerPrisOgKlip(Prisliste prisliste, Pris pris){
@@ -185,12 +273,27 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param ordreLinje
+     * @param rabatProcent
+     * pre: ordrelinje er ikke null
+     * pre: 0 <= rabatProcent <= 100
+     * @return opretter, tilføjer til ordreLinje og returnerer en ProcentRabat
+     */
     public RabatBeregning tilføjProcentRabatTilOrdrelinje(OrdreLinje ordreLinje,double rabatProcent){
         RabatBeregning procentRabat = new ProcentRabat(rabatProcent);
         ordreLinje.setRabatBeregning(procentRabat);
         return procentRabat;
     }
 
+    /**
+     * @param ordreLinje
+     * @param fastRabatPris
+     * pre: ordreLinje er ikke null
+     * pre: fastRabatPris <= ordreLinje.getPris() * ordreLinje.getAntal()
+     * @return opretter, tilføjer til ordrelinje og returnerer en FastRabat
+     */
     public RabatBeregning tilføjFastRabatTilOrdrelinje(OrdreLinje ordreLinje,double fastRabatPris){
         RabatBeregning fastRabat = new FastRabat(fastRabatPris);
         ordreLinje.setRabatBeregning(fastRabat);
@@ -198,15 +301,22 @@ public class Controller {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param start
+     * @param slut
+     * pre: slut er efter start
+     * @return returnerer en ArrayList med salg, solgt imellem start og slut fra storage.
+     */
     public ArrayList<Salg> getSalgFromDato(LocalDate start, LocalDate slut){
         ArrayList<Salg> salg = new ArrayList<>();
-        if (!storage.getSalg().isEmpty()){
-            for (Salg s : storage.getSalg()){
-                if (s.getSalgsTidspunkt().isAfter(start.atStartOfDay()) && s.getSalgsTidspunkt().isBefore(slut.atTime(23,59))){
-                    salg.add(s);
+            if (!storage.getSalg().isEmpty()){
+                for (Salg s : storage.getSalg()){
+                    if (s.getSalgsTidspunkt().isAfter(start.atStartOfDay()) && s.getSalgsTidspunkt().isBefore(slut.atTime(23,59))){
+                        salg.add(s);
+                    }
                 }
             }
-        }
         return salg;
     }
 

@@ -91,7 +91,7 @@ public class Opret_Redigere_Prisliste_Window extends Stage {
     private void okAction(){
         String prisListeNavn = txfPrislisteNavn.getText().trim();
         if (prisListeNavn.length() == 0){
-            lblError.setText("Produktbeskrivelse skal være udfyldt");
+            lblError.setText("Navn skal være udfyldt");
         }
         else if (prisliste != null) {
             prisliste.setSituation(prisListeNavn);
