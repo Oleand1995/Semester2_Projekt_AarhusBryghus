@@ -27,11 +27,12 @@ public class StartWindow extends Application {
 	// -------------------------------------------------------------------------
 
 	private void initContent(BorderPane pane) {
+		controller = Controller.getController();
+		controller.loadStorage();
+
 		TabPane tabPane = new TabPane();
 		this.initTabPane(tabPane);
 		pane.setCenter(tabPane);
-		controller = Controller.getController();
-		controller.loadStorage();
 	}
 
 	@Override
@@ -70,10 +71,6 @@ public class StartWindow extends Application {
 		VisSalgOgUdlejninger_Pane visSalgOgUdlejninger = new VisSalgOgUdlejninger_Pane();
 		tab4.setContent(visSalgOgUdlejninger);
 		tab4.setOnSelectionChanged(event -> visSalgOgUdlejninger.updateControls());
-
-
-
-
 
 	}
 

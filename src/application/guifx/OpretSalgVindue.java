@@ -53,9 +53,6 @@ public class OpretSalgVindue extends GridPane {
         this.add(cbbBetalingsMåder, 1, 0);
         cbbBetalingsMåder.setDisable(true);
 
-        Button btnKlippekort = new Button("Tilføj Klippekort");
-        this.add(btnKlippekort, 2, 0);
-
         Label lblProdukter = new Label("Produkter:");
         this.add(lblProdukter, 0, 1);
 
@@ -87,7 +84,6 @@ public class OpretSalgVindue extends GridPane {
         ChangeListener<OrdreLinje> listenerordrelinje = (ov, oldOrdreLinje, newOrdreLinje) -> this.valgtOrdrelinje();
         lvwIndkøbsliste.getSelectionModel().selectedItemProperty().addListener(listenerordrelinje);
 
-
         HBox indkøbsListePris = new HBox(20);
         this.add(indkøbsListePris, 3, 6);
         indkøbsListePris.setPadding(new Insets(10, 0, 0, 50));
@@ -99,7 +95,6 @@ public class OpretSalgVindue extends GridPane {
         txfPrisIndkøbsliste = new TextField();
         indkøbsListePris.getChildren().add(txfPrisIndkøbsliste);
         txfPrisIndkøbsliste.setEditable(false);
-
 
         VBox vbxAntal = new VBox(10);
         this.add(vbxAntal, 5, 3);
@@ -250,8 +245,6 @@ public class OpretSalgVindue extends GridPane {
             txfAntal.setText(ordreLinje.getAntal() + "");
             lblError.setText("");
         }
-
-
     }
 
     public void tilføjRabat() {
@@ -259,6 +252,7 @@ public class OpretSalgVindue extends GridPane {
 
         if (ordreLinje != null && txfFastRabatEllerProcent.getText().trim().length() != 0) {
 
+            try {
             if (chbProcent.isSelected()) {
                 double rabatProcent = Double.parseDouble(txfFastRabatEllerProcent.getText().trim());
                 if (rabatProcent <= 100.0 && rabatProcent >= 0.0) {
@@ -279,11 +273,14 @@ public class OpretSalgVindue extends GridPane {
                     lblError.setStyle("-fx-text-fill: red");
                     lblError.setText("Rabaten kan ikke være større end ordre linjens fulde pris");
                 }
-
             }
             txfPrisIndkøbsliste.setText(controller.getSamletPris(lvwIndkøbsliste.getItems()) + "");
             opdaterIndkøbsliste();
             clearRabat();
+            } catch (NumberFormatException e){
+                lblError.setStyle("-fx-text-fill: red");
+                lblError.setText("Rabatfeltet godtager ikke bugstaver.");
+            }
         }
     }
 
@@ -447,9 +444,13 @@ public class OpretSalgVindue extends GridPane {
     }
 
     public void updateControls() {
-        cbbPrisListe.getItems().setAll(controller.getPrislister());
-        cbbBetalingsMåder.setDisable(true);
-        clearAll();
+        Prisliste  prisliste = cbbPrisListe.getSelectionModel().getSelectedItem();
+        if (prisliste != null) {
+            cbbPrisListe.getItems().setAll(controller.getPrislister());
+            cbbBetalingsMåder.setDisable(true);
+        } else{
+            clearAll();
+        }
     }
 
     public void updateControlsBetalingsmaader() {
