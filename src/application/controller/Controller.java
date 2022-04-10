@@ -319,6 +319,7 @@ public class Controller {
      */
     public ArrayList<Salg> getSalgFromDato(LocalDate start, LocalDate slut){
         ArrayList<Salg> salg = new ArrayList<>();
+        if (start != null && slut != null){
             if (!storage.getSalg().isEmpty()){
                 for (Salg s : storage.getSalg()){
                     if (s.getSalgsTidspunkt().isAfter(start.atStartOfDay()) && s.getSalgsTidspunkt().isBefore(slut.atTime(23,59))){
@@ -326,6 +327,7 @@ public class Controller {
                     }
                 }
             }
+        }
         return salg;
     }
 

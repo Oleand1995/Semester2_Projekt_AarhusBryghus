@@ -275,7 +275,7 @@ public class OpretSalgVindue extends GridPane {
             clearRabat();
             } catch (NumberFormatException e){
                 lblError.setStyle("-fx-text-fill: red");
-                lblError.setText("Rabatfeltet godtager ikke bugstaver.");
+                lblError.setText("Rabatfeltet godtager ikke bogstaver.");
             }
         }
     }

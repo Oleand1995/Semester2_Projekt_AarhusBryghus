@@ -27,6 +27,11 @@ public class StorageInitializer {
         ProduktGruppe sodavand = controller.createproduktGruppe("Sodavand");
         ProduktGruppe snacks = controller.createproduktGruppe("Snacks");
         ProduktGruppe rundvisning = controller.createproduktGruppe("Rundvisning");
+        ProduktGruppe klippekort = controller.createproduktGruppe("Klippekort");
+
+        // Produkter under klippekort:
+
+        Produkt klippekort4Klip = controller.createProdukt("Klippekort | 4 klip", klippekort);
 
         // Produkter under flaske:
 
@@ -144,6 +149,11 @@ public class StorageInitializer {
         // Prisliste i Bar:
 
         Prisliste bar = controller.createPrisliste("Bar");
+
+
+        // Flaske i Bar:
+
+        bar.createPris(130, klippekort4Klip);
 
         // Flaske i Bar:
 

@@ -141,13 +141,12 @@ public class VisSalgOgUdlejninger_Pane extends GridPane {
         Salg salg = lvwSalg.getSelectionModel().getSelectedItem();
         if(salg != null){
             for (Udlejning u : lvwAfsluttedeUdlejninger.getItems()){
-                if (u.getAfregningsTidspunkt().truncatedTo(ChronoUnit.SECONDS).isEqual(salg.getSalgsTidspunkt().truncatedTo(ChronoUnit.SECONDS))){
+                if (u.getAfregningsTidspunkt().truncatedTo(ChronoUnit.SECONDS).isEqual(salg.getSalgsTidspunkt().truncatedTo(ChronoUnit.SECONDS))) {
                     controller.removeUdlejning(u);
-                    controller.removeSalg(salg);
-                }else{
                     controller.removeSalg(salg);
                 }
             }
+            controller.removeSalg(salg);
             lvwAfsluttedeUdlejninger.getItems().setAll(controller.getAfsluttedeUdlejninger());
             lvwSalg.getItems().setAll(controller.getSalg());
             lvwSalgOrdreLinjer.getItems().clear();
