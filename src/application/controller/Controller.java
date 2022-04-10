@@ -41,13 +41,14 @@ public class Controller {
      * @param ordreLinjer
      * @param samletKlip
      * @param samletPris
-     * pre: salgstidspunkt er ikke null
+     * @param betalingsmåde
+     * pre: salgstidspunkt og betalingsmåde er ikke null
      * pre: samletKlip, samletPris > 0
      * pre: ordrelinjer er ikke tom
      * @return opretter og returnere et salg.
      */
-    public Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris){
-        Salg salg = new Salg(salgsTidspunkt, ordreLinjer, samletPris, samletKlip);
+    public Salg createSalg(LocalDateTime salgsTidspunkt, ArrayList<OrdreLinje> ordreLinjer, int samletKlip, double samletPris, Betalingsmåder betalingsmåde){
+        Salg salg = new Salg(salgsTidspunkt, ordreLinjer, samletPris, samletKlip, betalingsmåde);
         storage.addSalg(salg);
         return salg;
     }
@@ -326,6 +327,26 @@ public class Controller {
                 }
             }
         return salg;
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param start
+     * @param slut
+     * pre: slut er efter start
+     * @return returnerer en ArrayList med salg, solgt imellem start og slut fra storage.
+     */
+    public ArrayList<Udlejning> getUdlejningFromDato(LocalDate start, LocalDate slut){
+        ArrayList<Udlejning> udlejninger = new ArrayList<>();
+        if (!storage.getUdlejninger().isEmpty()){
+            for (Udlejning u : storage.getUdlejninger()){
+                if (u.getAfregningsTidspunkt().isAfter(start.atStartOfDay()) && u.getAfregningsTidspunkt().isBefore(slut.atTime(23,59))){
+                    udlejninger.add(u);
+                }
+            }
+        }
+        return udlejninger;
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------

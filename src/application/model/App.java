@@ -49,7 +49,7 @@ public class App {
         ordreLinjer.add(ordreLinje1);
 
         //Salget oprettes med ordrelinjerne.
-        Salg salg = new Salg(LocalDateTime.now(),ordreLinjer,100,0);
+        Salg salg = new Salg(LocalDateTime.now(),ordreLinjer,100,0, Betalingsmåder.Dankort);
 
         //Udlejning oprettes med ordrelinjerne.
         Udlejning udlejning = new Udlejning(LocalDateTime.now(),null,100,"Henrik",ordreLinjer);
